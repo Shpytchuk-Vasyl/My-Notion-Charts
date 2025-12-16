@@ -1,0 +1,149 @@
+{
+  "validation": {
+    "email": {
+      "invalid": "Invalid email address",
+      "required": "Email is required"
+    },
+    "password": {
+      "min": "Password must be at least {min} characters",
+      "minSignIn": "Password must be at least 6 characters",
+      "minSignUp": "Password must be at least 8 characters",
+      "uppercase": "Password must contain at least one uppercase letter",
+      "lowercase": "Password must contain at least one lowercase letter",
+      "number": "Password must contain at least one number",
+      "required": "Password is required"
+    },
+    "confirmPassword": {
+      "min": "Confirm Password must be at least 8 characters",
+      "match": "Passwords do not match",
+      "required": "Confirm password is required"
+    }
+  },
+  "pages": {
+    "root": {
+      "hero": {
+        "title": "Transform Notion data into",
+        "titleHighlight": "powerful visualizations",
+        "description": "Build dynamic, auto-updating charts from your Notion workspace in minutes — zero coding needed.",
+        "cta": "Sign in with Google",
+        "imageAlt": "Example of a chart created with Notion Charts"
+      },
+      "howItWorks": {
+        "steps": [
+          {
+            "title": "Link your Notion",
+            "description": "Securely connect to access your workspace tables and databases"
+          },
+          {
+            "title": "Design your visualization",
+            "description": "Pick from various chart styles and personalize every detail"
+          },
+          {
+            "title": "Share & export",
+            "description": "Embed live charts or export them to share with anyone"
+          }
+        ],
+        "stepImageAlt": "Illustration for step {number}: {title}"
+      },
+      "features": {
+        "blocks": [
+          {
+            "title": "Simple and straightforward",
+            "description": "Built for simplicity, allowing you to generate stunning charts effortlessly. Customize every aspect with just a few clicks.",
+            "items": [
+              "Your charts sync automatically whenever Notion data changes",
+              "Secure by design - share charts knowing your data is protected",
+              "Works without writing a single line of code"
+            ]
+          },
+          {
+            "title": "Complete creative control",
+            "description": "Full flexibility over your chart appearance. Select from dozens of visualization types and apply your brand identity.",
+            "items": [
+              "Wide selection of visualization formats",
+              "Personalized themes and brand colors",
+              "Configurable labels, legends, and tooltips"
+            ]
+          },
+          {
+            "title": "Flexible sharing & distribution",
+            "description": "Effortlessly distribute visualizations to teammates or stakeholders. Download in multiple formats or integrate seamlessly.",
+            "items": [
+              "Seamlessly integrate into Notion pages or external websites",
+              "Collaborate by sharing with colleagues or clients",
+              "Download as premium PNG, JPG, or PDF files"
+            ]
+          }
+        ],
+        "featureImageAlt": "Illustration for feature: {title}"
+      },
+      "featureCards": {
+        "title": "All the tools you need for data visualization",
+        "subtitle": "Feature-rich platform to unlock insights from your Notion data",
+        "cards": [
+          {
+            "title": "Secure",
+            "description": "Your privacy matters most. We never store your information — only access what you explicitly share."
+          },
+          {
+            "title": "Sorting & Filtering",
+            "description": "Quickly organize and filter information to surface the most relevant insights."
+          },
+          {
+            "title": "Responsive",
+            "description": "Charts automatically adjust to fit any device — perfect on phones, tablets, and computers."
+          },
+          {
+            "title": "Dark mode",
+            "description": "Toggle between light and dark themes instantly, directly within your chart."
+          }
+        ]
+      },
+      "cta": {
+        "title": "Unlock your Notion data's potential",
+        "description": "Stop spending hours on manual charts. Visualize your workspace data instantly with our intuitive builder.",
+        "button": "Create your chart",
+        "features": "Zero code needed • Free account to start"
+      },
+      "footer": {
+        "copyright": "© 2025 Your Company. All rights reserved."
+      }
+    },
+    "login": {
+      "title": "Welcome back",
+      "description": "Login to your account",
+      "emailLabel": "Email",
+      "passwordLabel": "Password",
+      "forgotPasswordText": "Forgot your password?",
+      "loginButtonText": "Login",
+      "orContinueWithText": "Or continue with",
+      "googleLoginButtonText": "Login with Google",
+      "signUpPromptText": "Don't have an account?",
+      "signUpLinkText": "Sign up",
+      "termsText": "By clicking continue, you agree to our",
+      "termsLink": "Terms of Service",
+      "privacyLink": "Privacy Policy"
+    },
+    "signup": {
+      "title": "Create your account",
+      "description": "Enter your email below to create your account",
+      "emailLabel": "Email",
+      "passwordLabel": "Password",
+      "confirmPasswordLabel": "Confirm Password",
+      "createAccountButtonText": "Create Account",
+      "orContinueWithText": "Or continue with",
+      "googleSignupButtonText": "Sign up with Google",
+      "loginPromptText": "Already have an account?",
+      "loginLinkText": "Sign in"
+    },
+    "verifyEmail": {
+      "title": "Check your email",
+      "description": "We've sent you a confirmation email. Please check your inbox and click the link to verify your account.",
+      "resendText": "Didn't receive the email?",
+      "resendButton": "Resend confirmation email",
+      "backToLogin": "Back to login",
+      "resendSuccess": "Verification email has been sent successfully. Please check your inbox.",
+      "resendError": "Failed to send verification email. Please try again."
+    }
+  }
+}
