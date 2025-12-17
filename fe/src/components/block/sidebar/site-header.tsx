@@ -2,7 +2,7 @@
 
 import { SidebarIcon } from "lucide-react";
 
-import { SearchForm } from "@/components/search-form";
+import { SearchForm } from "@/components/block/sidebar/search-form";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -14,6 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useSidebar } from "@/components/ui/sidebar";
+import { Fragment } from "react";
 
 export function SiteHeader() {
   const { toggleSidebar } = useSidebar();
@@ -30,21 +31,34 @@ export function SiteHeader() {
           <SidebarIcon />
         </Button>
         <Separator orientation="vertical" className="mr-2 h-4" />
-        <Breadcrumb className="hidden sm:block">
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="#">
-                Building Your Application
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+        <SiteBreadcrumb />
         <SearchForm className="w-full sm:ml-auto sm:w-auto" />
       </div>
     </header>
   );
 }
+
+const SiteBreadcrumb = () => {
+  const { breadcrumbs } = useSidebar();
+
+  return (
+    <Breadcrumb className="hidden sm:block">
+      <BreadcrumbList>
+        {breadcrumbs.map((breadcrumb, index) => (
+          <Fragment key={`breadcrumb-${index}`}>
+            <BreadcrumbItem>
+              {index < breadcrumbs.length - 1 ? (
+                <BreadcrumbLink href={breadcrumb.url}>
+                  {breadcrumb.title}
+                </BreadcrumbLink>
+              ) : (
+                <BreadcrumbPage>{breadcrumb.title}</BreadcrumbPage>
+              )}
+            </BreadcrumbItem>
+            <BreadcrumbSeparator className="last:hidden" />
+          </Fragment>
+        ))}
+      </BreadcrumbList>
+    </Breadcrumb>
+  );
+};

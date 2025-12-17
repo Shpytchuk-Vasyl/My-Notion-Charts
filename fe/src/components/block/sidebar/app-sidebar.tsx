@@ -1,5 +1,4 @@
 "use client";
-
 import {
   BookOpen,
   Bot,
@@ -14,10 +13,10 @@ import {
 } from "lucide-react";
 import type * as React from "react";
 
-import { NavMain } from "@/components/nav-main";
-import { NavProjects } from "@/components/nav-projects";
-import { NavSecondary } from "@/components/nav-secondary";
-import { NavUser } from "@/components/nav-user";
+import { NavMain } from "@/components/block/sidebar/nav-main";
+import { NavCharts } from "@/components/block/sidebar/nav-charts";
+import { NavSecondary } from "@/components/block/sidebar/nav-secondary";
+import { NavUser } from "@/components/block/sidebar/nav-user";
 import {
   Sidebar,
   SidebarContent,
@@ -27,6 +26,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { NavWorkspace } from "./nav-workspace";
+import { User } from "@/lib/supabase/user";
+import { Workspace } from "@/models/workspace";
 
 const data = {
   user: {
@@ -35,45 +37,45 @@ const data = {
     avatar: "/avatars/shadcn.jpg",
   },
   navMain: [
-    {
-      title: "Playground",
-      url: "#",
-      icon: SquareTerminal,
-      isActive: true,
-      items: [
-        {
-          title: "History",
-          url: "#",
-        },
-        {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Models",
-      url: "#",
-      icon: Bot,
-      items: [
-        {
-          title: "Genesis",
-          url: "#",
-        },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
-      ],
-    },
+    // {
+    //   title: "Playground",
+    //   url: "#",
+    //   icon: SquareTerminal,
+    //   isActive: true,
+    //   items: [
+    //     {
+    //       title: "History",
+    //       url: "#",
+    //     },
+    //     {
+    //       title: "Starred",
+    //       url: "#",
+    //     },
+    //     {
+    //       title: "Settings",
+    //       url: "#",
+    //     },
+    //   ],
+    // },
+    // {
+    //   title: "Models",
+    //   url: "#",
+    //   icon: Bot,
+    //   items: [
+    //     {
+    //       title: "Genesis",
+    //       url: "#",
+    //     },
+    //     {
+    //       title: "Explorer",
+    //       url: "#",
+    //     },
+    //     {
+    //       title: "Quantum",
+    //       url: "#",
+    //     },
+    //   ],
+    // },
     {
       title: "Documentation",
       url: "#",
@@ -136,52 +138,41 @@ const data = {
   projects: [
     {
       name: "Design Engineering",
-      url: "#",
+      id: "#",
       icon: Frame,
     },
     {
       name: "Sales & Marketing",
-      url: "#",
+      id: "#",
       icon: PieChart,
     },
     {
       name: "Travel",
-      url: "#",
+      id: "#",
       icon: Map,
     },
   ],
 };
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({
+  user,
+  workspaces,
+}: {
+  user: User;
+  workspaces: Workspace[];
+}) {
   return (
-    <Sidebar
-      className="top-(--header-height) h-[calc(100svh-var(--header-height))]!"
-      {...props}
-    >
+    <Sidebar className="top-(--header-height) h-[calc(100svh-var(--header-height))]!">
       <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild>
-              <a href="#">
-                <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                  <Command className="size-4" />
-                </div>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">Acme Inc</span>
-                  <span className="truncate text-xs">Enterprise</span>
-                </div>
-              </a>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
+        <NavWorkspace workspaces={workspaces} />
       </SidebarHeader>
       <SidebarContent>
+        {/* <NavCharts charts={data.projects} /> */}
         <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>
   );

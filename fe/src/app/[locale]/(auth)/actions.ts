@@ -96,7 +96,7 @@ export async function signUp(formData: FormData) {
     email,
     password,
     options: {
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
+      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}api/auth/callback`,
     },
   });
 
@@ -121,7 +121,7 @@ export async function signInWithGoogle() {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
+      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}api/auth/callback`,
     },
   });
 
@@ -159,7 +159,7 @@ export async function resendVerificationEmail() {
     type: "signup",
     email: user.email,
     options: {
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
+      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}api/auth/callback`,
     },
   });
 
@@ -174,4 +174,15 @@ export async function resendVerificationEmail() {
     success: true,
     msg: t("resendSuccess"),
   };
+}
+
+export async function signOut() {
+  const supabase = await createClient();
+  await supabase.auth.signOut();
+  const locale = await getLocale();
+
+  redirect({
+    locale,
+    href: routing.pathnames["/"],
+  });
 }

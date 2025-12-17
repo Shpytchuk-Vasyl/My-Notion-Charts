@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
-import { AppSidebar } from "@/components/app-sidebar";
-import { SiteHeader } from "@/components/site-header";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { SiteHeader } from "@/components/block/sidebar/site-header";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { redirect } from "@/i18n/routing";
 import { createClient } from "@/lib/supabase/server";
 
@@ -24,12 +23,9 @@ export default async function ProtectedLayout({
   }
 
   return (
-      <SidebarProvider className="[--header-height:calc(--spacing(14))] flex flex-col">
-        <SiteHeader />
-        <div className="flex flex-1">
-          <AppSidebar />
-          <SidebarInset>{children}</SidebarInset>
-        </div>
-      </SidebarProvider>
+    <SidebarProvider className="[--header-height:calc(--spacing(14))] flex flex-col">
+      <SiteHeader />
+      <div className="flex flex-1">{children}</div>
+    </SidebarProvider>
   );
 }

@@ -428,6 +428,11 @@
   resolved "https://registry.yarnpkg.com/@next/swc-win32-x64-msvc/-/swc-win32-x64-msvc-16.0.8.tgz#9cb3db37d0113ce099877e04b975868e57782204"
   integrity sha512-jWpWjWcMQu2iZz4pEK2IktcfR+OA9+cCG8zenyLpcW8rN4rzjfOzH4yj/b1FiEAZHKS+5Vq8+bZyHi+2yqHbFA==
 
+"@notionhq/client@^5.6.0":
+  version "5.6.0"
+  resolved "https://registry.yarnpkg.com/@notionhq/client/-/client-5.6.0.tgz#13fea40462f570150d6d8c2341d47323462e971c"
+  integrity sha512-eA3dO87vQJhFmR59utXH8r0nnulW7C7oTcxfp3bpiiTiv59luCkOkbbALCIa8TzBDdELoRD/zJEIfKcynyFR6Q==
+
 "@radix-ui/number@1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@radix-ui/number/-/number-1.1.1.tgz#7b2c9225fbf1b126539551f5985769d0048d9090"

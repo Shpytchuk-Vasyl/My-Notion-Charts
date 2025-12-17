@@ -31,6 +31,11 @@ const SIDEBAR_WIDTH_MOBILE = "18rem";
 const SIDEBAR_WIDTH_ICON = "3rem";
 const SIDEBAR_KEYBOARD_SHORTCUT = "b";
 
+type BreadcrumbItem = {
+  title: string;
+  url: string;
+};
+
 type SidebarContextProps = {
   state: "expanded" | "collapsed";
   open: boolean;
@@ -39,6 +44,8 @@ type SidebarContextProps = {
   setOpenMobile: (open: boolean) => void;
   isMobile: boolean;
   toggleSidebar: () => void;
+  breadcrumbs: BreadcrumbItem[];
+  setBreadcrumbs: React.Dispatch<React.SetStateAction<BreadcrumbItem[]>>;
 };
 
 const SidebarContext = React.createContext<SidebarContextProps | null>(null);
@@ -112,21 +119,31 @@ function SidebarProvider({
   // This makes it easier to style the sidebar with Tailwind classes.
   const state = open ? "expanded" : "collapsed";
 
-  const contextValue = React.useMemo<SidebarContextProps>(
-    () => ({
-      state,
-      open,
-      setOpen,
-      isMobile,
-      openMobile,
-      setOpenMobile,
-      toggleSidebar,
-    }),
-    [state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar],
-  );
+  const [breadcrumbs, setBreadcrumbs] = React.useState<BreadcrumbItem[]>([
+    {
+      title: "Home",
+      url: "/",
+    },
+    {
+      title: "Dashboard",
+      url: "#",
+    },
+  ]);
 
   return (
-    <SidebarContext.Provider value={contextValue}>
+    <SidebarContext.Provider
+      value={{
+        state,
+        open,
+        setOpen,
+        isMobile,
+        openMobile,
+        setOpenMobile,
+        toggleSidebar,
+        breadcrumbs,
+        setBreadcrumbs,
+      }}
+    >
       <TooltipProvider delayDuration={0}>
         <div
           data-slot="sidebar-wrapper"
@@ -396,8 +413,8 @@ function SidebarGroupLabel({
   className,
   asChild = false,
   ...props
-}: React.ComponentProps<"div"> & { asChild?: boolean }) {
-  const Comp = asChild ? Slot : "div";
+}: React.ComponentProps<"p"> & { asChild?: boolean }) {
+  const Comp = asChild ? Slot : "p";
 
   return (
     <Comp

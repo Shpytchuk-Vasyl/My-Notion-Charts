@@ -25,7 +25,7 @@
         "title": "Transform Notion data into",
         "titleHighlight": "powerful visualizations",
         "description": "Build dynamic, auto-updating charts from your Notion workspace in minutes — zero coding needed.",
-        "cta": "Sign in with Google",
+        "cta": "Create your chart",
         "imageAlt": "Example of a chart created with Notion Charts"
       },
       "howItWorks": {
@@ -144,6 +144,10 @@
       "backToLogin": "Back to login",
       "resendSuccess": "Verification email has been sent successfully. Please check your inbox.",
       "resendError": "Failed to send verification email. Please try again."
+    },
+    "logout": {
+      "title": "Logging out",
+      "description": "Please wait while we sign you out of your account..."
     }
   }
 }

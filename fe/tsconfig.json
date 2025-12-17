@@ -22,9 +22,9 @@
       "@/*": ["./src/*"],
       "@/pages/*": ["./src/components/pages/*"],
       "@/components/*": ["./src/components/*"],
-      "@/ui/*": ["./src/components/ui/*"],
       "@/lib/*": ["./src/lib/*"],
-      "@/hooks/*": ["./src/hooks/*"]
+      "@/hooks/*": ["./src/hooks/*"],
+      "@/models/*": ["./src/models/*"]
     }
   },
   "include": [

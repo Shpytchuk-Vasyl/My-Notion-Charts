@@ -1,5 +1,3 @@
-"use client";
-
 import {
   BadgeCheck,
   Bell,
@@ -23,20 +21,12 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
 } from "@/components/ui/sidebar";
+import { Link, routing } from "@/i18n/routing";
+import { AvatarInfo } from "@/components/ui/avatar-info";
+import { User } from "@/lib/supabase/user";
 
-export function NavUser({
-  user,
-}: {
-  user: {
-    name: string;
-    email: string;
-    avatar: string;
-  };
-}) {
-  const { isMobile } = useSidebar();
-
+export function NavUser({ user }: { user: User }) {
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -46,61 +36,55 @@ export function NavUser({
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
-              </Avatar>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{user.name}</span>
-                <span className="truncate text-xs">{user.email}</span>
-              </div>
+              <AvatarInfo
+                name={user.name}
+                email={user.email || ""}
+                avatar={user.avatar}
+              />
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
             className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
-            side={isMobile ? "bottom" : "right"}
+            side={"right"}
             align="end"
             sideOffset={4}
           >
-            <DropdownMenuLabel className="p-0 font-normal">
-              <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.avatar} alt={user.name} />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
-                </Avatar>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{user.name}</span>
-                  <span className="truncate text-xs">{user.email}</span>
-                </div>
-              </div>
+            <DropdownMenuLabel className="flex items-center gap-2 px-1 py-1.5 text-left text-sm font-normal">
+              <AvatarInfo
+                name={user.name}
+                email={user.email || ""}
+                avatar={user.avatar}
+              />
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuGroup>
+            {/* <DropdownMenuGroup>
               <DropdownMenuItem>
                 <Sparkles />
                 Upgrade to Pro
               </DropdownMenuItem>
             </DropdownMenuGroup>
-            <DropdownMenuSeparator />
+            <DropdownMenuSeparator /> */}
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              {/* <DropdownMenuItem>
                 <BadgeCheck />
                 Account
-              </DropdownMenuItem>
-              <DropdownMenuItem>
+              </DropdownMenuItem> */}
+              {/* <DropdownMenuItem>
                 <CreditCard />
                 Billing
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
               <DropdownMenuItem>
                 <Bell />
                 Notifications
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <LogOut />
-              Log out
+            <DropdownMenuItem asChild>
+              <Link href={routing.pathnames["/logout"]}>
+                <LogOut />
+                Log out
+              </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

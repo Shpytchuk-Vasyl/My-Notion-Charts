@@ -15,7 +15,7 @@ export function CtaSection() {
         <p className="mb-8 text-lg opacity-90">{t("description")}</p>
         <div className="flex flex-col items-center gap-4">
           <Button size="lg" variant="secondary" className="gap-2" asChild>
-            <Link href={routing.pathnames["/login"]}>
+            <Link href={routing.pathnames["/dashboard"]}>
               {t("button")} <ArrowRight className="h-4 w-4" />
             </Link>
           </Button>
