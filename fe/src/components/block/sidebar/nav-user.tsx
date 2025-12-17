@@ -1,13 +1,7 @@
-import {
-  BadgeCheck,
-  Bell,
-  ChevronsUpDown,
-  CreditCard,
-  LogOut,
-  Sparkles,
-} from "lucide-react";
+"use client";
+import { Bell, ChevronsUpDown, LogOut } from "lucide-react";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { AvatarInfo } from "@/components/ui/avatar-info";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,10 +17,12 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { Link, routing } from "@/i18n/routing";
-import { AvatarInfo } from "@/components/ui/avatar-info";
-import { User } from "@/lib/supabase/user";
+import { useDashboardContext } from "@/components/pages/protected/dashboard/context";
+import { useTranslations } from "next-intl";
 
-export function NavUser({ user }: { user: User }) {
+export function NavUser() {
+  const { user } = useDashboardContext();
+  const t = useTranslations("pages.dashboard.nav");
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -58,32 +54,17 @@ export function NavUser({ user }: { user: User }) {
               />
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            {/* <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Sparkles />
-                Upgrade to Pro
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator /> */}
             <DropdownMenuGroup>
-              {/* <DropdownMenuItem>
-                <BadgeCheck />
-                Account
-              </DropdownMenuItem> */}
-              {/* <DropdownMenuItem>
-                <CreditCard />
-                Billing
-              </DropdownMenuItem> */}
               <DropdownMenuItem>
                 <Bell />
-                Notifications
+                {t("notifications")}
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
               <Link href={routing.pathnames["/logout"]}>
                 <LogOut />
-                Log out
+                {t("logout")}
               </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>

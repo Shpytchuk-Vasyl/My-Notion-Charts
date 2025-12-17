@@ -1,4 +1,3 @@
-import { SupabaseClient } from "@supabase/supabase-js";
 import { createClient } from "./server";
 
 export type User = {
@@ -33,33 +32,4 @@ export async function getCurrentUser() {
     } as User,
     supabase,
   };
-}
-
-export async function updateUserMetadata(
-  user: any,
-  user_metadata: {
-    name?: string;
-    avatar?: string;
-  },
-  supabase: SupabaseClient,
-) {
-  const newUserMetadata = { ...user.user_metadata };
-
-  if (
-    !(newUserMetadata.avatar_url || newUserMetadata.picture) &&
-    user_metadata.avatar
-  ) {
-    newUserMetadata.avatar_url = user_metadata.avatar;
-  }
-
-  if (
-    !(newUserMetadata.name || newUserMetadata.full_name) &&
-    user_metadata.name
-  ) {
-    newUserMetadata.name = user_metadata.name;
-  }
-
-  await supabase.auth.updateUser({
-    data: newUserMetadata,
-  });
 }

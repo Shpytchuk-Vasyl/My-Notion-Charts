@@ -1,7 +1,7 @@
 "use client";
 
 import { SidebarIcon } from "lucide-react";
-
+import { Fragment } from "react";
 import { SearchForm } from "@/components/block/sidebar/search-form";
 import {
   Breadcrumb,
@@ -14,7 +14,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useSidebar } from "@/components/ui/sidebar";
-import { Fragment } from "react";
 
 export function SiteHeader() {
   const { toggleSidebar } = useSidebar();

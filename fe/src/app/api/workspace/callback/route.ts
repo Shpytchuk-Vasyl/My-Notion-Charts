@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
-import { WorkspaceRepository } from "@/models/workspace";
-import { routing } from "@/i18n/routing";
 import { Client } from "@notionhq/client";
+import type SupabaseClient from "@supabase/supabase-js/dist/module/SupabaseClient.js";
+import { type NextRequest, NextResponse } from "next/server";
+import { routing } from "@/i18n/routing";
 import { getCurrentUser } from "@/lib/supabase/user";
-import SupabaseClient from "@supabase/supabase-js/dist/module/SupabaseClient.js";
+import { WorkspaceRepository } from "@/models/workspace";
 
 const NOTION_CLIENT_ID = process.env.NOTION_CLIENT_ID!;
 const NOTION_CLIENT_SECRET = process.env.NOTION_CLIENT_SECRET!;

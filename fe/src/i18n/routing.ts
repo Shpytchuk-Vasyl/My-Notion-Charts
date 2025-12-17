@@ -7,6 +7,8 @@ export const routing = defineRouting({
   pathnames: {
     // public
     "/": "/",
+    "/help/workspace/delete": "/help/workspace/delete",
+    "/help": "/help",
 
     // Authentication
     "/login": "/login",
@@ -18,11 +20,14 @@ export const routing = defineRouting({
     // Protected
     "/settings": "/settings",
     "/dashboard": "/dashboard",
-    "/dashboard/[workspaceId]/delete": "/dashboard/[workspaceId]/delete",
+    "/dashboard/workspace/[workspaceId]/delete":
+      "/dashboard/workspace/[workspaceId]/delete",
     "/chart/all": "/chart/all",
     "/chart/[chartId]/edit": "/chart/[chartId]/edit",
     "/chart/[chartId]": "/chart/[chartId]",
-    "/help": "/help",
+
+    "/feedback": "/feedback",
+    "/support": "/support",
   },
 });
 

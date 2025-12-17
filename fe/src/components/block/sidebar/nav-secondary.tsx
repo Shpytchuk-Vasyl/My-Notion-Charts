@@ -1,4 +1,6 @@
-import type { LucideIcon } from "lucide-react";
+"use client";
+
+import { LifeBuoy, type LucideIcon, Send } from "lucide-react";
 import type * as React from "react";
 
 import {
@@ -8,28 +10,44 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { Link, routing } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
+
+type NavItem = {
+  titleKey: "support" | "feedback";
+  url: string;
+  icon: LucideIcon;
+};
+
+const items: NavItem[] = [
+  {
+    titleKey: "support",
+    url: routing.pathnames["/support"],
+    icon: LifeBuoy,
+  },
+  {
+    titleKey: "feedback",
+    url: routing.pathnames["/feedback"],
+    icon: Send,
+  },
+];
 
 export function NavSecondary({
-  items,
   ...props
-}: {
-  items: {
-    title: string;
-    url: string;
-    icon: LucideIcon;
-  }[];
-} & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
+}: React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
+  const t = useTranslations("pages.dashboard.nav");
+
   return (
     <SidebarGroup {...props}>
       <SidebarGroupContent>
         <SidebarMenu>
           {items.map((item) => (
-            <SidebarMenuItem key={item.title}>
+            <SidebarMenuItem key={item.titleKey}>
               <SidebarMenuButton asChild size="sm">
-                <a href={item.url}>
+                <Link href={item.url as any}>
                   <item.icon />
-                  <span>{item.title}</span>
-                </a>
+                  <span>{t(item.titleKey)}</span>
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}

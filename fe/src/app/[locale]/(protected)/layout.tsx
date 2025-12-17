@@ -1,8 +1,9 @@
 import type { ReactNode } from "react";
 import { SiteHeader } from "@/components/block/sidebar/site-header";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { redirect } from "@/i18n/routing";
-import { createClient } from "@/lib/supabase/server";
+import { redirect, routing } from "@/i18n/routing";
+import { DashboardProvider } from "@/components/pages/protected/dashboard/context";
+import { getCachedWorkspaces } from "@/lib/supabase/workspace-cache";
 
 export default async function ProtectedLayout({
   children,
@@ -11,21 +12,26 @@ export default async function ProtectedLayout({
   children: ReactNode;
   params: Promise<{ locale: string }>;
 }) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  try {
+    const { user, workspaces } = await getCachedWorkspaces();
 
-  if (!user) {
+    return (
+      <SidebarProvider className="[--header-height:calc(--spacing(14))] flex flex-col">
+        <SiteHeader />
+        <DashboardProvider workspaces={workspaces} user={user}>
+          <div className="flex flex-1">{children}</div>
+        </DashboardProvider>
+      </SidebarProvider>
+    );
+    
+  } catch (error) {
     const { locale } = await params;
-    redirect({ href: "/login", locale });
-    return null;
+    redirect({
+      locale,
+      href: {
+        pathname: routing.pathnames["/login"],
+      },
+    });
   }
-
-  return (
-    <SidebarProvider className="[--header-height:calc(--spacing(14))] flex flex-col">
-      <SiteHeader />
-      <div className="flex flex-1">{children}</div>
-    </SidebarProvider>
-  );
+  return null;
 }

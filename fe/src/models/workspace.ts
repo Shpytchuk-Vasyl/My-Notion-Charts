@@ -1,5 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { Tables, Database } from "./_database.types";
+import type { Database, Tables } from "./_database.types";
 
 export type Workspace = Tables<"workspaces"> & { isSelected?: boolean };
 export type SelectedWorkspace = Tables<"selected_workspace">;
@@ -14,7 +14,8 @@ export class WorkspaceRepository {
         .select(
           "access_token, created_at, id, updated_at, user_id, workspace_icon, workspace_id, workspace_name",
         )
-        .eq("user_id", userId),
+        .eq("user_id", userId)
+        .order("updated_at", { ascending: true }),
       this.supabase
         .from("selected_workspace")
         .select("*")
@@ -74,10 +75,13 @@ export class WorkspaceRepository {
   }
 
   async setSelectedWorkspace(userId: string, workspaceId: string) {
-    return this.supabase.from("selected_workspace").update({
-      user_id: userId,
-      workspace_id: workspaceId,
-    });
+    return this.supabase
+      .from("selected_workspace")
+      .update({
+        user_id: userId,
+        workspace_id: workspaceId,
+      })
+      .eq("user_id", userId);
   }
 
   async getSelectedWorkspace(userId: string) {
@@ -96,9 +100,12 @@ export class WorkspaceRepository {
       return;
     }
 
-    await this.supabase.from("selected_workspace").update({
-      user_id: userId,
-      workspace_id: workspaces[0].id,
-    });
+    await this.supabase
+      .from("selected_workspace")
+      .update({
+        user_id: userId,
+        workspace_id: workspaces[0].id,
+      })
+      .eq("user_id", userId);
   }
 }

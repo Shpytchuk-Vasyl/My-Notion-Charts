@@ -17,11 +17,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarMenu,
@@ -30,33 +25,37 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Link, routing } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
 
 const CHART_DISPLAY_LIMIT = 10;
 
-export function NavCharts({
-  charts,
-}: {
-  charts: {
-    name: string;
-    id: string;
-    icon: LucideIcon;
-  }[];
-}) {
-  const { isMobile } = useSidebar();
+export function NavCharts() {
+  const charts: any[] = [];
+  const t = useTranslations("pages.dashboard.charts.nav");
 
+
+  if (charts.length === 0) {
+    return null;
+  }
+  
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <div className="flex items-center justify-between">
-        <SidebarGroupLabel>Charts</SidebarGroupLabel>
+        <SidebarGroupLabel>{t("charts")}</SidebarGroupLabel>
         <Tooltip>
           <TooltipTrigger asChild>
             <SidebarMenuAction className="static">
               <Plus />
-              <span className="sr-only">Add new chart</span>
+              <span className="sr-only">{t("addNewChart")}</span>
             </SidebarMenuAction>
           </TooltipTrigger>
-          <TooltipContent side="top">Add new chart</TooltipContent>
+          <TooltipContent side="top">{t("addNewChart")}</TooltipContent>
         </Tooltip>
       </div>
       <SidebarMenu>
@@ -75,7 +74,7 @@ export function NavCharts({
                 <span title={item.name}>{item.name}</span>
               </Link>
             </SidebarMenuButton>
-            <DropdownOptions isMobile={isMobile} chartId={item.id} />
+            <DropdownOptions chartId={item.id} />
           </SidebarMenuItem>
         ))}
         {charts.length > CHART_DISPLAY_LIMIT && (
@@ -83,7 +82,7 @@ export function NavCharts({
             <SidebarMenuButton asChild>
               <Link href={routing.pathnames["/chart/all"]}>
                 <MoreHorizontal />
-                <span>More</span>
+                <span>{t("more")}</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -93,47 +92,46 @@ export function NavCharts({
   );
 }
 
-const DropdownOptions = ({
-  isMobile,
-  chartId,
-}: {
-  isMobile: boolean;
-  chartId: string;
-}) => (
-  <DropdownMenu>
-    <DropdownMenuTrigger asChild>
-      <SidebarMenuAction showOnHover>
-        <MoreHorizontal />
-        <span className="sr-only">More</span>
-      </SidebarMenuAction>
-    </DropdownMenuTrigger>
-    <DropdownMenuContent
-      className="w-48"
-      side={isMobile ? "bottom" : "right"}
-      align={isMobile ? "end" : "start"}
-    >
-      <DropdownMenuItem asChild>
-        <Link
-          href={{
-            pathname: routing.pathnames["/chart/[chartId]/edit"],
-            params: {
-              chartId,
-            },
-          }}
-        >
-          <Folder className="text-muted-foreground" />
-          <span>Edit</span>
-        </Link>
-      </DropdownMenuItem>
-      <DropdownMenuItem>
-        <Share className="text-muted-foreground" />
-        <span>Share</span>
-      </DropdownMenuItem>
-      <DropdownMenuSeparator />
-      <DropdownMenuItem>
-        <Trash2 className="text-muted-foreground" />
-        <span>Delete</span>
-      </DropdownMenuItem>
-    </DropdownMenuContent>
-  </DropdownMenu>
-);
+const DropdownOptions = ({ chartId }: { chartId: string }) => {
+  const { isMobile } = useSidebar();
+  const t = useTranslations("pages.dashboard.charts.nav");
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <SidebarMenuAction showOnHover>
+          <MoreHorizontal />
+          <span className="sr-only">{t("more")}</span>
+        </SidebarMenuAction>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent
+        className="w-48"
+        side={isMobile ? "bottom" : "right"}
+        align={isMobile ? "end" : "start"}
+      >
+        <DropdownMenuItem asChild>
+          <Link
+            href={{
+              pathname: routing.pathnames["/chart/[chartId]/edit"],
+              params: {
+                chartId,
+              },
+            }}
+          >
+            <Folder className="text-muted-foreground" />
+            <span>{t("edit")}</span>
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Share className="text-muted-foreground" />
+          <span>{t("share")}</span>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>
+          <Trash2 className="text-muted-foreground" />
+          <span>{t("delete")}</span>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};

@@ -148,6 +148,62 @@
     "logout": {
       "title": "Logging out",
       "description": "Please wait while we sign you out of your account..."
+    },
+    "dashboard": {
+      "nav": {
+        "notifications": "Notifications",
+        "logout": "Log out",
+        "support": "Support",
+        "feedback": "Feedback",
+        "platform": "Platform",
+        "toggle": "Toggle",
+        "documentation": "Documentation",
+        "introduction": "Introduction",
+        "getStarted": "Get Started",
+        "tutorials": "Tutorials",
+        "changelog": "Changelog",
+        "settings": "Settings",
+        "general": "General",
+        "team": "Team",
+        "billing": "Billing",
+        "limits": "Limits"
+      },
+      "charts": {
+        "nav": {
+          "charts": "Charts",
+          "addNewChart": "Add new chart",
+          "more": "More",
+          "edit": "Edit",
+          "share": "Share",
+          "delete": "Delete"
+        }
+      },
+      "workspace": {
+        "nav": {
+          "addWorkspace": "Connect Notion",
+          "more": "More",
+          "edit": "Edit",
+          "delete": "Delete"
+        },
+        "delete": {
+          "title": "Delete Connection",
+          "description": "Are you sure you want to delete this connection? This action cannot be undone. Also, remember to disconnect the integration in Notion Settings.",
+          "cancelButtonText": "Cancel",
+          "deleteButtonText": "Delete",
+          "moreDetailsLink": "See more details here.",
+          "successMessage": "Connection deleted successfully"
+        }
+      },
+      "emptyState": {
+        "title": "Connect your Notion",
+        "description": "Connect your Notion to start creating charts from your data. You decide which pages we can access – we handle the rest.",
+        "connectButton": "Connect to Notion"
+      },
+      "emptyCharts": {
+        "title": "You don't have any charts yet",
+        "description": "Create your first chart to visualize your Notion data. It's quick and easy!",
+        "createButton": "Create Chart"
+      }
     }
   }
 }
