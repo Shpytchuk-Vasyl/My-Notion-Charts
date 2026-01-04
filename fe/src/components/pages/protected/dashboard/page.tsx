@@ -1,18 +1,26 @@
 "use client";
+import { use } from "react";
 import { useDashboardContext } from "./context";
 
 export function DashboardPage({
   addWorkspace,
-  addChart
+  addChart,
 }: {
   addWorkspace: React.ReactNode;
   addChart: React.ReactNode;
 }) {
-  const { workspaces } = useDashboardContext();
+  const { workspaces, charts } = useDashboardContext();
 
-  if (workspaces.length === 0) {
+  const workspacesData = use(workspaces);
+  const chartsData = use(charts);
+
+  if (workspacesData.length === 0) {
     return addWorkspace;
   }
 
- return addChart;
+  if (chartsData.length === 0) {
+    return addChart;
+  }
+
+  return null;
 }

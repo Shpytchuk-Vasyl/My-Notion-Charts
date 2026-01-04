@@ -17,6 +17,21 @@
       "min": "Confirm Password must be at least 8 characters",
       "match": "Passwords do not match",
       "required": "Confirm password is required"
+    },
+    "chartName": {
+      "min": "Chart name must be at least 2 characters",
+      "max": "Chart name must not exceed 50 characters",
+      "required": "Chart name is required"
+    },
+    "databases": {
+      "min": "At least one database must be selected",
+      "required": "Database is required"
+    },
+    "workspaceId": {
+      "required": "Workspace connection is required"
+    },
+    "chartType": {
+      "invalid": "Invalid chart type"
     }
   },
   "pages": {
@@ -176,6 +191,28 @@
           "edit": "Edit",
           "share": "Share",
           "delete": "Delete"
+        },
+        "new": {
+          "nameLabel": "Chart Name",
+          "namePlaceholder": "Enter chart name",
+          "databaseLabel": "Database",
+          "databasePlaceholder": "Select a database",
+          "chartTypeLabel": "Chart Type",
+          "chartTypePlaceholder": "Select chart type",
+          "create": "Create Chart",
+          "chartType": {
+            "bar": "Bar",
+            "line": "Line",
+            "pie": "Pie",
+            "scatter": "Scatter",
+            "radar": "Radar",
+            "area": "Area",
+            "radial": "Radial"
+          },
+          "cancel": "Cancel",
+          "title": "Create New Chart",
+          "description": "Fill out the form to create a new chart from your Notion data.",
+          "successMessage": "Chart created successfully"
         }
       },
       "workspace": {

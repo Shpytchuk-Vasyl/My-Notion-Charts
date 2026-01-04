@@ -34,6 +34,44 @@ export type Database = {
   };
   public: {
     Tables: {
+      charts: {
+        Row: {
+          config: Json;
+          created_at: string;
+          id: string;
+          name: string;
+          type: Database["public"]["Enums"]["chart_type"];
+          updated_at: string;
+          workspace_id: string;
+        };
+        Insert: {
+          config?: Json;
+          created_at?: string;
+          id?: string;
+          name: string;
+          type: Database["public"]["Enums"]["chart_type"];
+          updated_at?: string;
+          workspace_id: string;
+        };
+        Update: {
+          config?: Json;
+          created_at?: string;
+          id?: string;
+          name?: string;
+          type?: Database["public"]["Enums"]["chart_type"];
+          updated_at?: string;
+          workspace_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "charts_workspace_id_fkey";
+            columns: ["workspace_id"];
+            isOneToOne: false;
+            referencedRelation: "workspaces";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       selected_workspace: {
         Row: {
           user_id: string;
@@ -104,7 +142,14 @@ export type Database = {
       [_ in never]: never;
     };
     Enums: {
-      [_ in never]: never;
+      chart_type:
+        | "bar"
+        | "line"
+        | "pie"
+        | "scatter"
+        | "radar"
+        | "area"
+        | "radial";
     };
     CompositeTypes: {
       [_ in never]: never;
@@ -237,6 +282,8 @@ export const Constants = {
     Enums: {},
   },
   public: {
-    Enums: {},
+    Enums: {
+      chart_type: ["bar", "line", "pie", "scatter", "radar", "area", "radial"],
+    },
   },
 } as const;

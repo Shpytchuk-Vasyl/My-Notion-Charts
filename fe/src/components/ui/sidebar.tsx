@@ -44,8 +44,6 @@ type SidebarContextProps = {
   setOpenMobile: (open: boolean) => void;
   isMobile: boolean;
   toggleSidebar: () => void;
-  breadcrumbs: BreadcrumbItem[];
-  setBreadcrumbs: React.Dispatch<React.SetStateAction<BreadcrumbItem[]>>;
 };
 
 const SidebarContext = React.createContext<SidebarContextProps | null>(null);
@@ -119,17 +117,6 @@ function SidebarProvider({
   // This makes it easier to style the sidebar with Tailwind classes.
   const state = open ? "expanded" : "collapsed";
 
-  const [breadcrumbs, setBreadcrumbs] = React.useState<BreadcrumbItem[]>([
-    {
-      title: "Home",
-      url: "/",
-    },
-    {
-      title: "Dashboard",
-      url: "#",
-    },
-  ]);
-
   return (
     <SidebarContext.Provider
       value={{
@@ -140,8 +127,6 @@ function SidebarProvider({
         openMobile,
         setOpenMobile,
         toggleSidebar,
-        breadcrumbs,
-        setBreadcrumbs,
       }}
     >
       <TooltipProvider delayDuration={0}>

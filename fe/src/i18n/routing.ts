@@ -19,9 +19,16 @@ export const routing = defineRouting({
 
     // Protected
     "/settings": "/settings",
+
+    // Dashboard
     "/dashboard": "/dashboard",
+    "/dashboard/chart/new": "/dashboard/chart/new",
+    "/dashboard/chart/[chartId]/delete": "/dashboard/chart/[chartId]/delete",
+
     "/dashboard/workspace/[workspaceId]/delete":
       "/dashboard/workspace/[workspaceId]/delete",
+
+    // Charts
     "/chart/all": "/chart/all",
     "/chart/[chartId]/edit": "/chart/[chartId]/edit",
     "/chart/[chartId]": "/chart/[chartId]",

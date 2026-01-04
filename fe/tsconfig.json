@@ -19,12 +19,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"],
       "@/pages/*": ["./src/components/pages/*"],
-      "@/components/*": ["./src/components/*"],
-      "@/lib/*": ["./src/lib/*"],
-      "@/hooks/*": ["./src/hooks/*"],
-      "@/models/*": ["./src/models/*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": [
@@ -35,5 +31,5 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["**/node_modules", "**/.next", "**/dist", "**/build"]
 }

@@ -6,11 +6,11 @@
     "status": "supabase status",
     "logs": "supabase logs --follow",
     "db:reset": "supabase db reset --yes",
-    "bg:m:new": "supabase migration new",
+    "db:m:new": "supabase migration new",
     "db:m:up": "supabase db migrate up",
     "db:m:down": "supabase db migrate down",
     "db:seed": "supabase db seed",
-    "types:generate:fe": "supabase gen types typescript --local > ../fe/src/models/_database.types.ts"
+    "types:gen:fe": "supabase gen types typescript --local > ../fe/src/models/_database.types.ts"
   },
   "dependencies": {
     "supabase": "2.67.2"

@@ -1,5 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
+import { Skeleton } from "./skeleton";
 
 interface AvatarInfoProps {
   name: string;
@@ -42,6 +43,26 @@ export function AvatarInfo({
       <div className="grid flex-1 text-left text-sm leading-tight">
         <span className="truncate font-medium">{name}</span>
         {email && <span className="truncate text-xs">{email}</span>}
+      </div>
+    </>
+  );
+}
+
+export function AvatarInfoSckeleton({
+  avatarSize = "md",
+}: Pick<AvatarInfoProps, "avatarSize">) {
+  const sizeClasses = {
+    sm: "size-6",
+    md: "size-8",
+    lg: "size-10",
+  };
+
+  return (
+    <>
+      <Skeleton className={cn("rounded-lg", sizeClasses[avatarSize])} />
+      <div className="grid flex-1 text-left text-sm leading-tight gap-2">
+        <Skeleton className="h-4 w-3/4 rounded" />
+        <Skeleton className="h-3 w-1/2 rounded" />
       </div>
     </>
   );

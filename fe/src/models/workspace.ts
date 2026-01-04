@@ -84,7 +84,19 @@ export class WorkspaceRepository {
       .eq("user_id", userId);
   }
 
+  /**
+   * This method should be used only on server side to get the current selected workspace
+   *
+   * @param userId
+   *
+   * @returns
+   */
   async getSelectedWorkspace(userId: string) {
+    if (typeof window !== "undefined") {
+      throw new Error(
+        "getSelectedWorkspace should be used only on server side",
+      );
+    }
     return this.supabase
       .from("selected_workspace")
       .select(`

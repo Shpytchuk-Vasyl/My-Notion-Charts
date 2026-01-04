@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  Folder,
-  type LucideIcon,
-  MoreHorizontal,
-  Plus,
-  Share,
-  Trash2,
-} from "lucide-react";
+import { Folder, MoreHorizontal, Plus, Share, Trash2 } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -32,35 +25,66 @@ import {
 } from "@/components/ui/tooltip";
 import { Link, routing } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
+import { ChartIcon } from "../chart/icons";
+import { Suspense, use } from "react";
+import { useDashboardContext } from "@/pages/protected/dashboard/context";
+import { Skeleton } from "@/components/ui/skeleton";
 
-const CHART_DISPLAY_LIMIT = 10;
+const CHART_DISPLAY_LIMIT = 5;
 
 export function NavCharts() {
-  const charts: any[] = [];
   const t = useTranslations("pages.dashboard.charts.nav");
 
+  return (
+    <Suspense
+      fallback={
+        <SidebarGroup className="group-data-[collapsible=icon]:hidden">
+          <div className="flex items-center justify-between">
+            <SidebarGroupLabel>{t("charts")}</SidebarGroupLabel>
+          </div>
+          <SidebarMenu>
+            <Skeleton className="h-9 w-full" />
+            <Skeleton className="h-9 w-full" />
+            <Skeleton className="h-9 w-full" />
+          </SidebarMenu>
+        </SidebarGroup>
+      }
+    >
+      <NavChartsInner />
+    </Suspense>
+  );
+}
 
-  if (charts.length === 0) {
+function NavChartsInner() {
+  const { charts, currentWorkspace } = useDashboardContext();
+  const chartsData = use(charts);
+  const currentWorkspaceData = use(currentWorkspace);
+
+  const t = useTranslations("pages.dashboard.charts.nav");
+
+  if (!currentWorkspaceData) {
     return null;
   }
-  
+
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <div className="flex items-center justify-between">
         <SidebarGroupLabel>{t("charts")}</SidebarGroupLabel>
         <Tooltip>
           <TooltipTrigger asChild>
-            <SidebarMenuAction className="static">
-              <Plus />
-              <span className="sr-only">{t("addNewChart")}</span>
+            <SidebarMenuAction className="static" asChild>
+              <Link href={routing.pathnames["/dashboard/chart/new"]}>
+                <Plus />
+                <span className="sr-only">{t("addNewChart")}</span>
+              </Link>
             </SidebarMenuAction>
           </TooltipTrigger>
           <TooltipContent side="top">{t("addNewChart")}</TooltipContent>
         </Tooltip>
       </div>
       <SidebarMenu>
-        {charts.slice(0, CHART_DISPLAY_LIMIT).map((item) => (
-          <SidebarMenuItem key={item.name}>
+        {chartsData.slice(0, CHART_DISPLAY_LIMIT).map((item, idx) => (
+          <SidebarMenuItem key={item.name + idx}>
             <SidebarMenuButton asChild>
               <Link
                 href={{
@@ -70,14 +94,14 @@ export function NavCharts() {
                   },
                 }}
               >
-                <item.icon />
+                <ChartIcon type={item.type} />
                 <span title={item.name}>{item.name}</span>
               </Link>
             </SidebarMenuButton>
             <DropdownOptions chartId={item.id} />
           </SidebarMenuItem>
         ))}
-        {charts.length > CHART_DISPLAY_LIMIT && (
+        {chartsData.length > CHART_DISPLAY_LIMIT && (
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
               <Link href={routing.pathnames["/chart/all"]}>
@@ -118,18 +142,27 @@ const DropdownOptions = ({ chartId }: { chartId: string }) => {
               },
             }}
           >
-            <Folder className="text-muted-foreground" />
+            <Folder />
             <span>{t("edit")}</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
-          <Share className="text-muted-foreground" />
+          <Share />
           <span>{t("share")}</span>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <Trash2 className="text-muted-foreground" />
-          <span>{t("delete")}</span>
+        <DropdownMenuItem variant="destructive">
+          <Link
+            href={{
+              pathname: routing.pathnames["/dashboard/chart/[chartId]/delete"],
+              params: {
+                chartId,
+              },
+            }}
+          >
+            <Trash2 className="text-destructive" />
+            <span>{t("delete")}</span>
+          </Link>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

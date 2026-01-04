@@ -26,6 +26,9 @@ export async function createClient(cookiesStore?: NextRequest["cookies"]) {
           }
         },
       },
+      global: {
+        fetch: globalThis.fetch,
+      },
     },
   );
 }

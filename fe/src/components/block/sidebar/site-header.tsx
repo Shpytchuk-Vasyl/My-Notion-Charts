@@ -14,6 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useSidebar } from "@/components/ui/sidebar";
+import { usePathname } from "@/i18n/routing";
 
 export function SiteHeader() {
   const { toggleSidebar } = useSidebar();
@@ -38,7 +39,11 @@ export function SiteHeader() {
 }
 
 const SiteBreadcrumb = () => {
-  const { breadcrumbs } = useSidebar();
+  const pathname = usePathname();
+
+  const breadcrumbs: any[] = [];
+
+  // Simple breadcrumb generation based on pathname
 
   return (
     <Breadcrumb className="hidden sm:block">

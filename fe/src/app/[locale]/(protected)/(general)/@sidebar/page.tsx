@@ -11,7 +11,6 @@ import {
 import { NavCharts } from "@/components/block/sidebar/nav-charts";
 import { getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
-
 export { generateStaticParams } from "@/i18n/static-params";
 
 export default async function AppSidebar() {

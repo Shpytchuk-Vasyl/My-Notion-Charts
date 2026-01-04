@@ -1,5 +1,5 @@
 import { useTranslations } from "next-intl";
-import { DeleteWorkspaceModal } from "@/components/pages/protected/dashboard/workspace/[id]/delete/modal";
+import { DeleteWorkspaceModal } from "@/pages/protected/dashboard/workspace/[id]/delete/modal";
 import { deleteWorkspace } from "../../../actions";
 
 export { generateStaticParams } from "@/i18n/static-params";

@@ -2,8 +2,8 @@ import { Client } from "@notionhq/client";
 import type SupabaseClient from "@supabase/supabase-js/dist/module/SupabaseClient.js";
 import { type NextRequest, NextResponse } from "next/server";
 import { routing } from "@/i18n/routing";
-import { getCurrentUser } from "@/lib/supabase/user";
 import { WorkspaceRepository } from "@/models/workspace";
+import { UserService } from "@/services/user";
 
 const NOTION_CLIENT_ID = process.env.NOTION_CLIENT_ID!;
 const NOTION_CLIENT_SECRET = process.env.NOTION_CLIENT_SECRET!;
@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
       client_secret: NOTION_CLIENT_SECRET,
     });
 
-    const { user, supabase } = await getCurrentUser();
+    const { user, supabase } = await UserService.getCurrentUser();
 
     if (!user) {
       return NextResponse.redirect(new URL("/sign-in", request.url));

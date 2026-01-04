@@ -183,6 +183,6 @@ export async function signOut() {
 
   redirect({
     locale,
-    href: routing.pathnames["/"],
+    href: routing.pathnames["/login"],
   });
 }

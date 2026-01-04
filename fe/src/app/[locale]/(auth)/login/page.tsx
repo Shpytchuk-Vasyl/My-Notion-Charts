@@ -1,5 +1,5 @@
 import { useTranslations } from "next-intl";
-import { LoginForm } from "@/components/pages/auth/login/form";
+import { LoginForm } from "@/pages/auth/login/form";
 import { signIn, signInWithGoogle } from "../actions";
 
 export { generateStaticParams } from "@/i18n/static-params";

@@ -8,9 +8,9 @@ import {
   Trash2,
 } from "lucide-react";
 import NextLink from "next/link";
-import { useTransition } from "react";
+import { Suspense, use, useTransition } from "react";
 import { setWorkspaceAsCurrent } from "@/app/[locale]/(protected)/(general)/dashboard/actions";
-import { AvatarInfo } from "@/components/ui/avatar-info";
+import { AvatarInfo, AvatarInfoSckeleton } from "@/components/ui/avatar-info";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,12 +26,30 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Link, routing } from "@/i18n/routing";
-import { useDashboardContext } from "@/components/pages/protected/dashboard/context";
 import { useTranslations } from "next-intl";
+import { Workspace } from "@/models/workspace";
+import { useDashboardContext } from "@/pages/protected/dashboard/context";
 
 export function NavWorkspace() {
-  const { workspaces } = useDashboardContext();
+  return (
+    <Suspense
+      fallback={
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton size="lg">
+              <AvatarInfoSckeleton />
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      }
+    >
+      <NavWorkspaceInner />
+    </Suspense>
+  );
+}
 
+function NavWorkspaceInner() {
+  const { workspaces, currentWorkspace } = useDashboardContext();
   const [isPending, startTransition] = useTransition();
 
   const onSelectWorkspace = (workspaceId: string) => {
@@ -42,7 +60,10 @@ export function NavWorkspace() {
 
   const { isMobile } = useSidebar();
 
-  if (workspaces.length === 0) {
+  const currentWorkspaceData = use(currentWorkspace);
+  const workspacesData = use(workspaces);
+
+  if (!currentWorkspaceData) {
     return (
       <SidebarMenu>
         <SidebarMenuItem>
@@ -54,9 +75,6 @@ export function NavWorkspace() {
     );
   }
 
-  const currentWorkspace =
-    workspaces.find((ws) => ws.isSelected) || workspaces[0];
-
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -67,9 +85,9 @@ export function NavWorkspace() {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <AvatarInfo
-                name={currentWorkspace.workspace_name}
-                email={currentWorkspace.workspace_email}
-                avatar={currentWorkspace.workspace_icon}
+                name={currentWorkspaceData.workspace_name}
+                email={currentWorkspaceData.workspace_email}
+                avatar={currentWorkspaceData.workspace_icon}
               />
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -80,25 +98,11 @@ export function NavWorkspace() {
             align={isMobile ? "start" : "end"}
             sideOffset={4}
           >
-            {workspaces.map((workspace, index) => (
-              <DropdownMenuItem
-                key={`workspace-${index}`}
-                className="p-0 font-normal flex items-center gap-2 px-1 py-1.5 text-left text-sm"
-                onSelect={(event) => {
-                  event.preventDefault();
-                  onSelectWorkspace(workspace.id);
-                }}
-                disabled={isPending}
-              >
-                <AvatarInfo
-                  name={workspace.workspace_name}
-                  email={workspace.workspace_email}
-                  avatar={workspace.workspace_icon}
-                />
-                <DropdownOptions workspaceId={workspace.id} />
-              </DropdownMenuItem>
-            ))}
-
+            <Items
+              workspaces={workspacesData}
+              onSelectWorkspace={onSelectWorkspace}
+              isPending={isPending}
+            />
             <DropdownMenuSeparator />
             <DropdownMenuItem
               disabled={isPending}
@@ -113,7 +117,36 @@ export function NavWorkspace() {
   );
 }
 
-const DropdownOptions = ({ workspaceId }: { workspaceId: string }) => {
+const Items = ({
+  workspaces,
+  onSelectWorkspace,
+  isPending,
+}: {
+  workspaces: Workspace[];
+  onSelectWorkspace: (workspaceId: string) => void;
+  isPending: boolean;
+}) => {
+  return workspaces.map((workspace, index) => (
+    <DropdownMenuItem
+      key={`workspace-${index}`}
+      className="p-0 font-normal flex items-center gap-2 px-1 py-1.5 text-left text-sm"
+      onSelect={(event) => {
+        event.preventDefault();
+        onSelectWorkspace(workspace.id);
+      }}
+      disabled={isPending}
+    >
+      <AvatarInfo
+        name={workspace.workspace_name}
+        email={workspace.workspace_email}
+        avatar={workspace.workspace_icon}
+      />
+      <DropdownOptions workspaceId={workspace.id} workspaceName={workspace.workspace_name} />
+    </DropdownMenuItem>
+  ));
+};
+
+const DropdownOptions = ({ workspaceId, workspaceName }: { workspaceId: string; workspaceName: string }) => {
   const t = useTranslations("pages.dashboard.workspace.nav");
 
   return (
@@ -131,7 +164,7 @@ const DropdownOptions = ({ workspaceId }: { workspaceId: string }) => {
             <span>{t("edit")}</span>
           </NextLink>
         </DropdownMenuItem>
-        <DropdownMenuItem asChild>
+        <DropdownMenuItem asChild variant="destructive">
           <Link
             href={{
               pathname:
@@ -139,9 +172,12 @@ const DropdownOptions = ({ workspaceId }: { workspaceId: string }) => {
               params: {
                 workspaceId,
               },
+              query: {
+                name: workspaceName,
+              }
             }}
           >
-            <Trash2 className="text-muted-foreground" />
+            <Trash2 className="text-destructive" />
             <span>{t("delete")}</span>
           </Link>
         </DropdownMenuItem>

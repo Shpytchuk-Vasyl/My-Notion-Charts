@@ -1,7 +1,6 @@
 "use client";
 import { Bell, ChevronsUpDown, LogOut } from "lucide-react";
 
-import { AvatarInfo } from "@/components/ui/avatar-info";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,11 +16,10 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { Link, routing } from "@/i18n/routing";
-import { useDashboardContext } from "@/components/pages/protected/dashboard/context";
 import { useTranslations } from "next-intl";
+import { UserAvatar } from "../user/avatar";
 
 export function NavUser() {
-  const { user } = useDashboardContext();
   const t = useTranslations("pages.dashboard.nav");
   return (
     <SidebarMenu>
@@ -32,11 +30,7 @@ export function NavUser() {
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <AvatarInfo
-                name={user.name}
-                email={user.email || ""}
-                avatar={user.avatar}
-              />
+              <UserAvatar />
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
@@ -47,11 +41,7 @@ export function NavUser() {
             sideOffset={4}
           >
             <DropdownMenuLabel className="flex items-center gap-2 px-1 py-1.5 text-left text-sm font-normal">
-              <AvatarInfo
-                name={user.name}
-                email={user.email || ""}
-                avatar={user.avatar}
-              />
+              <UserAvatar />
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>

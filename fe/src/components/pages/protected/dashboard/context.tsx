@@ -1,11 +1,15 @@
 "use client";
 
+import { Chart } from "@/models/chart";
 import { Workspace } from "@/models/workspace";
+import { User } from "@/services/user";
 import React, { createContext, useContext } from "react";
 
 interface DashboardContextType {
-  workspaces: Workspace[];
-  user: any;
+  workspaces: Promise<Workspace[]>;
+  currentWorkspace: Promise<Workspace | null>;
+  user: Promise<User>;
+  charts: Promise<Chart[]>;
 }
 
 const DashboardContext = createContext<DashboardContextType | undefined>(

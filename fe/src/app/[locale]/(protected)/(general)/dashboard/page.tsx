@@ -1,8 +1,8 @@
 import {
   AddChart,
   AddWorkspace,
-} from "@/components/pages/protected/dashboard/empty-state";
-import { DashboardPage } from "@/components/pages/protected/dashboard/page";
+} from "@/pages/protected/dashboard/empty-state";
+import { DashboardPage } from "@/pages/protected/dashboard/page";
 
 export { generateStaticParams } from "@/i18n/static-params";
 

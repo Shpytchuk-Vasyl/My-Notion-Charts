@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useTranslations } from "next-intl";
 import { BarChart3 } from "lucide-react";
+import { Link, routing } from "@/i18n/routing";
 
 export function AddWorkspace() {
   const t = useTranslations("pages.dashboard.emptyState");
@@ -48,7 +49,7 @@ export function AddWorkspace() {
 
 export function AddChart() {
   const t = useTranslations("pages.dashboard.emptyCharts");
-  
+
   return (
     <div className="flex flex-1 items-center justify-center p-4">
       <Card className="max-w-md">
@@ -63,9 +64,9 @@ export function AddChart() {
           </div>
 
           <Button asChild size="lg" className="w-full">
-            <NextLink href="/dashboard/chart/new">
+            <Link href={routing.pathnames["/dashboard/chart/new"]}>
               {t("createButton")}
-            </NextLink>
+            </Link>
           </Button>
         </CardContent>
       </Card>
