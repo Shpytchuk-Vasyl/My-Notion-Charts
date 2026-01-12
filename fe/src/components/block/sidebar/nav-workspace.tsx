@@ -85,9 +85,9 @@ function NavWorkspaceInner() {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <AvatarInfo
-                name={currentWorkspaceData.workspace_name}
-                email={currentWorkspaceData.workspace_email}
-                avatar={currentWorkspaceData.workspace_icon}
+                title={currentWorkspaceData.workspace_name}
+                description={currentWorkspaceData.workspace_email}
+                url={currentWorkspaceData.workspace_icon}
               />
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -137,16 +137,25 @@ const Items = ({
       disabled={isPending}
     >
       <AvatarInfo
-        name={workspace.workspace_name}
-        email={workspace.workspace_email}
-        avatar={workspace.workspace_icon}
+        title={workspace.workspace_name}
+        description={workspace.workspace_email}
+        url={workspace.workspace_icon}
       />
-      <DropdownOptions workspaceId={workspace.id} workspaceName={workspace.workspace_name} />
+      <DropdownOptions
+        workspaceId={workspace.id}
+        workspaceName={workspace.workspace_name}
+      />
     </DropdownMenuItem>
   ));
 };
 
-const DropdownOptions = ({ workspaceId, workspaceName }: { workspaceId: string; workspaceName: string }) => {
+const DropdownOptions = ({
+  workspaceId,
+  workspaceName,
+}: {
+  workspaceId: string;
+  workspaceName: string;
+}) => {
   const t = useTranslations("pages.dashboard.workspace.nav");
 
   return (
@@ -172,9 +181,6 @@ const DropdownOptions = ({ workspaceId, workspaceName }: { workspaceId: string; 
               params: {
                 workspaceId,
               },
-              query: {
-                name: workspaceName,
-              }
             }}
           >
             <Trash2 className="text-destructive" />
@@ -195,8 +201,8 @@ const AddWorkspace = () => {
       className="flex items-center gap-2"
     >
       <AvatarInfo
-        name={t("addWorkspace")}
-        email={""}
+        title={t("addWorkspace")}
+        description={""}
         icon={
           <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
             <Plus className="size-4" />

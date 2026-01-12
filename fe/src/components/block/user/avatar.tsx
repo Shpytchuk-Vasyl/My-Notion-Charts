@@ -16,9 +16,9 @@ const Avatar = () => {
   const resolvedUser = use(user);
   return (
     <AvatarInfo
-      name={resolvedUser.name}
-      email={resolvedUser.email || ""}
-      avatar={resolvedUser.avatar}
+      title={resolvedUser.name}
+      description={resolvedUser.email || ""}
+      url={resolvedUser.avatar}
     />
   );
 };

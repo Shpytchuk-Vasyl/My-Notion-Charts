@@ -1,6 +1,6 @@
 "use client";
 
-import { Folder, MoreHorizontal, Plus, Share, Trash2 } from "lucide-react";
+import { Folder, GripVertical, MoreHorizontal, Plus, Share, Trash2 } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -26,9 +26,10 @@ import {
 import { Link, routing } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import { ChartIcon } from "../chart/icons";
-import { Suspense, use } from "react";
+import { Suspense, use, useState } from "react";
 import { useDashboardContext } from "@/pages/protected/dashboard/context";
 import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
 
 const CHART_DISPLAY_LIMIT = 5;
 
@@ -61,6 +62,7 @@ function NavChartsInner() {
   const currentWorkspaceData = use(currentWorkspace);
 
   const t = useTranslations("pages.dashboard.charts.nav");
+  const [displayedCharts, setDisplayedCharts] = useState(CHART_DISPLAY_LIMIT);
 
   if (!currentWorkspaceData) {
     return null;
@@ -88,9 +90,9 @@ function NavChartsInner() {
             <SidebarMenuButton asChild>
               <Link
                 href={{
-                  pathname: routing.pathnames["/chart/[chartId]"],
+                  pathname: routing.pathnames["/chart/[id]"],
                   params: {
-                    chartId: item.id,
+                    id: item.id,
                   },
                 }}
               >
@@ -136,9 +138,9 @@ const DropdownOptions = ({ chartId }: { chartId: string }) => {
         <DropdownMenuItem asChild>
           <Link
             href={{
-              pathname: routing.pathnames["/chart/[chartId]/edit"],
+              pathname: routing.pathnames["/chart/[id]/edit"],
               params: {
-                chartId,
+                id: chartId,
               },
             }}
           >
@@ -151,12 +153,12 @@ const DropdownOptions = ({ chartId }: { chartId: string }) => {
           <span>{t("share")}</span>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem variant="destructive">
+        <DropdownMenuItem variant="destructive" asChild>
           <Link
             href={{
-              pathname: routing.pathnames["/dashboard/chart/[chartId]/delete"],
+              pathname: routing.pathnames["/dashboard/chart/[id]/delete"],
               params: {
-                chartId,
+                id: chartId,
               },
             }}
           >

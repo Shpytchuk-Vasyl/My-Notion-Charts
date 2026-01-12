@@ -21,6 +21,10 @@ export class ChartRepository {
       });
   }
 
+  async getChartById(chartId: string) {
+    return this.supabase.from("charts").select("*").eq("id", chartId).single();
+  }
+
   async createChart(chart: TablesInsert<"charts">) {
     return this.supabase.from("charts").insert(chart).select().single();
   }

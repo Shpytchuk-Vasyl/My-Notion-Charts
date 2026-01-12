@@ -11,4 +11,18 @@ export class ChartService {
 
     return { charts };
   }
+
+  static async getChartById(chartId: string) {
+    const supabase = await createClient();
+
+    const { data: chart, error } = await new ChartRepository(
+      supabase,
+    ).getChartById(chartId);
+
+    if (error) {
+      throw error;
+    }
+
+    return chart;
+  }
 }

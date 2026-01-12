@@ -86,7 +86,12 @@ export function DefaultModal({
           {children}
 
           <DialogFooter>
-            <Button variant="outline" onClick={goBack} disabled={isPending}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={goBack}
+              disabled={isPending}
+            >
               {cancel}
             </Button>
 

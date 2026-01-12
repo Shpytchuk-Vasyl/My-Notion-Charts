@@ -213,6 +213,13 @@
           "title": "Create New Chart",
           "description": "Fill out the form to create a new chart from your Notion data.",
           "successMessage": "Chart created successfully"
+        },
+        "delete": {
+          "title": "Delete Chart",
+          "description": "Are you sure you want to delete this chart? This action cannot be undone.",
+          "cancelButtonText": "Cancel",
+          "deleteButtonText": "Delete",
+          "successMessage": "Chart deleted successfully"
         }
       },
       "workspace": {

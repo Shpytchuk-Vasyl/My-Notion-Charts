@@ -22,7 +22,6 @@ export class NotionService {
       },
     });
 
-
     return response.results.filter(
       (result): result is DataSourceObjectResponse =>
         result.object === "data_source",

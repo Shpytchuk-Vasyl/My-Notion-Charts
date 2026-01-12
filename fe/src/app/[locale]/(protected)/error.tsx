@@ -4,11 +4,13 @@ import { useLocale } from "next-intl";
 
 export default function () {
   const locale = useLocale();
-  redirect({
-    locale,
-    href: {
-      pathname: routing.pathnames["/login"],
-    },
-  });
+  if (process.env.NODE_ENV === "production") {
+    redirect({
+      locale,
+      href: {
+        pathname: routing.pathnames["/logout"],
+      },
+    });
+  }
   return null;
 }

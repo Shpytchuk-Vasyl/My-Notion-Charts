@@ -23,15 +23,15 @@ export const routing = defineRouting({
     // Dashboard
     "/dashboard": "/dashboard",
     "/dashboard/chart/new": "/dashboard/chart/new",
-    "/dashboard/chart/[chartId]/delete": "/dashboard/chart/[chartId]/delete",
+    "/dashboard/chart/[id]/delete": "/dashboard/chart/[id]/delete",
 
     "/dashboard/workspace/[workspaceId]/delete":
       "/dashboard/workspace/[workspaceId]/delete",
 
     // Charts
     "/chart/all": "/chart/all",
-    "/chart/[chartId]/edit": "/chart/[chartId]/edit",
-    "/chart/[chartId]": "/chart/[chartId]",
+    "/chart/[id]/edit": "/chart/[id]/edit",
+    "/chart/[id]": "/chart/[id]",
 
     "/feedback": "/feedback",
     "/support": "/support",

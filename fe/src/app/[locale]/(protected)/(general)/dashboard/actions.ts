@@ -21,7 +21,7 @@ export async function deleteWorkspace(workspaceId: string) {
   if (error) {
     return { success: false, msg: error.message };
   }
-  return { success: true, msg: "" }; 
+  return { success: true, msg: "" };
 }
 
 export async function setWorkspaceAsCurrent(workspaceId: string) {
@@ -92,11 +92,11 @@ export async function createChart(_: any, formData: FormData) {
   redirect({
     locale,
     href: {
-      params: { chartId: data.id },
-      pathname: routing.pathnames["/chart/[chartId]/edit"],
+      params: { id: data.id },
+      pathname: routing.pathnames["/chart/[id]/edit"],
     },
   });
-  return { success: true, msg: "" }; 
+  return { success: true, msg: "" };
 }
 
 export async function deleteChart(chartId: string) {
@@ -117,7 +117,7 @@ export async function deleteChart(chartId: string) {
       pathname: routing.pathnames["/dashboard"],
     },
   });
-  return { success: true, msg: "" }; 
+  return { success: true, msg: "" };
 }
 
 export async function getDatabeses() {

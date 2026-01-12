@@ -1,54 +1,33 @@
-"use client";
-import { useParams, useSearchParams } from "next/navigation";
-import { Link, routing } from "@/i18n/routing";
-import { DefaultModal } from "@/components/ui/modal";
-
-type DeleteWorkspaceModalProps = {
-  deleteWorkspace: (id: string) => Promise<{
-    success: boolean;
-    msg: string;
-  }>;
-  translation: {
-    title: string;
-    description: string;
-    cancelButtonText: string;
-    deleteButtonText: string;
-    moreDetailsLink: string;
-    successMessage: string;
-  };
-  isIntercepted?: boolean;
-};
+import { useTranslations } from "next-intl";
+import { DeleteWorkspaceForm } from "./form";
+import { WorkspaceService } from "@/services/workspace";
+import { deleteWorkspace } from "@/app/[locale]/(protected)/(general)/dashboard/actions";
 
 export function DeleteWorkspaceModal({
-  deleteWorkspace,
-  translation,
+  params,
   isIntercepted = false,
-}: DeleteWorkspaceModalProps) {
-  const { id } = useParams();
-  const searchParams = useSearchParams();
-  const handleDelete = async () => {
-    return await deleteWorkspace(id as string);
-  };
+}: {
+  params: Promise<{ id: string }>;
+  isIntercepted?: boolean;
+}) {
+  const workspace = params.then(({ id }) =>
+    WorkspaceService.getWorkspaceById(id),
+  );
 
+  const t = useTranslations("pages.dashboard.workspace.delete");
   return (
-    <DefaultModal
-      title={`${translation.title}: ${searchParams.get("name") || ""}`}
-      description={
-        <>
-          {translation.description}{" "}
-          <Link
-            href={routing.pathnames["/help/workspace/delete"]}
-            className="underline"
-          >
-            {translation.moreDetailsLink}
-          </Link>
-        </>
-      }
-      cancel={translation.cancelButtonText}
-      submit={translation.deleteButtonText}
-      action={handleDelete}
-      successMsg={translation.successMessage}
+    <DeleteWorkspaceForm
+      deleteWorkspace={deleteWorkspace}
+      translation={{
+        title: t("title"),
+        description: t("description"),
+        cancelButtonText: t("cancelButtonText"),
+        deleteButtonText: t("deleteButtonText"),
+        moreDetailsLink: t("moreDetailsLink"),
+        successMessage: t("successMessage"),
+      }}
       isIntercepted={isIntercepted}
+      workspace={workspace}
     />
   );
 }

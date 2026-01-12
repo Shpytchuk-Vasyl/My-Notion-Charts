@@ -1,6 +1,7 @@
 "use client";
 import { use } from "react";
 import { useDashboardContext } from "./context";
+import { ChartGrid } from "./grid";
 
 export function DashboardPage({
   addWorkspace,
@@ -22,5 +23,5 @@ export function DashboardPage({
     return addChart;
   }
 
-  return null;
+  return <ChartGrid charts={chartsData} />;
 }

@@ -1,7 +1,6 @@
-import { cache } from "react";
-import { WorkspaceRepository } from "@/models/workspace";
-import { ChartRepository } from "@/models/chart";
+import { Workspace, WorkspaceRepository } from "@/models/workspace";
 import { UserService } from "./user";
+import { createClient } from "@/lib/supabase/server";
 
 export class WorkspaceService {
   static async getCachedWorkspaces() {
@@ -16,8 +15,6 @@ export class WorkspaceService {
     const currentWorkspace =
       workspaces.find((ws) => ws.isSelected) || workspaces?.[0];
 
-    console.log("WORKSPACES CACHE HIT");
-
     return { workspaces, user, supabase, currentWorkspace };
   }
 
@@ -30,5 +27,18 @@ export class WorkspaceService {
     );
 
     return workspace?.workspace || null;
+  }
+
+  static async getWorkspaceById(id: string) {
+    const supabase = await createClient();
+    const workspaceRepository = new WorkspaceRepository(supabase);
+    const { data: workspace, error } =
+      await workspaceRepository.getWorkspaceById(id);
+
+    if (error) {
+      throw error;
+    }
+
+    return workspace as Workspace;
   }
 }

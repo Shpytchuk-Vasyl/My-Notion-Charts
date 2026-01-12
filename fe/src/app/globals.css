@@ -125,3 +125,22 @@
     @apply bg-background text-foreground;
   }
 }
+
+.grid-stack-item>.ui-resizable-se {
+  bottom: calc(var(--gs-item-margin-bottom) + var(--spacing) * 6) !important;
+  right: calc(var(--gs-item-margin-right) + var(--spacing) * 6) !important;
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMwOTA5MGIiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1leHBhbmQtaWNvbiBsdWNpZGUtZXhwYW5kIj48cGF0aCBkPSJtMTUgMTUgNiA2Ii8+PHBhdGggZD0ibTE1IDkgNi02Ii8+PHBhdGggZD0iTTIxIDE2djVoLTUiLz48cGF0aCBkPSJNMjEgOFYzaC01Ii8+PHBhdGggZD0iTTMgMTZ2NWg1Ii8+PHBhdGggZD0ibTMgMjEgNi02Ii8+PHBhdGggZD0iTTMgOFYzaDUiLz48cGF0aCBkPSJNOSA5IDMgMyIvPjwvc3ZnPg==) !important;
+  transform: none !important;
+  z-index: 1 !important;
+}
+
+.ui-draggable-dragging>.grid-stack-item-content,
+.ui-resizable-resizing>.grid-stack-item-content {
+  box-shadow: none !important;
+  border-radius: var(--radius-lg);
+}
+
+.grid-stack-placeholder>.placeholder-content {
+  background-color: var(--accent) !important;
+  border-radius: var(--radius-lg);
+}

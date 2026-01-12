@@ -12,7 +12,7 @@ export class WorkspaceRepository {
       this.supabase
         .from("workspaces")
         .select(
-          "access_token, created_at, id, updated_at, user_id, workspace_icon, workspace_id, workspace_name",
+          "created_at, id, updated_at, user_id, workspace_icon, workspace_id, workspace_name",
         )
         .eq("user_id", userId)
         .order("updated_at", { ascending: true }),
@@ -119,5 +119,15 @@ export class WorkspaceRepository {
         workspace_id: workspaces[0].id,
       })
       .eq("user_id", userId);
+  }
+
+  async getWorkspaceById(id: string) {
+    return this.supabase
+      .from("workspaces")
+      .select(
+        "created_at, id, updated_at, user_id, workspace_icon, workspace_id, workspace_name",
+      )
+      .eq("id", id)
+      .single();
   }
 }
