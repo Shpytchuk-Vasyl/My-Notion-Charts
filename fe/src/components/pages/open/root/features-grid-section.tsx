@@ -72,7 +72,10 @@ function FeatureBlock({ blockIndex, toRight }: FeatureBlockProps) {
         <p className="mb-6 text-lg text-gray-600">{description}</p>
         <ul className="space-y-3">
           {items.map((item, index) => (
-            <FeatureItem key={index} {...item} />
+            <FeatureItem
+              key={`feature-item-${blockIndex}-${index}`}
+              {...item}
+            />
           ))}
         </ul>
       </div>

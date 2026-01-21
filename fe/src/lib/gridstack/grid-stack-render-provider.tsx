@@ -114,7 +114,9 @@ export function GridStackRenderProvider({ children }: PropsWithChildren) {
         [gridStack, renderTick],
       )}
     >
-      <div ref={containerRef}>{gridStack ? children : null}</div>
+      <div data-tour-step-id="grid-stack" ref={containerRef}>
+        {gridStack ? children : null}
+      </div>
     </GridStackRenderContext.Provider>
   );
 }

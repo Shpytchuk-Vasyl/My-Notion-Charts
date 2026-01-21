@@ -1,6 +1,13 @@
 "use client";
 
-import { Folder, GripVertical, MoreHorizontal, Plus, Share, Trash2 } from "lucide-react";
+import {
+  Folder,
+  GripVertical,
+  MoreHorizontal,
+  Plus,
+  Share,
+  Trash2,
+} from "lucide-react";
 
 import {
   DropdownMenu,
@@ -29,12 +36,11 @@ import { ChartIcon } from "../chart/icons";
 import { Suspense, use, useState } from "react";
 import { useDashboardContext } from "@/pages/protected/dashboard/context";
 import { Skeleton } from "@/components/ui/skeleton";
-import { cn } from "@/lib/utils";
 
 const CHART_DISPLAY_LIMIT = 5;
 
 export function NavCharts() {
-  const t = useTranslations("pages.dashboard.charts.nav");
+  const t = useTranslations("nav.charts");
 
   return (
     <Suspense
@@ -44,6 +50,8 @@ export function NavCharts() {
             <SidebarGroupLabel>{t("charts")}</SidebarGroupLabel>
           </div>
           <SidebarMenu>
+            <Skeleton className="h-9 w-full" />
+            <Skeleton className="h-9 w-full" />
             <Skeleton className="h-9 w-full" />
             <Skeleton className="h-9 w-full" />
             <Skeleton className="h-9 w-full" />
@@ -61,7 +69,7 @@ function NavChartsInner() {
   const chartsData = use(charts);
   const currentWorkspaceData = use(currentWorkspace);
 
-  const t = useTranslations("pages.dashboard.charts.nav");
+  const t = useTranslations("nav.charts");
   const [displayedCharts, setDisplayedCharts] = useState(CHART_DISPLAY_LIMIT);
 
   if (!currentWorkspaceData) {
@@ -84,10 +92,29 @@ function NavChartsInner() {
           <TooltipContent side="top">{t("addNewChart")}</TooltipContent>
         </Tooltip>
       </div>
-      <SidebarMenu>
-        {chartsData.slice(0, CHART_DISPLAY_LIMIT).map((item, idx) => (
-          <SidebarMenuItem key={item.name + idx}>
-            <SidebarMenuButton asChild>
+      <SidebarMenu data-tour-step-id="sidebar-charts">
+        {chartsData.slice(0, displayedCharts).map((item) => (
+          <SidebarMenuItem
+            data-tour-step-id="sidebar-chart-item"
+            key={`nav-charts-inner-item-${item.id}`}
+            className="sidebar-draggable grid-stack-item cursor-grab active:cursor-grabbing"
+            data-gs-widget={JSON.stringify({
+              w: 1,
+              h: 1,
+              id: item.id,
+              content: JSON.stringify({
+                name: "GridChart",
+                props: {
+                  chart: {
+                    id: item.id,
+                    name: item.name,
+                    type: item.type,
+                  },
+                },
+              }),
+            })}
+          >
+            <SidebarMenuButton asChild className="flex-1">
               <Link
                 href={{
                   pathname: routing.pathnames["/chart/[id]"],
@@ -95,6 +122,7 @@ function NavChartsInner() {
                     id: item.id,
                   },
                 }}
+                draggable={false}
               >
                 <ChartIcon type={item.type} />
                 <span title={item.name}>{item.name}</span>
@@ -103,13 +131,15 @@ function NavChartsInner() {
             <DropdownOptions chartId={item.id} />
           </SidebarMenuItem>
         ))}
-        {chartsData.length > CHART_DISPLAY_LIMIT && (
+        {chartsData.length > displayedCharts && (
           <SidebarMenuItem>
-            <SidebarMenuButton asChild>
-              <Link href={routing.pathnames["/chart/all"]}>
-                <MoreHorizontal />
-                <span>{t("more")}</span>
-              </Link>
+            <SidebarMenuButton
+              onClick={() =>
+                setDisplayedCharts((prev) => prev + CHART_DISPLAY_LIMIT)
+              }
+            >
+              <MoreHorizontal />
+              <span>{t("more")}</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         )}
@@ -120,7 +150,7 @@ function NavChartsInner() {
 
 const DropdownOptions = ({ chartId }: { chartId: string }) => {
   const { isMobile } = useSidebar();
-  const t = useTranslations("pages.dashboard.charts.nav");
+  const t = useTranslations("nav.charts");
 
   return (
     <DropdownMenu>

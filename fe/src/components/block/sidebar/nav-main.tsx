@@ -94,14 +94,18 @@ const getItems = (): NavItem[] => [
 
 export function NavMain() {
   const items = getItems();
-  const t = useTranslations("pages.dashboard.nav");
+  const t = useTranslations("nav");
 
   return (
     <SidebarGroup>
       <SidebarGroupLabel>{t("platform")}</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
-          <Collapsible key={item.titleKey} asChild defaultOpen={false}>
+          <Collapsible
+            key={`nav-main-${item.titleKey}`}
+            asChild
+            defaultOpen={false}
+          >
             <SidebarMenuItem>
               <SidebarMenuButton asChild tooltip={t(item.titleKey)}>
                 <a href={item.url}>
@@ -120,7 +124,9 @@ export function NavMain() {
                   <CollapsibleContent>
                     <SidebarMenuSub>
                       {item.items?.map((subItem) => (
-                        <SidebarMenuSubItem key={subItem.titleKey}>
+                        <SidebarMenuSubItem
+                          key={`nav-main-subitem-${subItem.titleKey}`}
+                        >
                           <SidebarMenuSubButton asChild>
                             <a href={subItem.url}>
                               <span>{t(subItem.titleKey)}</span>

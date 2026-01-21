@@ -1,3 +1,4 @@
+"use client";
 import { ChartIcon } from "@/components/block/chart/icons";
 import { AvatarInfo } from "@/components/ui/avatar-info";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -9,14 +10,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Link, routing } from "@/i18n/routing";
+import { useGridStackContext } from "@/lib/gridstack";
 import { Chart } from "@/models/chart";
-import { Folder, MoreVertical, Share, Trash2 } from "lucide-react";
+import { CircleMinus, Folder, MoreVertical, Share, Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 export function GridChart({ chart }: { chart: Chart }) {
-  const t = useTranslations("pages.dashboard.charts.new.chartType");
+  const t = useTranslations("pages.dashboard.grid.chartType");
   return (
-    <Card className="size-full shadow-none">
+    <Card data-tour-step-id="grid-chart" className="size-full shadow-none">
       <CardHeader className="grid-rows-1 grid-cols-[min-content_auto_min-content] items-center">
         <AvatarInfo
           title={chart.name}
@@ -31,7 +33,7 @@ export function GridChart({ chart }: { chart: Chart }) {
 }
 
 const DropdownOptions = ({ id }: { id: string }) => {
-  const t = useTranslations("pages.dashboard.charts.nav");
+  const t = useTranslations("pages.dashboard.grid");
 
   return (
     <DropdownMenu>
@@ -71,7 +73,25 @@ const DropdownOptions = ({ id }: { id: string }) => {
             <span>{t("delete")}</span>
           </Link>
         </DropdownMenuItem>
+        <ExcludeFromDashboard id={id} />
       </DropdownMenuContent>
     </DropdownMenu>
+  );
+};
+
+const ExcludeFromDashboard = ({ id }: { id: string }) => {
+  const t = useTranslations("pages.dashboard.grid");
+  const { removeWidget } = useGridStackContext();
+
+  return (
+    <DropdownMenuItem
+      variant="destructive"
+      onClick={() => {
+        removeWidget(id);
+      }}
+    >
+      <CircleMinus className="text-destructive" />
+      <span>{t("exclude")}</span>
+    </DropdownMenuItem>
   );
 };

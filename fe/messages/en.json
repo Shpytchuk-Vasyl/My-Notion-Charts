@@ -165,33 +165,7 @@
       "description": "Please wait while we sign you out of your account..."
     },
     "dashboard": {
-      "nav": {
-        "notifications": "Notifications",
-        "logout": "Log out",
-        "support": "Support",
-        "feedback": "Feedback",
-        "platform": "Platform",
-        "toggle": "Toggle",
-        "documentation": "Documentation",
-        "introduction": "Introduction",
-        "getStarted": "Get Started",
-        "tutorials": "Tutorials",
-        "changelog": "Changelog",
-        "settings": "Settings",
-        "general": "General",
-        "team": "Team",
-        "billing": "Billing",
-        "limits": "Limits"
-      },
       "charts": {
-        "nav": {
-          "charts": "Charts",
-          "addNewChart": "Add new chart",
-          "more": "More",
-          "edit": "Edit",
-          "share": "Share",
-          "delete": "Delete"
-        },
         "new": {
           "nameLabel": "Chart Name",
           "namePlaceholder": "Enter chart name",
@@ -223,12 +197,6 @@
         }
       },
       "workspace": {
-        "nav": {
-          "addWorkspace": "Connect Notion",
-          "more": "More",
-          "edit": "Edit",
-          "delete": "Delete"
-        },
         "delete": {
           "title": "Delete Connection",
           "description": "Are you sure you want to delete this connection? This action cannot be undone. Also, remember to disconnect the integration in Notion Settings.",
@@ -247,7 +215,96 @@
         "title": "You don't have any charts yet",
         "description": "Create your first chart to visualize your Notion data. It's quick and easy!",
         "createButton": "Create Chart"
+      },
+      "grid": {
+        "more": "More",
+        "edit": "Edit",
+        "share": "Share",
+        "delete": "Delete",
+        "exclude": "Exclude",
+        "chartType": {
+          "bar": "Bar",
+          "line": "Line",
+          "pie": "Pie",
+          "scatter": "Scatter",
+          "radar": "Radar",
+          "area": "Area",
+          "radial": "Radial"
+        }
       }
+    }
+  },
+  "nav": {
+    "charts": {
+      "charts": "Charts",
+      "addNewChart": "Add new chart",
+      "more": "More",
+      "edit": "Edit",
+      "share": "Share",
+      "delete": "Delete"
+    },
+    "workspace": {
+      "addWorkspace": "Connect Notion",
+      "more": "More",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "notifications": "Notifications",
+    "logout": "Log out",
+    "support": "Support",
+    "feedback": "Feedback",
+    "platform": "Platform",
+    "toggle": "Toggle",
+    "documentation": "Documentation",
+    "introduction": "Introduction",
+    "getStarted": "Get Started",
+    "tutorials": "Tutorials",
+    "changelog": "Changelog",
+    "settings": "Settings",
+    "general": "General",
+    "team": "Team",
+    "billing": "Billing",
+    "limits": "Limits"
+  },
+  "tours": {
+    "dashboard": {
+      "dragChart": {
+        "welcome": {
+          "title": "Welcome to Dashboard!",
+          "content": "Let's learn how to add charts to your dashboard using drag & drop. It's simple and intuitive!"
+        },
+        "sidebarCharts": {
+          "title": "Your Charts",
+          "content": "All your charts are located here in the sidebar. You can easily add them to your dashboard."
+        },
+        "grabChart": {
+          "title": "Grab a Chart",
+          "content": "Hover over a chart and hold down the left mouse button. Then drag the chart onto the dashboard."
+        },
+        "dropZone": {
+          "title": "Drop It Here",
+          "content": "Drag the chart to any part of the dashboard and release the mouse button. The chart will automatically position itself in the grid."
+        },
+        "resizeChart": {
+          "title": "Resize Charts",
+          "content": "Hover over the bottom-right corner of a chart – an icon will appear. Click and drag to resize the chart."
+        },
+        "moveChart": {
+          "title": "Move Charts Around",
+          "content": "You can also drag charts within the dashboard to rearrange them. Just click and move!"
+        },
+        "complete": {
+          "title": "All Done!",
+          "content": "Now you know how to work with charts on your dashboard. Create, drag, and customize your perfect dashboard!"
+        }
+      }
+    },
+    "nav": {
+      "next": "Next",
+      "previous": "Previous",
+      "finish": "Finish",
+      "step": "Step",
+      "of": "of"
     }
   }
 }

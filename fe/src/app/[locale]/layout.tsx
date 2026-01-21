@@ -54,7 +54,9 @@ export default async function RootLayout({
       <body
         className={`bg-linear-to-b from-white to-gray-50 ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider messages={{}}>
+          {children}
+        </NextIntlClientProvider>
         <Toaster />
       </body>
     </html>

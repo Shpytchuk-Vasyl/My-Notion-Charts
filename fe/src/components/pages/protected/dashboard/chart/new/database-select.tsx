@@ -35,7 +35,10 @@ export function DatabaseSelect({ placeholder, promise }: DatabaseSelectProps) {
       <MultiSelectContent>
         <MultiSelectGroup>
           {databases.map((database) => (
-            <MultiSelectItem key={database.id} value={database.id}>
+            <MultiSelectItem
+              key={`database-select-${database.id}`}
+              value={database.id}
+            >
               <div className="flex items-center gap-2">
                 <NotionDatabaseIcon database={database} />
                 <span>{database.title[0].plain_text}</span>

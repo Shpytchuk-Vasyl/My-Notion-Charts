@@ -156,7 +156,7 @@ const DropdownOptions = ({
   workspaceId: string;
   workspaceName: string;
 }) => {
-  const t = useTranslations("pages.dashboard.workspace.nav");
+  const t = useTranslations("nav.workspace");
 
   return (
     <DropdownMenu>
@@ -193,7 +193,7 @@ const DropdownOptions = ({
 };
 
 const AddWorkspace = () => {
-  const t = useTranslations("pages.dashboard.workspace.nav");
+  const t = useTranslations("nav.workspace");
 
   return (
     <NextLink

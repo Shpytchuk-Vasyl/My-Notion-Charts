@@ -35,14 +35,14 @@ const items: NavItem[] = [
 export function NavSecondary({
   ...props
 }: React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
-  const t = useTranslations("pages.dashboard.nav");
+  const t = useTranslations("nav");
 
   return (
     <SidebarGroup {...props}>
       <SidebarGroupContent>
         <SidebarMenu>
           {items.map((item) => (
-            <SidebarMenuItem key={item.titleKey}>
+            <SidebarMenuItem key={`nav-secondary-${item.titleKey}`}>
               <SidebarMenuButton asChild size="sm">
                 <Link href={item.url as any}>
                   <item.icon />

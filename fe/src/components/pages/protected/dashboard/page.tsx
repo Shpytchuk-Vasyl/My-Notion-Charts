@@ -1,16 +1,24 @@
 "use client";
-import { use } from "react";
+import React, { use } from "react";
 import { useDashboardContext } from "./context";
 import { ChartGrid } from "./grid";
+import { NextIntlClientProvider, useLocale, useTranslations } from "next-intl";
+import { TourProvider } from "@/components/ui/tour";
+import { getTours } from "./tour";
 
 export function DashboardPage({
   addWorkspace,
   addChart,
+  dashboardMessages,
+  tourMessages,
 }: {
   addWorkspace: React.ReactNode;
   addChart: React.ReactNode;
+  tourMessages: Record<string, string>;
+  dashboardMessages: Record<string, string>;
 }) {
   const { workspaces, charts } = useDashboardContext();
+  const locale = useLocale();
 
   const workspacesData = use(workspaces);
   const chartsData = use(charts);
@@ -23,5 +31,35 @@ export function DashboardPage({
     return addChart;
   }
 
-  return <ChartGrid charts={chartsData} />;
+  return (
+    <NextIntlClientProvider
+      locale={locale}
+      messages={{
+        pages: { dashboard: { grid: dashboardMessages } },
+        tours: tourMessages,
+      }}
+    >
+      <Tours>
+        <ChartGrid charts={chartsData} />
+      </Tours>
+    </NextIntlClientProvider>
+  );
 }
+
+const Tours = ({ children }: React.PropsWithChildren<{}>) => {
+  const t = useTranslations("tours.nav");
+  return (
+    <TourProvider
+      tours={getTours(useTranslations("tours.dashboard"))}
+      translations={{
+        next: t("next"),
+        previous: t("previous"),
+        finish: t("finish"),
+        step: t("step"),
+        of: t("of"),
+      }}
+    >
+      {children}
+    </TourProvider>
+  );
+};

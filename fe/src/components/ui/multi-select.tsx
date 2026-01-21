@@ -222,7 +222,7 @@ export function MultiSelectValue({
             variant="outline"
             data-selected-item
             className="group flex items-center gap-1"
-            key={value}
+            key={`multi-select-value-${value}`}
             onClick={
               clickToRemove
                 ? (e) => {

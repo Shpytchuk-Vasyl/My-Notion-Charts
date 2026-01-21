@@ -64,7 +64,7 @@ function ChartTypeField({ t }: DatabaseFieldProps) {
         <SelectContent>
           <SelectGroup>
             {Object.entries(chartIcons).map(([value, Icon]) => (
-              <SelectItem key={value} value={value}>
+              <SelectItem key={`chart-type-field-${value}`} value={value}>
                 <div className="flex items-center gap-2">
                   <Icon className="size-4" />
                   <span>{t(`chartType.${value}`)}</span>

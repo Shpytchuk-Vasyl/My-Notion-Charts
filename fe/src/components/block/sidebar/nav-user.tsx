@@ -20,7 +20,7 @@ import { useTranslations } from "next-intl";
 import { UserAvatar } from "../user/avatar";
 
 export function NavUser() {
-  const t = useTranslations("pages.dashboard.nav");
+  const t = useTranslations("nav");
   return (
     <SidebarMenu>
       <SidebarMenuItem>
