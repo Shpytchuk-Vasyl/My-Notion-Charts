@@ -23,19 +23,19 @@ alter table public.workspaces enable row level security;
 -- Create policies
 create policy "Users can view their own workspaces"
   on public.workspaces for select
-  using (auth.uid() = user_id);
+  using ((select auth.uid()) = user_id);
 
 create policy "Users can create their own workspaces"
   on public.workspaces for insert
-  with check (auth.uid() = user_id);
+  with check ((select auth.uid()) = user_id);
 
 create policy "Users can update their own workspaces"
   on public.workspaces for update
-  using (auth.uid() = user_id);
+  using ((select auth.uid()) = user_id);
 
 create policy "Users can delete their own workspaces"
   on public.workspaces for delete
-  using (auth.uid() = user_id);
+  using ((select auth.uid()) = user_id);
 
 -- Create updated_at trigger
 create or replace function public.handle_updated_at()

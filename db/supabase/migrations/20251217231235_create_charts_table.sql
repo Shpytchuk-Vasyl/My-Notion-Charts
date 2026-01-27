@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS public.charts (
     name VARCHAR(50) NOT NULL,
     type public.chart_type NOT NULL,
     workspace_id UUID NOT NULL REFERENCES public.workspaces(id) ON DELETE CASCADE,
+    databases UUID[] NOT NULL DEFAULT '{}'::uuid[],
     config JSONB NOT NULL DEFAULT '{}'::jsonb,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
@@ -14,9 +15,6 @@ CREATE TABLE IF NOT EXISTS public.charts (
 
 -- Create index for faster queries by workspace_id
 CREATE INDEX IF NOT EXISTS idx_charts_workspace_id ON public.charts(workspace_id);
-
--- Create index for faster queries by updated_at
-CREATE INDEX IF NOT EXISTS idx_charts_updated_at ON public.charts(updated_at DESC);
 
 -- Enable Row Level Security
 ALTER TABLE public.charts ENABLE ROW LEVEL SECURITY;
@@ -27,7 +25,7 @@ CREATE POLICY "Users can view their own charts"
     FOR SELECT
     USING (
         workspace_id IN (
-            SELECT id FROM public.workspaces WHERE user_id = auth.uid()
+            SELECT id FROM public.workspaces WHERE user_id = (select auth.uid())
         )
     );
 
@@ -37,7 +35,7 @@ CREATE POLICY "Users can insert charts for their workspaces"
     FOR INSERT
     WITH CHECK (
         workspace_id IN (
-            SELECT id FROM public.workspaces WHERE user_id = auth.uid()
+            SELECT id FROM public.workspaces WHERE user_id = (select auth.uid())
         )
     );
 
@@ -47,12 +45,12 @@ CREATE POLICY "Users can update their own charts"
     FOR UPDATE
     USING (
         workspace_id IN (
-            SELECT id FROM public.workspaces WHERE user_id = auth.uid()
+            SELECT id FROM public.workspaces WHERE user_id = (select auth.uid())
         )
     )
     WITH CHECK (
         workspace_id IN (
-            SELECT id FROM public.workspaces WHERE user_id = auth.uid()
+            SELECT id FROM public.workspaces WHERE user_id = (select auth.uid())
         )
     );
 
@@ -62,7 +60,7 @@ CREATE POLICY "Users can delete their own charts"
     FOR DELETE
     USING (
         workspace_id IN (
-            SELECT id FROM public.workspaces WHERE user_id = auth.uid()
+            SELECT id FROM public.workspaces WHERE user_id = (select auth.uid())
         )
     );
 

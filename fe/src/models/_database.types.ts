@@ -38,6 +38,7 @@ export type Database = {
         Row: {
           config: Json;
           created_at: string;
+          databases: string[];
           id: string;
           name: string;
           type: Database["public"]["Enums"]["chart_type"];
@@ -47,6 +48,7 @@ export type Database = {
         Insert: {
           config?: Json;
           created_at?: string;
+          databases?: string[];
           id?: string;
           name: string;
           type: Database["public"]["Enums"]["chart_type"];
@@ -56,6 +58,7 @@ export type Database = {
         Update: {
           config?: Json;
           created_at?: string;
+          databases?: string[];
           id?: string;
           name?: string;
           type?: Database["public"]["Enums"]["chart_type"];

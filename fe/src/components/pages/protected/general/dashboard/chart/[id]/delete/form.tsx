@@ -1,7 +1,7 @@
 "use client";
 import { DefaultModal } from "@/components/ui/modal";
 import { useParams } from "next/navigation";
-import { Chart } from "@/models/chart";
+import { type Chart } from "@/models/chart";
 import { SuspenseSkeleton } from "@/components/ui/skeleton-suspense";
 
 type DeleteChartFormProps = {

@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Link, routing } from "@/i18n/routing";
 import { useGridStackContext } from "@/lib/gridstack";
-import { Chart } from "@/models/chart";
+import { type Chart } from "@/models/chart";
 import { CircleMinus, Folder, MoreVertical, Share, Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 

@@ -1,6 +1,6 @@
 "use client";
 import { AvatarInfo, AvatarInfoSckeleton } from "@/components/ui/avatar-info";
-import { useDashboardContext } from "@/pages/protected/dashboard/context";
+import { useDashboardContext } from "@/pages/protected/general/dashboard/context";
 import { Suspense, use } from "react";
 
 export function UserAvatar() {

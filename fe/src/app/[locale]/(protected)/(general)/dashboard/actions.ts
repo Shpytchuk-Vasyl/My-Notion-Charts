@@ -5,8 +5,7 @@ import { redirect, routing } from "@/i18n/routing";
 import { createClient } from "@/lib/supabase/server";
 import { WorkspaceRepository } from "@/models/workspace";
 import { z } from "zod";
-import { chartIcons } from "@/components/block/chart/icons";
-import { ChartRepository } from "@/models/chart";
+import { ChartRepository, type ChartType } from "@/models/chart";
 import { UserService } from "@/services/user";
 import { WorkspaceService } from "@/services/workspace";
 import { NotionService } from "@/services/notion";
@@ -52,7 +51,18 @@ export async function createChart(_: any, formData: FormData) {
       .array(z.uuid(), t("databases.required"))
       .min(1, t("databases.min")),
     workspaceId: z.uuid(t("workspaceId.required")),
-    chartType: z.enum(Object.keys(chartIcons), t("chartType.invalid")),
+    chartType: z.enum(
+      [
+        "bar",
+        "line",
+        "pie",
+        "scatter",
+        "radar",
+        "area",
+        "radial",
+      ] as ChartType[],
+      t("chartType.invalid"),
+    ),
   });
 
   const values = {
@@ -76,10 +86,7 @@ export async function createChart(_: any, formData: FormData) {
   const { error, data } = await repository.createChart({
     name: result.data.chartName,
     workspace_id: result.data.workspaceId,
-    config: {
-      databases: result.data.databases,
-    },
-    // @ts-expect-error
+    databases: result.data.databases,
     type: result.data.chartType,
   });
 
@@ -130,6 +137,7 @@ export async function getDatabeses() {
   const databases = await new NotionService(
     workspace.access_token,
   ).getDatabases();
+  console.log(databases);
 
   return { databases, id: workspace.id };
 }

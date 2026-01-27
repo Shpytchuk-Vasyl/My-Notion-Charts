@@ -1,9 +1,9 @@
 import type { ReactNode } from "react";
-import { SiteHeader } from "@/components/block/sidebar/site-header";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { WorkspaceService } from "@/services/workspace";
 import { ChartService } from "@/services/chart";
-import { DashboardProvider } from "@/pages/protected/dashboard/context";
+import { DashboardProvider } from "@/pages/protected/general/dashboard/context";
+import { SiteHeader } from "@/pages/protected/general/sidebar/site-header";
 
 export default function ProtectedLayout({ children }: { children: ReactNode }) {
   const promises = WorkspaceService.getCachedWorkspaces();

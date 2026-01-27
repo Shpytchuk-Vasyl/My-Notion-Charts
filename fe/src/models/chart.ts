@@ -4,6 +4,44 @@ import { Tables, Database, Enums, TablesInsert } from "./_database.types";
 export type Chart = Tables<"charts">;
 export type ChartType = Enums<"chart_type">;
 
+type AvailableOperators =
+  | "="
+  | "!="
+  | "<"
+  | "<="
+  | ">"
+  | ">="
+  | "starts_with"
+  | "ends_with";
+export type ChartConfig = {
+  joins?: {
+    from_id: string;
+    to_id: string;
+    table_id: string;
+  }[];
+  filters?: {
+    [key in "and" | "or"]?: {
+      operator: AvailableOperators;
+      property: string;
+      value: string;
+    }[];
+  };
+  sort?: {
+    property: string;
+    ascending: boolean;
+  };
+  limit?: number;
+  axis?: {
+    [key in "x" | "y"]: {
+      property: string;
+      aggregation: "none" | "count" | "sum" | "average" | "min" | "max";
+    }[];
+  };
+  cache?: {
+    duration: number;
+  };
+};
+
 export class ChartRepository {
   constructor(protected supabase: SupabaseClient<Database>) {}
 

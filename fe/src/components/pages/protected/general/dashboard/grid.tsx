@@ -1,7 +1,7 @@
 "use client";
 import "gridstack/dist/gridstack.min.css";
 import { GridStack, type GridStackOptions } from "gridstack";
-import { Chart } from "@/models/chart";
+import { type Chart } from "@/models/chart";
 import { LocalCashe } from "@/helpers/local-cashe";
 import {
   GridStackProvider,
@@ -112,10 +112,7 @@ export function ChartGrid({ charts }: { charts: Chart[] }) {
   const [options] = useState<GridStackOptions>(getGridOptiond);
 
   useEffect(() => {
-    if (
-      options.children!.length === 0
-      && charts.length === 1
-    ) {
+    if (options.children!.length === 0 && charts.length === 1) {
       start(TOUR_DASHBOARD_DRAG_CHART_ID);
     }
   }, []);

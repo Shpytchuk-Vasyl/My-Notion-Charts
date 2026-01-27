@@ -1,4 +1,4 @@
-import { CreateChartModal } from "@/pages/protected/dashboard/chart/new/modal";
+import { CreateChartModal } from "@/pages/protected/general/dashboard/chart/new/modal";
 
 export { generateStaticParams } from "@/i18n/static-params";
 

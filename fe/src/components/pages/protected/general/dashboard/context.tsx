@@ -1,8 +1,8 @@
 "use client";
 
-import { Chart } from "@/models/chart";
-import { Workspace } from "@/models/workspace";
-import { User } from "@/services/user";
+import { type Chart } from "@/models/chart";
+import { type Workspace } from "@/models/workspace";
+import { type User } from "@/services/user";
 import React, { createContext, useContext } from "react";
 
 interface DashboardContextType {

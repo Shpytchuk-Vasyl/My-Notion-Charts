@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Link, routing } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
-import { UserAvatar } from "../user/avatar";
+import { UserAvatar } from "@/components/block/user/avatar";
 
 export function NavUser() {
   const t = useTranslations("nav");

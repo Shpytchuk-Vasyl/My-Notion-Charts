@@ -32,10 +32,10 @@ import {
 } from "@/components/ui/tooltip";
 import { Link, routing } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
-import { ChartIcon } from "../chart/icons";
 import { Suspense, use, useState } from "react";
-import { useDashboardContext } from "@/pages/protected/dashboard/context";
+import { useDashboardContext } from "@/pages/protected/general/dashboard/context";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ChartIcon } from "@/components/block/chart/icons";
 
 const CHART_DISPLAY_LIMIT = 5;
 

@@ -10,19 +10,19 @@ alter table public.selected_workspace enable row level security;
 -- Create policies
 create policy "Users can view their own selected workspace"
   on public.selected_workspace for select
-  using (auth.uid() = user_id);
+  using ((select auth.uid()) = user_id);
 
 create policy "Users can insert their own selected workspace"
   on public.selected_workspace for insert
-  with check (auth.uid() = user_id);
+  with check ((select auth.uid()) = user_id);
 
 create policy "Users can update their own selected workspace"
   on public.selected_workspace for update
-  using (auth.uid() = user_id);
+  using ((select auth.uid()) = user_id);
 
 create policy "Users can delete their own selected workspace"
   on public.selected_workspace for delete
-  using (auth.uid() = user_id);
+  using ((select auth.uid()) = user_id);
 
 -- Create function to initialize selected_workspace for new users
 create or replace function public.handle_new_user_selected_workspace()

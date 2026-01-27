@@ -1,4 +1,4 @@
-import { DeleteChartModal } from "@/pages/protected/dashboard/chart/[id]/delete/modal";
+import { DeleteChartModal } from "@/pages/protected/general/dashboard/chart/[id]/delete/modal";
 
 export { generateStaticParams } from "@/i18n/static-params";
 

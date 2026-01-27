@@ -27,10 +27,14 @@ import {
 } from "@/components/ui/sidebar";
 import { Link, routing } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
-import { Workspace } from "@/models/workspace";
-import { useDashboardContext } from "@/pages/protected/dashboard/context";
+import { type Workspace } from "@/models/workspace";
+import { useDashboardContext } from "@/pages/protected/general/dashboard/context";
 
-export function NavWorkspace() {
+type NavWorkspaceProps = {
+  editable?: boolean;
+};
+
+export function NavWorkspace(props: NavWorkspaceProps) {
   return (
     <Suspense
       fallback={
@@ -43,12 +47,12 @@ export function NavWorkspace() {
         </SidebarMenu>
       }
     >
-      <NavWorkspaceInner />
+      <NavWorkspaceInner {...props} />
     </Suspense>
   );
 }
 
-function NavWorkspaceInner() {
+function NavWorkspaceInner({ editable }: NavWorkspaceProps) {
   const { workspaces, currentWorkspace } = useDashboardContext();
   const [isPending, startTransition] = useTransition();
 
@@ -69,6 +73,22 @@ function NavWorkspaceInner() {
         <SidebarMenuItem>
           <SidebarMenuButton size="lg" asChild>
             <AddWorkspace />
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      </SidebarMenu>
+    );
+  }
+
+  if (!editable) {
+    return (
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <SidebarMenuButton size="lg">
+            <AvatarInfo
+              title={currentWorkspaceData.workspace_name}
+              description={currentWorkspaceData.workspace_email}
+              url={currentWorkspaceData.workspace_icon}
+            />
           </SidebarMenuButton>
         </SidebarMenuItem>
       </SidebarMenu>

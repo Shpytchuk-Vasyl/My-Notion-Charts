@@ -1,12 +1,9 @@
 "use client";
 import { Link, routing } from "@/i18n/routing";
 import { DefaultModal } from "@/components/ui/modal";
-import { Workspace } from "@/models/workspace";
+import { type Workspace } from "@/models/workspace";
 import { useParams } from "next/navigation";
-import { Suspense, use } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
 import { SuspenseSkeleton } from "@/components/ui/skeleton-suspense";
-import { resolve } from "path";
 
 type DeleteWorkspaceFormProps = {
   deleteWorkspace: (id: string) => Promise<{
