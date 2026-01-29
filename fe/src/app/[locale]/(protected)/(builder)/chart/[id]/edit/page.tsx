@@ -1,5 +1,6 @@
 export { generateStaticParams } from "@/i18n/static-params";
 
-export default function Page() {
+export default async function Page() {
+  await new Promise((resolve) => setTimeout(resolve, 10000));
   return "test";
 }

@@ -1,5 +1,5 @@
 "use client";
-import React, { use } from "react";
+import { use } from "react";
 import { useDashboardContext } from "./context";
 import { ChartGrid } from "./grid";
 import { NextIntlClientProvider, useLocale, useTranslations } from "next-intl";

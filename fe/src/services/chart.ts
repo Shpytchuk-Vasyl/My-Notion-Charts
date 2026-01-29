@@ -1,4 +1,4 @@
-import { ChartRepository } from "@/models/chart";
+import { type Chart, ChartRepository } from "@/models/chart";
 import { createClient } from "@/lib/supabase/server";
 
 export class ChartService {
@@ -23,6 +23,6 @@ export class ChartService {
       throw error;
     }
 
-    return chart;
+    return chart as Chart;
   }
 }

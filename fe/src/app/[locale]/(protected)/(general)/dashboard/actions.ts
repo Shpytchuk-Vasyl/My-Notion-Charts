@@ -5,7 +5,14 @@ import { redirect, routing } from "@/i18n/routing";
 import { createClient } from "@/lib/supabase/server";
 import { WorkspaceRepository } from "@/models/workspace";
 import { z } from "zod";
-import { ChartRepository, type ChartType } from "@/models/chart";
+import {
+  ChartRepository,
+  type ChartType,
+  type ChartConfig,
+  DEFAULT_CHART_CONFIG_CACHE_DURATION,
+  DEFAULT_CHART_CONFIG_THEME,
+  DEFAULT_CHART_CONFIG_LIMIT,
+} from "@/models/chart";
 import { UserService } from "@/services/user";
 import { WorkspaceService } from "@/services/workspace";
 import { NotionService } from "@/services/notion";
@@ -88,6 +95,32 @@ export async function createChart(_: any, formData: FormData) {
     workspace_id: result.data.workspaceId,
     databases: result.data.databases,
     type: result.data.chartType,
+    config: {
+      axis: {
+        x: {
+          property: "",
+        },
+        y: [
+          {
+            property: "",
+            aggregation: "none",
+          },
+        ],
+      },
+      joins: Array.from({ length: result.data.databases.length - 1 }, () => ({
+        from: "",
+        to: "",
+      })),
+      filters: {},
+      limit: DEFAULT_CHART_CONFIG_LIMIT,
+      sort: undefined,
+      cache: {
+        duration: DEFAULT_CHART_CONFIG_CACHE_DURATION,
+      },
+      customization: {
+        theme: DEFAULT_CHART_CONFIG_THEME,
+      },
+    } as ChartConfig,
   });
 
   if (error) {

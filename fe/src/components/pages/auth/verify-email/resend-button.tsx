@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { SubmitButton } from "@/components/ui/button-submit";
 
@@ -16,7 +16,7 @@ export function ResendButton({
   resendButtonText,
 }: ResendButtonProps) {
   const [state, action] = useActionState(resendAction, null);
-  const buttonRef = React.useRef<HTMLButtonElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const intervalId = setInterval(() => {

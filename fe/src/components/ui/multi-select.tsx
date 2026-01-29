@@ -17,25 +17,17 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-  type ComponentPropsWithoutRef,
-  type ReactNode,
-} from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import { debounce } from "@/helpers/debounce";
 
 type MultiSelectContextType = {
   open: boolean;
   setOpen: (open: boolean) => void;
   selectedValues: Set<string>;
   toggleValue: (value: string) => void;
-  items: Map<string, ReactNode>;
-  onItemAdded: (value: string, label: ReactNode) => void;
+  items: Map<string, React.ReactNode>;
+  onItemAdded: (value: string, label: React.ReactNode) => void;
 };
 const MultiSelectContext = createContext<MultiSelectContextType | null>(null);
 
@@ -47,7 +39,7 @@ export function MultiSelect({
   name,
   required,
 }: {
-  children: ReactNode;
+  children: React.ReactNode;
   values?: string[];
   defaultValues?: string[];
   onValuesChange?: (values: string[]) => void;
@@ -59,7 +51,7 @@ export function MultiSelect({
     new Set<string>(values ?? defaultValues),
   );
   const selectedValues = values ? new Set(values) : internalValues;
-  const [items, setItems] = useState<Map<string, ReactNode>>(new Map());
+  const [items, setItems] = useState<Map<string, React.ReactNode>>(new Map());
 
   function toggleValue(value: string) {
     const getNewSet = (prev: Set<string>) => {
@@ -75,12 +67,12 @@ export function MultiSelect({
     onValuesChange?.([...getNewSet(selectedValues)]);
   }
 
-  const onItemAdded = useCallback((value: string, label: ReactNode) => {
+  const onItemAdded = (value: string, label: React.ReactNode) => {
     setItems((prev) => {
       if (prev.get(value) === label) return prev;
       return new Map(prev).set(value, label);
     });
-  }, []);
+  };
 
   return (
     <MultiSelectContext
@@ -107,8 +99,8 @@ export function MultiSelectTrigger({
   ...props
 }: {
   className?: string;
-  children?: ReactNode;
-} & ComponentPropsWithoutRef<typeof Button>) {
+  children?: React.ReactNode;
+} & React.ComponentPropsWithoutRef<typeof Button>) {
   const { open } = useMultiSelectContext();
 
   return (
@@ -140,7 +132,7 @@ export function MultiSelectValue({
   placeholder?: string;
   clickToRemove?: boolean;
   overflowBehavior?: "wrap" | "wrap-when-open" | "cutoff";
-} & Omit<ComponentPropsWithoutRef<"div">, "children">) {
+} & Omit<React.ComponentPropsWithoutRef<"div">, "children">) {
   const { selectedValues, toggleValue, items, open } = useMultiSelectContext();
   const [overflowAmount, setOverflowAmount] = useState(0);
   const valueRef = useRef<HTMLDivElement>(null);
@@ -150,7 +142,7 @@ export function MultiSelectValue({
     overflowBehavior === "wrap" ||
     (overflowBehavior === "wrap-when-open" && open);
 
-  const checkOverflow = useCallback(() => {
+  const checkOverflow = () => {
     if (valueRef.current == null) return;
 
     const containerElement = valueRef.current;
@@ -172,30 +164,27 @@ export function MultiSelectValue({
       overflowElement?.style.removeProperty("display");
     }
     setOverflowAmount(amount);
-  }, []);
+  };
 
-  const handleResize = useCallback(
-    (node: HTMLDivElement) => {
-      valueRef.current = node;
+  const handleResize = (node: HTMLDivElement) => {
+    valueRef.current = node;
 
-      const mutationObserver = new MutationObserver(checkOverflow);
-      const observer = new ResizeObserver(debounce(checkOverflow, 100));
+    const mutationObserver = new MutationObserver(checkOverflow);
+    const observer = new ResizeObserver(debounce(checkOverflow, 100));
 
-      mutationObserver.observe(node, {
-        childList: true,
-        attributes: true,
-        attributeFilter: ["class", "style"],
-      });
-      observer.observe(node);
+    mutationObserver.observe(node, {
+      childList: true,
+      attributes: true,
+      attributeFilter: ["class", "style"],
+    });
+    observer.observe(node);
 
-      return () => {
-        observer.disconnect();
-        mutationObserver.disconnect();
-        valueRef.current = null;
-      };
-    },
-    [checkOverflow],
-  );
+    return () => {
+      observer.disconnect();
+      mutationObserver.disconnect();
+      valueRef.current = null;
+    };
+  };
 
   if (selectedValues.size === 0 && placeholder) {
     return (
@@ -257,8 +246,8 @@ export function MultiSelectContent({
   ...props
 }: {
   search?: boolean | { placeholder?: string; emptyMessage?: string };
-  children: ReactNode;
-} & Omit<ComponentPropsWithoutRef<typeof Command>, "children">) {
+  children: React.ReactNode;
+} & Omit<React.ComponentPropsWithoutRef<typeof Command>, "children">) {
   const canSearch = typeof search === "object" ? true : search;
 
   return (
@@ -300,9 +289,9 @@ export function MultiSelectItem({
   onSelect,
   ...props
 }: {
-  badgeLabel?: ReactNode;
+  badgeLabel?: React.ReactNode;
   value: string;
-} & Omit<ComponentPropsWithoutRef<typeof CommandItem>, "value">) {
+} & Omit<React.ComponentPropsWithoutRef<typeof CommandItem>, "value">) {
   const { toggleValue, selectedValues, onItemAdded } = useMultiSelectContext();
   const isSelected = selectedValues.has(value);
 
@@ -327,13 +316,13 @@ export function MultiSelectItem({
 }
 
 export function MultiSelectGroup(
-  props: ComponentPropsWithoutRef<typeof CommandGroup>,
+  props: React.ComponentPropsWithoutRef<typeof CommandGroup>,
 ) {
   return <CommandGroup {...props} />;
 }
 
 export function MultiSelectSeparator(
-  props: ComponentPropsWithoutRef<typeof CommandSeparator>,
+  props: React.ComponentPropsWithoutRef<typeof CommandSeparator>,
 ) {
   return <CommandSeparator {...props} />;
 }
@@ -346,17 +335,6 @@ function useMultiSelectContext() {
     );
   }
   return context;
-}
-
-function debounce<T extends (...args: never[]) => void>(
-  func: T,
-  wait: number,
-): (...args: Parameters<T>) => void {
-  let timeout: ReturnType<typeof setTimeout> | null = null;
-  return function (this: unknown, ...args: Parameters<T>) {
-    if (timeout) clearTimeout(timeout);
-    timeout = setTimeout(() => func.apply(this, args), wait);
-  };
 }
 
 function RequiredField({

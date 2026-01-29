@@ -81,7 +81,7 @@ const SetupDragIn = () => {
 export function ChartGrid({ charts }: { charts: Chart[] }) {
   const { start } = useTour();
 
-  function getGridOptiond() {
+  function getGridOptions() {
     const layout =
       LocalCashe.get<GridStackOptions>(LAYOUT_KEY) || default_options;
     layout.children = layout
@@ -109,7 +109,7 @@ export function ChartGrid({ charts }: { charts: Chart[] }) {
     return layout;
   }
 
-  const [options] = useState<GridStackOptions>(getGridOptiond);
+  const [options] = useState<GridStackOptions>(getGridOptions);
 
   useEffect(() => {
     if (options.children!.length === 0 && charts.length === 1) {

@@ -3,7 +3,7 @@
 import { type Chart } from "@/models/chart";
 import { type Workspace } from "@/models/workspace";
 import { type User } from "@/services/user";
-import React, { createContext, useContext } from "react";
+import { createContext, useContext } from "react";
 
 interface DashboardContextType {
   workspaces: Promise<Workspace[]>;
