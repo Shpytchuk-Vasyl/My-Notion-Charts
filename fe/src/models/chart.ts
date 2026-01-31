@@ -3,28 +3,24 @@ import { Tables, Database, Enums, TablesInsert } from "./_database.types";
 
 export type ChartType = Enums<"chart_type">;
 
-type AvailableOperators =
-  | "="
-  | "!="
-  | "<"
-  | "<="
-  | ">"
-  | ">="
-  | "starts_with"
-  | "ends_with";
+export type ChartConfigFilterType = {
+  property?: string;
+  type?: string;
+  operator?: string;
+  value?: string | number | boolean;
+};
+
+export type ChartConfigFilterGroupType = {
+  and?: (ChartConfigFilterGroupType | ChartConfigFilterType)[];
+  or?: (ChartConfigFilterGroupType | ChartConfigFilterType)[];
+};
 
 export type ChartConfig = {
   joins: {
     from: string;
     to: string;
   }[];
-  filters: {
-    [key in "and" | "or"]?: {
-      operator: AvailableOperators;
-      property: string;
-      value: string;
-    }[];
-  };
+  filters: ChartConfigFilterGroupType;
   axis: {
     x: {
       property: string;

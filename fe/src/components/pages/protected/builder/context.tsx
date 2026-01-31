@@ -1,11 +1,12 @@
 "use client";
 
-import { type Chart } from "@/models/chart";
+import { type Chart, type ChartConfigFilterType } from "@/models/chart";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useDashboardContext } from "@/pages/protected/general/dashboard/context";
 import { useParams } from "next/navigation";
 import { type PartialDataSourceObjectResponse } from "@notionhq/client";
 import { chartThemeNames } from "@/components/block/chart/themes";
+import path from "path";
 
 type SortProperty = {
   name: string;
@@ -16,15 +17,16 @@ type SortProperty = {
 type AvailableJoinType = {
   id: string;
   name: string;
-  from: PartialDataSourceObjectResponse["properties"]["key"][];
-  to: PartialDataSourceObjectResponse["properties"]["key"][];
+  from: SortProperty[];
+  to: SortProperty[];
 };
+
+type PathType = (string | number)[];
 
 interface BuilderContextType {
   isLoading: boolean;
   cacheDuration: number | undefined;
   setCacheDuration: (duration: number) => void;
-  availableCacheDurations: SortProperty[];
   limit: number | undefined;
   setLimit: (newLimit: number | undefined) => void;
   availableSortProperties: SortProperty[];
@@ -48,6 +50,21 @@ interface BuilderContextType {
   setAxisY: (index: number, property: string, aggregation: string) => void;
   addAxisY: () => void;
   availableAxisProperties: SortProperty[];
+  filters: Chart["config"]["filters"] | undefined;
+  availableFilterProperties: (PartialDataSourceObjectResponse["properties"]["key"] &
+    SortProperty)[];
+  addFilter: (
+    path: PathType,
+    newFilter?: Partial<ChartConfigFilterType>,
+  ) => void;
+  updateFilter: (path: PathType, props: Partial<ChartConfigFilterType>) => void;
+  removeFilter: (path: PathType) => void;
+  addFilterGroup: (path: PathType) => void;
+  updateFilterGroup: (
+    path: PathType,
+    newKey: "and" | "or" | (string & {}),
+  ) => void;
+  removeFilterGroup: (path: PathType) => void;
 }
 
 const BuilderContext = createContext<BuilderContextType | undefined>(undefined);
@@ -92,9 +109,7 @@ export function BuilderProvider({
   //
   // setChart wrapper
   //
-  const setChart: React.Dispatch<React.SetStateAction<Chart | null>> = (
-    updater,
-  ) => {
+  const setChart: React.Dispatch<React.SetStateAction<Chart>> = (updater) => {
     if (typeof updater === "function") {
       set((prev) => {
         const updated = (updater as (prevState: Chart | null) => Chart | null)(
@@ -111,19 +126,10 @@ export function BuilderProvider({
   const cacheDuration = chart?.config?.cache?.duration;
   const setCacheDuration = (duration: number) => {
     setChart((prev) => {
-      if (!prev) return prev;
       prev.config.cache.duration = duration;
       return prev;
     });
   };
-  const availableCacheDurations = [
-    { name: "without", value: 0 },
-    { name: "tenMin", value: 10 * 60 },
-    { name: "oneHour", value: 60 * 60 },
-    { name: "sixHours", value: 6 * 60 * 60 },
-    { name: "twelveHours", value: 12 * 60 * 60 },
-    { name: "oneDay", value: 24 * 60 * 60 },
-  ] as unknown as SortProperty[];
 
   //
   // limit management
@@ -131,7 +137,6 @@ export function BuilderProvider({
   const limit = chart?.config?.limit;
   const setLimit = (newLimit: number | undefined) => {
     setChart((prev) => {
-      if (!prev) return prev;
       prev.config.limit = newLimit;
       return prev;
     });
@@ -151,7 +156,6 @@ export function BuilderProvider({
   const sortAscending = chart?.config?.sort?.ascending;
   const setSortProperty = (value: string) => {
     setChart((prev) => {
-      if (!prev) return prev;
       if (!prev.config.sort && value !== "none") {
         prev.config.sort = { property: value, ascending: true };
       } else if (value === "none") {
@@ -164,8 +168,7 @@ export function BuilderProvider({
   };
   const toggleSortAscending = (ascending: boolean) => {
     setChart((prev) => {
-      if (!prev || !prev.config.sort) return prev;
-      prev.config.sort.ascending = ascending;
+      prev.config.sort!.ascending = ascending;
       return prev;
     });
   };
@@ -179,8 +182,8 @@ export function BuilderProvider({
       ...db,
       properties: Object.values(db.properties).map((prop) => ({
         ...prop,
-        id: `${db.id}::${prop.id}`,
-      })),
+        value: `${db.id}::${prop.id}`,
+      })) as AvailableJoinType["from"],
     }))
     .map((db, idx, arr) => {
       const nextDb = arr[idx + 1];
@@ -196,7 +199,6 @@ export function BuilderProvider({
     .slice(0, -1);
   const onChangeJoin = (index: number, fromId?: string, toId?: string) => {
     setChart((prev) => {
-      if (!prev) return prev;
       const joins = prev.config.joins;
       if (fromId) joins[index].from = fromId;
       if (toId) joins[index].to = toId;
@@ -211,7 +213,6 @@ export function BuilderProvider({
   const name = chart?.name;
   const setName = (newName: string) => {
     setChart((prev) => {
-      if (!prev) return prev;
       prev.name = newName;
       return prev;
     });
@@ -219,7 +220,6 @@ export function BuilderProvider({
   const type = chart?.type;
   const setType = (newType: string) => {
     setChart((prev) => {
-      if (!prev) return prev;
       prev.type = newType as Chart["type"];
       return prev;
     });
@@ -227,7 +227,6 @@ export function BuilderProvider({
   const theme = chart?.config?.customization.theme;
   const setTheme = (newTheme: string) => {
     setChart((prev) => {
-      if (!prev) return prev;
       prev.config.customization.theme = newTheme;
       return prev;
     });
@@ -235,7 +234,7 @@ export function BuilderProvider({
   const availableThemes = chartThemeNames.map((theme) => ({
     name: theme,
     value: theme,
-  }));
+  })) as SortProperty[];
 
   //
   // axis management
@@ -245,14 +244,12 @@ export function BuilderProvider({
   const axisY = chart?.config?.axis?.y ?? [];
   const setAxisX = (property: string) => {
     setChart((prev) => {
-      if (!prev) return prev;
       prev.config.axis.x.property = property;
       return prev;
     });
   };
   const setAxisY = (index: number, property: string, aggregation: string) => {
     setChart((prev) => {
-      if (!prev) return prev;
       prev.config.axis.y[index] = {
         property,
         aggregation:
@@ -263,8 +260,117 @@ export function BuilderProvider({
   };
   const addAxisY = () => {
     setChart((prev) => {
-      if (!prev) return prev;
       prev.config.axis.y.push({ property: "", aggregation: "none" });
+      return prev;
+    });
+  };
+
+  //
+  // Filter management
+  //
+  const filters = chart?.config?.filters;
+  const availableFilterProperties = databases.flatMap((db) =>
+    Object.values(db.properties).map((prop) => ({
+      ...prop,
+      value: `${db.id}::${prop.id}`,
+    })),
+  );
+  const getNodeAtPath = (node: any, path: PathType, length: number) => {
+    for (let i = 0; i < length; i++) {
+      node = node[path[i]];
+    }
+    return node;
+  };
+  const addFilter = (
+    path: PathType,
+    newFilter: Partial<ChartConfigFilterType> = {},
+  ) => {
+    setChart((prev) => {
+      let node = getNodeAtPath(
+        prev.config.filters,
+        path,
+        path.length,
+      ) as ChartConfigFilterType[];
+      node.push({ ...newFilter });
+      return prev;
+    });
+  };
+  const updateFilter = (
+    path: PathType,
+    props: Partial<ChartConfigFilterType>,
+  ) => {
+    setChart((prev) => {
+      let node = getNodeAtPath(
+        prev.config.filters,
+        path,
+        path.length - 1,
+      ) as ChartConfigFilterType[];
+      node[path[path.length - 1] as number] = {
+        ...node[path[path.length - 1] as number],
+        ...props,
+      } as ChartConfigFilterType;
+      return prev;
+    });
+  };
+  const removeFilter = (path: PathType) => {
+    setChart((prev) => {
+      let node = getNodeAtPath(
+        prev.config.filters,
+        path,
+        path.length - 1,
+      ) as ChartConfigFilterType[];
+      node.splice(path[path.length - 1] as number, 1);
+
+      if (node.length === 0) {
+        if (path.length === 2) {
+          prev.config.filters = {};
+        } else {
+          const parentNode = getNodeAtPath(
+            prev.config.filters,
+            path,
+            path.length - 3,
+          ) as ChartConfigFilterType[];
+
+          parentNode.splice(path[path.length - 3] as number, 1);
+        }
+      }
+      return prev;
+    });
+  };
+  const addFilterGroup = (path: PathType) => {
+    setChart((prev) => {
+      let node = getNodeAtPath(prev.config.filters, path, path.length);
+      if (Array.isArray(node)) {
+        node.push({ and: [{}] });
+      } else {
+        node.and = [{}];
+      }
+      return prev;
+    });
+  };
+  const updateFilterGroup = (
+    path: PathType,
+    newKey: "and" | "or" | (string & {}),
+  ) => {
+    setChart((prev) => {
+      let node = getNodeAtPath(prev.config.filters, path, path.length);
+      const oldKey = newKey === "and" ? "or" : "and";
+      node[newKey] = node[oldKey];
+      delete node[oldKey];
+      return prev;
+    });
+  };
+  const removeFilterGroup = (path: PathType) => {
+    setChart((prev) => {
+      let node = getNodeAtPath(
+        prev.config.filters,
+        path,
+        path.length - 1,
+      ) as ChartConfigFilterType[];
+      node.splice(path[path.length - 1] as number, 1);
+      if (node.length === 0 && path.length === 2) {
+        prev.config.filters = {};
+      }
       return prev;
     });
   };
@@ -275,7 +381,6 @@ export function BuilderProvider({
         isLoading,
         cacheDuration,
         setCacheDuration,
-        availableCacheDurations,
         limit,
         setLimit,
         availableSortProperties,
@@ -299,6 +404,14 @@ export function BuilderProvider({
         setAxisY,
         addAxisY,
         availableAxisProperties,
+        filters,
+        addFilter,
+        updateFilter,
+        removeFilter,
+        availableFilterProperties,
+        addFilterGroup,
+        updateFilterGroup,
+        removeFilterGroup,
       }}
     >
       {children}

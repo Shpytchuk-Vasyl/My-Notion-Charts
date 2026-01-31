@@ -52,13 +52,13 @@ export const JoinsAccordionItem = () => {
 
                   <SelectContent>
                     <SelectGroup>
-                      {join.from.map(({ id, name, type }) => (
+                      {join.from.map(({ value, name, type }) => (
                         <SelectItem
-                          key={`join-${join.name}-from-${id}`}
-                          value={id}
+                          key={`join-${join.name}-from-${value}`}
+                          value={value}
                         >
-                            <PropertyIcon type={type as any} className="h-4 w-4" />
-                            {name}
+                          <PropertyIcon type={type as any} />
+                          {name}
                         </SelectItem>
                       ))}
                     </SelectGroup>
@@ -88,13 +88,13 @@ export const JoinsAccordionItem = () => {
 
                   <SelectContent>
                     <SelectGroup>
-                      {join.to.map(({ id, name, type }) => (
+                      {join.to.map(({ value, name, type }) => (
                         <SelectItem
-                          key={`join-${join.name}-to-${id}`}
-                          value={id}
+                          key={`join-${join.name}-to-${value}`}
+                          value={value}
                         >
-                            <PropertyIcon type={type as any} className="h-4 w-4" />
-                            {name}
+                          <PropertyIcon type={type as any} />
+                          {name}
                         </SelectItem>
                       ))}
                     </SelectGroup>

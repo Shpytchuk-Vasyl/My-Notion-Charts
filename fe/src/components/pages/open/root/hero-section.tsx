@@ -25,7 +25,7 @@ export function HeroSection() {
 
         <Button size="lg" className="gap-2 mx-auto" asChild variant="outline">
           <Link href={routing.pathnames["/dashboard"]}>
-            {t("cta")} <ArrowRight className="h-4 w-4" />
+            {t("cta")} <ArrowRight />
           </Link>
         </Button>
       </div>

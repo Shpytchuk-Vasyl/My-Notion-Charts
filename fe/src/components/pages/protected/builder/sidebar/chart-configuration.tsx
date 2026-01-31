@@ -9,17 +9,18 @@ import { LimitAccordionItem } from "./limit-accordion-item";
 import { SettingsAccordionItem } from "./settings-accordion-item";
 import { SortAccordionItem } from "./sort-accordion-item";
 
+// TODO: add Translation for items
+
 export function ChartConfigurationAccordion() {
-  console.log("Rendering ChartConfigurationAccordion");
   return (
     <Accordion className="px-4" type="multiple">
       <SettingsAccordionItem />
 
+      <FiltersAccordionItem />
+
       <AxisAccordionItem />
 
       <CacheAccordionItem />
-
-      <FiltersAccordionItem />
 
       <SortAccordionItem />
 

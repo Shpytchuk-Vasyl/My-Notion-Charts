@@ -16,6 +16,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { useBuilderContext } from "../context";
 import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
 
 export const AxisAccordionItem = () => {
   const {
@@ -51,8 +52,8 @@ export const AxisAccordionItem = () => {
                         key={`axis-x-property-${value}`}
                         value={value}
                       >
-                          <PropertyIcon type={type as any} className="h-4 w-4" />
-                          {name}
+                        <PropertyIcon type={type as any} />
+                        {name}
                       </SelectItem>
                     ))}
                   </SelectGroup>
@@ -86,7 +87,7 @@ export const AxisAccordionItem = () => {
                           value={value}
                         >
                           <div className="flex items-center gap-2">
-                            <PropertyIcon type={type as any} className="h-4 w-4" />
+                            <PropertyIcon type={type as any} />
                             {name}
                           </div>
                         </SelectItem>
@@ -98,7 +99,8 @@ export const AxisAccordionItem = () => {
             </Field>
           ))}
 
-          <Button variant="secondary" onClick={addAxisY}>
+          <Button variant="outline" onClick={addAxisY} disabled={isLoading}>
+            <Plus />
             Додати вісь Y
           </Button>
         </FieldGroup>

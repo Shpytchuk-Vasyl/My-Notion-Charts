@@ -54,8 +54,8 @@ export const SortAccordionItem = () => {
                         key={`sort-property-field-${value}`}
                         value={value}
                       >
-                          <PropertyIcon type={type as any} className="h-4 w-4" />
-                          {name}
+                        <PropertyIcon type={type as any} />
+                        {name}
                       </SelectItem>
                     ))}
                     {sortProperty && (
