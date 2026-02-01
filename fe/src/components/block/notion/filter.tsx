@@ -12,9 +12,12 @@ import { Input } from "@/components/ui/input";
 import {
   Plus,
   ChevronDown,
-  Ellipsis,
   MoreVertical,
   LayersPlus,
+  CalendarIcon,
+  Copy,
+  Trash2,
+  CopyX,
 } from "lucide-react";
 import { type ChartConfigFilterType, type Chart } from "@/models/chart";
 import { Card } from "@/components/ui/card";
@@ -24,196 +27,307 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ButtonGroup } from "@/components/ui/button-group";
 import { useBuilderContext } from "@/pages/protected/builder/context";
 import { createContext, useContext } from "react";
+import { useTranslations } from "next-intl";
+import {
+  MultiSelect,
+  MultiSelectContent,
+  MultiSelectGroup,
+  MultiSelectItem,
+  MultiSelectTrigger,
+  MultiSelectValue,
+} from "@/components/ui/multi-select";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
 
 const typeAndAllowedFilters = {
-  checkbox: ["equals", "does_not_equal"],
-  created_by: ["contains", "does_not_contain", "is_empty", "is_not_empty"],
-  created_time: [
-    "after",
-    "before",
-    "equals",
-    "on_or_after",
-    "on_or_before",
-    "is_empty",
-    "is_not_empty",
-    "next_week",
-    "next_month",
-    "next_year",
-    "past_week",
-    "past_month",
-    "past_year",
-    "this_week",
-  ],
-  date: [
-    "after",
-    "before",
-    "equals",
-    "on_or_after",
-    "on_or_before",
-    "is_empty",
-    "is_not_empty",
-    "next_week",
-    "next_month",
-    "next_year",
-    "past_week",
-    "past_month",
-    "past_year",
-    "this_week",
-  ],
-  email: [
-    "equals",
-    "does_not_equal",
-    "contains",
-    "does_not_contain",
-    "starts_with",
-    "ends_with",
-    "is_empty",
-    "is_not_empty",
-  ],
-  files: ["is_empty", "is_not_empty"],
-  formula: [
-    "equals",
-    "does_not_equal",
-    "contains",
-    "does_not_contain",
-    "starts_with",
-    "ends_with",
-    "is_empty",
-    "is_not_empty",
-    "greater_than",
-    "greater_than_or_equal_to",
-    "less_than",
-    "less_than_or_equal_to",
-    "after",
-    "before",
-    "on_or_after",
-    "on_or_before",
-    "next_week",
-    "next_month",
-    "next_year",
-    "past_week",
-    "past_month",
-    "past_year",
-    "this_week",
-  ],
-  last_edited_by: ["contains", "does_not_contain", "is_empty", "is_not_empty"],
-  last_edited_time: [
-    "after",
-    "before",
-    "equals",
-    "on_or_after",
-    "on_or_before",
-    "is_empty",
-    "is_not_empty",
-    "next_week",
-    "next_month",
-    "next_year",
-    "past_week",
-    "past_month",
-    "past_year",
-    "this_week",
-  ],
-  multi_select: ["contains", "does_not_contain", "is_empty", "is_not_empty"],
-  number: [
-    "equals",
-    "does_not_equal",
-    "greater_than",
-    "greater_than_or_equal_to",
-    "less_than",
-    "less_than_or_equal_to",
-    "is_empty",
-    "is_not_empty",
-  ],
-  people: ["contains", "does_not_contain", "is_empty", "is_not_empty"],
-  phone_number: [
-    "equals",
-    "does_not_equal",
-    "contains",
-    "does_not_contain",
-    "starts_with",
-    "ends_with",
-    "is_empty",
-    "is_not_empty",
-  ],
-  place: [
-    "equals",
-    "does_not_equal",
-    "contains",
-    "does_not_contain",
-    "starts_with",
-    "ends_with",
-    "is_empty",
-    "is_not_empty",
-  ],
-  relation: ["contains", "does_not_contain", "is_empty", "is_not_empty"],
-  rich_text: [
-    "equals",
-    "does_not_equal",
-    "contains",
-    "does_not_contain",
-    "starts_with",
-    "ends_with",
-    "is_empty",
-    "is_not_empty",
-  ],
-  rollup: [
-    "equals",
-    "does_not_equal",
-    "contains",
-    "does_not_contain",
-    "starts_with",
-    "ends_with",
-    "is_empty",
-    "is_not_empty",
-    "greater_than",
-    "greater_than_or_equal_to",
-    "less_than",
-    "less_than_or_equal_to",
-    "after",
-    "before",
-    "on_or_after",
-    "on_or_before",
-    "next_week",
-    "next_month",
-    "next_year",
-    "past_week",
-    "past_month",
-    "past_year",
-    "this_week",
-  ],
-  select: ["equals", "does_not_equal", "is_empty", "is_not_empty"],
-  status: ["equals", "does_not_equal", "is_empty", "is_not_empty"],
-  title: [
-    "equals",
-    "does_not_equal",
-    "contains",
-    "does_not_contain",
-    "starts_with",
-    "ends_with",
-    "is_empty",
-    "is_not_empty",
-  ],
-  url: [
-    "equals",
-    "does_not_equal",
-    "contains",
-    "does_not_contain",
-    "starts_with",
-    "ends_with",
-    "is_empty",
-    "is_not_empty",
-  ],
+  checkbox: {
+    operators: ["equals", "does_not_equal"],
+    inputType: "select",
+    options: [
+      {
+        id: "true",
+        name: "Checked",
+      },
+      {
+        id: "false",
+        name: "Unchecked",
+      },
+    ],
+  },
+  created_by: {
+    operators: ["contains", "does_not_contain", "is_empty", "is_not_empty"],
+    inputType: "multi-select",
+  },
+  created_time: {
+    operators: [
+      "after",
+      "before",
+      "equals",
+      "on_or_after",
+      "on_or_before",
+      "is_empty",
+      "is_not_empty",
+      "next_week",
+      "next_month",
+      "next_year",
+      "past_week",
+      "past_month",
+      "past_year",
+      "this_week",
+    ],
+    inputType: "date-select",
+  },
+  date: {
+    operators: [
+      "after",
+      "before",
+      "equals",
+      "on_or_after",
+      "on_or_before",
+      "is_empty",
+      "is_not_empty",
+      "next_week",
+      "next_month",
+      "next_year",
+      "past_week",
+      "past_month",
+      "past_year",
+      "this_week",
+    ],
+    inputType: "date-select",
+  },
+  email: {
+    operators: [
+      "equals",
+      "does_not_equal",
+      "contains",
+      "does_not_contain",
+      "starts_with",
+      "ends_with",
+      "is_empty",
+      "is_not_empty",
+    ],
+    inputType: "text",
+  },
+  files: { operators: ["is_empty", "is_not_empty"], inputType: "none" },
+  formula: {
+    // operators: [
+    //   "equals",
+    //   "does_not_equal",
+    //   "contains",
+    //   "does_not_contain",
+    //   "starts_with",
+    //   "ends_with",
+    //   "is_empty",
+    //   "is_not_empty",
+    //   "greater_than",
+    //   "greater_than_or_equal_to",
+    //   "less_than",
+    //   "less_than_or_equal_to",
+    //   "after",
+    //   "before",
+    //   "on_or_after",
+    //   "on_or_before",
+    //   "next_week",
+    //   "next_month",
+    //   "next_year",
+    //   "past_week",
+    //   "past_month",
+    //   "past_year",
+    //   "this_week",
+    // ],
+    // inputType: "formula",
+    // it is temporary solution, because formula can return different types and they not spesified in notion response
+    operators: ["is_empty", "is_not_empty"],
+    inputType: "none",
+  },
+  last_edited_by: {
+    operators: ["contains", "does_not_contain", "is_empty", "is_not_empty"],
+    inputType: "multi-select",
+  },
+  last_edited_time: {
+    operators: [
+      "after",
+      "before",
+      "equals",
+      "on_or_after",
+      "on_or_before",
+      "is_empty",
+      "is_not_empty",
+      "next_week",
+      "next_month",
+      "next_year",
+      "past_week",
+      "past_month",
+      "past_year",
+      "this_week",
+    ],
+    inputType: "date-select",
+  },
+  multi_select: {
+    operators: ["contains", "does_not_contain", "is_empty", "is_not_empty"],
+    inputType: "multi-select",
+  },
+  number: {
+    operators: [
+      "equals",
+      "does_not_equal",
+      "greater_than",
+      "greater_than_or_equal_to",
+      "less_than",
+      "less_than_or_equal_to",
+      "is_empty",
+      "is_not_empty",
+    ],
+    inputType: "number",
+  },
+  unique_id: {
+    operators: [
+      "equals",
+      "does_not_equal",
+      "greater_than",
+      "greater_than_or_equal_to",
+      "less_than",
+      "less_than_or_equal_to",
+      "is_empty",
+      "is_not_empty",
+    ],
+    inputType: "number",
+  },
+  people: {
+    operators: ["contains", "does_not_contain", "is_empty", "is_not_empty"],
+    inputType: "multi-select",
+  },
+  phone_number: {
+    operators: [
+      "equals",
+      "does_not_equal",
+      "contains",
+      "does_not_contain",
+      "starts_with",
+      "ends_with",
+      "is_empty",
+      "is_not_empty",
+    ],
+    inputType: "text",
+  },
+  place: {
+    operators: ["is_empty", "is_not_empty"],
+    inputType: "none",
+  },
+  relation: {
+    operators: ["contains", "does_not_contain", "is_empty", "is_not_empty"],
+    inputType: "multi-select",
+  },
+  rich_text: {
+    operators: [
+      "equals",
+      "does_not_equal",
+      "contains",
+      "does_not_contain",
+      "starts_with",
+      "ends_with",
+      "is_empty",
+      "is_not_empty",
+    ],
+    inputType: "text",
+  },
+  rollup: {
+    // operators: [
+    //   "equals",
+    //   "does_not_equal",
+    //   "contains",
+    //   "does_not_contain",
+    //   "starts_with",
+    //   "ends_with",
+    //   "is_empty",
+    //   "is_not_empty",
+    //   "greater_than",
+    //   "greater_than_or_equal_to",
+    //   "less_than",
+    //   "less_than_or_equal_to",
+    //   "after",
+    //   "before",
+    //   "on_or_after",
+    //   "on_or_before",
+    //   "next_week",
+    //   "next_month",
+    //   "next_year",
+    //   "past_week",
+    //   "past_month",
+    //   "past_year",
+    //   "this_week",
+    // ],
+    // inputType: "formula",
+    // it is temporary solution, because rollup can return different types and they not spesified in notion response
+    operators: ["is_empty", "is_not_empty"],
+    inputType: "none",
+  },
+  select: {
+    operators: ["equals", "does_not_equal", "is_empty", "is_not_empty"],
+    inputType: "select",
+  },
+  status: {
+    operators: ["equals", "does_not_equal", "is_empty", "is_not_empty"],
+    inputType: "multi-select",
+  },
+  title: {
+    operators: [
+      "equals",
+      "does_not_equal",
+      "contains",
+      "does_not_contain",
+      "starts_with",
+      "ends_with",
+      "is_empty",
+      "is_not_empty",
+    ],
+    inputType: "text",
+  },
+  url: {
+    operators: [
+      "equals",
+      "does_not_equal",
+      "contains",
+      "does_not_contain",
+      "starts_with",
+      "ends_with",
+      "is_empty",
+      "is_not_empty",
+    ],
+    inputType: "text",
+  },
 } as const;
 
-type AvailableOperators<T extends keyof typeof typeAndAllowedFilters> =
-  (typeof typeAndAllowedFilters)[T][number];
+const shouldResetValueOperators = [
+  "is_empty",
+  "is_not_empty",
+  "next_week",
+  "next_month",
+  "next_year",
+  "past_week",
+  "past_month",
+  "past_year",
+  "this_week",
+];
 
-type AvailableOperatorsKeys = AvailableOperators<
-  keyof typeof typeAndAllowedFilters
->;
+type AvailableTypes = keyof typeof typeAndAllowedFilters;
+
+type AvailableOperators<T extends AvailableTypes> =
+  (typeof typeAndAllowedFilters)[T]["operators"][number];
+
+type AvailableOperatorsKeys = AvailableOperators<AvailableTypes>;
+
+type AvailableInputTypes<T extends AvailableTypes> =
+  (typeof typeAndAllowedFilters)[T]["inputType"];
+
+type AvailableInputTypesKeys = AvailableInputTypes<AvailableTypes>;
 
 type WithPath<T> = T & { path: (string | number)[] };
 
@@ -226,7 +340,7 @@ type AndOrWrapperProps = {
 };
 
 type FilterRowOperatorSelectProps = {
-  type?: string;
+  type: AvailableTypes;
   value?: AvailableOperatorsKeys;
 };
 
@@ -298,15 +412,20 @@ const AndOrWrapper = ({ children }: AndOrWrapperProps) => {
 const AndOrWrapperDropdownMenu = () => {
   const { removeFilterGroup } = useBuilderContext();
   const { path } = usePathContext();
+  const t = useTranslations("pages.chart.edit.nav.filters");
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="h-fit mt-2">
         <MoreVertical />
-        <span className="sr-only">більше</span>
+        <span className="sr-only">{t("more")}</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem onClick={() => removeFilterGroup(path)}>
-          Видалити групу
+        <DropdownMenuItem
+          className="text-destructive"
+          onClick={() => removeFilterGroup(path)}
+        >
+          <CopyX />
+          {t("deleteGroup")}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -314,20 +433,16 @@ const AndOrWrapperDropdownMenu = () => {
 };
 
 const FilterRow = () => {
-  const { filter } = usePathContext();
   return (
     <div className="flex items-center gap-2">
       {/* And or Or */}
       <FilterRowAndOrSelect />
 
       {/* Property */}
-      <FilterRowPropertySelect value={filter!.property} />
+      <FilterRowPropertySelect />
 
       {/* Operator */}
-      <FilterRowOperatorSelect
-        value={filter!.operator as AvailableOperatorsKeys}
-        type={filter!.type}
-      />
+      <FilterRowOperatorSelect />
 
       {/* Value */}
       <FilterRowValueInput />
@@ -341,11 +456,12 @@ const FilterRow = () => {
 const FilterRowAndOrSelect = () => {
   const { index, groupKey, path } = usePathContext();
   const { updateFilterGroup } = useBuilderContext();
+  const t = useTranslations("pages.chart.edit.nav.filters");
 
   if (index === 0) {
     return (
       <p className="w-20 max-w-20 grow shrink-0 px-3 py-2 text-sm whitespace-nowrap">
-        Де
+        {t("where")}
       </p>
     );
   }
@@ -353,7 +469,7 @@ const FilterRowAndOrSelect = () => {
   if (index > 1) {
     return (
       <p className="w-20 max-w-20 grow shrink-0 px-3 py-2 text-sm whitespace-nowrap">
-        {groupKey}
+        {groupKey === "and" ? t("and") : t("or")}
       </p>
     );
   }
@@ -370,32 +486,35 @@ const FilterRowAndOrSelect = () => {
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectItem value="and">Та</SelectItem>
-          <SelectItem value="or">АБО</SelectItem>
+          <SelectItem value="and">{t("and")}</SelectItem>
+          <SelectItem value="or">{t("or")}</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>
   );
 };
 
-const FilterRowPropertySelect = ({ value }: FilterRowPropertySelectProps) => {
+const FilterRowPropertySelect = () => {
   const { availableFilterProperties, updateFilter } = useBuilderContext();
-  const { path } = usePathContext();
+  const { path, filter } = usePathContext();
+  const t = useTranslations("pages.chart.edit.nav");
 
   return (
     <Select
-      value={value}
+      value={filter!.property}
       onValueChange={(property) => {
         updateFilter(path, {
           property,
           type: availableFilterProperties.find(
             (prop) => prop.value === property,
           )?.type,
+          operator: undefined,
+          value: undefined,
         });
       }}
     >
       <SelectTrigger>
-        <SelectValue placeholder="Властивість" />
+        <SelectValue placeholder={t("property")} />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
@@ -414,12 +533,15 @@ const FilterRowPropertySelect = ({ value }: FilterRowPropertySelectProps) => {
   );
 };
 
-const FilterRowOperatorSelect = ({
-  type,
-  value,
-}: FilterRowOperatorSelectProps) => {
-  const { path } = usePathContext();
+const FilterRowOperatorSelect = () => {
+  const { path, filter } = usePathContext();
   const { updateFilter } = useBuilderContext();
+  const t = useTranslations("pages.chart.edit.nav.filters");
+
+  const value = filter!.operator as AvailableOperatorsKeys;
+  const type = filter!.type as AvailableTypes;
+
+  const operators = typeAndAllowedFilters[type]?.operators || [];
 
   return (
     <Select
@@ -427,27 +549,25 @@ const FilterRowOperatorSelect = ({
       onValueChange={(operator) => {
         updateFilter(path, {
           operator,
+          ...(shouldResetValueOperators.includes(operator)
+            ? { value: undefined }
+            : {}),
         });
       }}
     >
       <SelectTrigger>
-        <SelectValue placeholder="Оператор" />
+        <SelectValue placeholder={t("operator")} />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          {type &&
-            (
-              typeAndAllowedFilters[
-                type as keyof typeof typeAndAllowedFilters
-              ] || []
-            ).map((key) => (
-              <SelectItem
-                key={`filter-operator-${path.join("-")}-${key}`}
-                value={key}
-              >
-                {key}
-              </SelectItem>
-            ))}
+          {operators.map((key) => (
+            <SelectItem
+              key={`filter-operator-${path.join("-")}-${key}`}
+              value={key}
+            >
+              {t(`operators.${key}`)}
+            </SelectItem>
+          ))}
         </SelectGroup>
       </SelectContent>
     </Select>
@@ -456,13 +576,125 @@ const FilterRowOperatorSelect = ({
 
 // temporary solution
 const FilterRowValueInput = () => {
-  const { updateFilter } = useBuilderContext();
+  const { updateFilter, availableFilterProperties } = useBuilderContext();
   const { path, filter } = usePathContext();
+  const t = useTranslations("pages.chart.edit.nav.filters");
+
+  const selectedProperty = availableFilterProperties.find(
+    (prop) => prop.value === filter!.property,
+  ) as any;
+
+  if (!selectedProperty) {
+    return null;
+  }
+
+  const inputType =
+    typeAndAllowedFilters[selectedProperty.type as AvailableTypes].inputType;
+
+  if (
+    !inputType ||
+    inputType === "none" ||
+    shouldResetValueOperators.includes(filter!.operator!)
+  ) {
+    return null;
+  }
+
+  if (inputType === "select") {
+    const options =
+      selectedProperty[selectedProperty.type].options ||
+      (typeAndAllowedFilters as any)[selectedProperty.type].options ||
+      [];
+
+    return (
+      <Select
+        value={filter!.value as string}
+        onValueChange={(value) =>
+          updateFilter(path, {
+            value,
+          })
+        }
+      >
+        <SelectTrigger>
+          <SelectValue placeholder={t("value")} />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            {options.map(({ id, name }: any) => (
+              <SelectItem
+                key={`filter-value-select-${path.join("-")}-${id}`}
+                value={id}
+              >
+                {name}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+    );
+  }
+
+  if (inputType === "multi-select") {
+    return (
+      <MultiSelect
+        values={filter!.value as string[]}
+        onValuesChange={(value) =>
+          updateFilter(path, {
+            value,
+          })
+        }
+      >
+        <MultiSelectTrigger>
+          <MultiSelectValue placeholder={t("value")} />
+        </MultiSelectTrigger>
+        <MultiSelectContent>
+          <MultiSelectGroup>
+            {selectedProperty[selectedProperty.type].options.map(
+              ({ id, name }: any) => (
+                <MultiSelectItem
+                  key={`filter-value-select-${path.join("-")}-${id}`}
+                  value={id}
+                >
+                  {name}
+                </MultiSelectItem>
+              ),
+            )}
+          </MultiSelectGroup>
+        </MultiSelectContent>
+      </MultiSelect>
+    );
+  }
+
+  if (inputType === "date-select") {
+    const date = filter!.value ? new Date(filter!.value as string) : undefined;
+    const setDate = (date: Date | undefined) => {
+      updateFilter(path, {
+        value: date ? date.toISOString() : undefined,
+      });
+    };
+    return (
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            data-empty={!date}
+            className="data-[empty=true]:text-muted-foreground w-[280px] justify-start text-left font-normal"
+          >
+            <CalendarIcon />
+            {date ? date.toLocaleDateString() : <span>{t("pickDate")}</span>}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0">
+          <Calendar mode="single" selected={date} onSelect={setDate} />
+        </PopoverContent>
+      </Popover>
+    );
+  }
 
   return (
     <Input
-      placeholder="Значення"
+      placeholder={t("value")}
       defaultValue={filter!.value as string}
+      type={inputType}
       onBlur={(e) =>
         updateFilter(path, {
           value: e.target.value,
@@ -475,19 +707,25 @@ const FilterRowValueInput = () => {
 const FilterRowDropDownMenu = () => {
   const { removeFilter, addFilter } = useBuilderContext();
   const { path, filter } = usePathContext();
+  const t = useTranslations("pages.chart.edit.nav.filters");
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="ml-auto">
         <MoreVertical />
-        <span className="sr-only">більше</span>
+        <span className="sr-only">{t("more")}</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem onSelect={() => removeFilter(path)}>
-          Видалити
+        <DropdownMenuItem
+          className="text-destructive"
+          onSelect={() => removeFilter(path)}
+        >
+          <Trash2 />
+          {t("delete")}
         </DropdownMenuItem>
         <DropdownMenuItem onSelect={() => addFilter(path.slice(0, -1), filter)}>
-          Дублювати
+          <Copy />
+          {t("duplicate")}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -496,24 +734,25 @@ const FilterRowDropDownMenu = () => {
 
 const AddFilterMenuBar = ({ path }: AddFilterMenuBarProps) => {
   const { addFilter, addFilterGroup } = useBuilderContext();
+  const t = useTranslations("pages.chart.edit.nav.filters");
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" className="w-full justify-start">
           <Plus />
-          Додати
+          {t("add")}
           <ChevronDown />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-(--radix-dropdown-menu-trigger-width)">
         <DropdownMenuItem onSelect={() => addFilter(path)}>
           <Plus />
-          Умову
+          {t("addCondition")}
         </DropdownMenuItem>
         <DropdownMenuItem onSelect={() => addFilterGroup(path)}>
           <LayersPlus />
-          Групу умов
+          {t("addConditionGroup")}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -550,7 +789,33 @@ export const FilterRowToSrting = (filter: ChartConfigFilterType): string => {
   const { availableFilterProperties } = useBuilderContext();
   const property = availableFilterProperties.find(
     (prop) => prop.value === filter.property,
-  );
+  ) as any;
   if (!property) return "";
-  return [property.name, filter.operator ?? "", filter.value ?? ""].join(" ");
+
+  const inputType =
+    typeAndAllowedFilters[property.type as AvailableTypes].inputType;
+
+  let value;
+
+  if (inputType === "select") {
+    const option = (
+      property[property.type].options ||
+      (typeAndAllowedFilters as any)[property.type].options ||
+      []
+    ).find((opt: any) => opt.id === filter.value);
+    value = option ? option.name : "";
+  } else if (inputType === "multi-select") {
+    const options = property[property.type].options.filter((opt: any) =>
+      ((filter.value || []) as string[]).includes(opt.id),
+    );
+    value = (options.map((opt: any) => opt.name) as string[]).join(", ");
+  } else if (inputType === "date-select") {
+    value = filter.value
+      ? new Date(filter.value as string).toLocaleDateString()
+      : "";
+  } else {
+    value = filter.value;
+  }
+
+  return [property.name, filter.operator ?? "", value ?? ""].join(" ");
 };

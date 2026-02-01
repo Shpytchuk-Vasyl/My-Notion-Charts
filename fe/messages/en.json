@@ -232,6 +232,120 @@
           "radial": "Radial"
         }
       }
+    },
+    "chart": {
+      "edit": {
+        "nav": {
+          "settings": {
+            "title": "Settings",
+            "chartName": "Chart Name",
+            "chartNamePlaceholder": "Enter chart name",
+            "chartType": {
+              "bar": "Bar",
+              "line": "Line",
+              "pie": "Pie",
+              "scatter": "Scatter",
+              "radar": "Radar",
+              "area": "Area",
+              "radial": "Radial",
+              "title": "Chart Type",
+              "placeholder": "Select chart type"
+            },
+            "chartTheme": {
+              "title": "Chart Theme",
+              "placeholder": "Select chart theme",
+              "green": "Green",
+              "blue": "Blue",
+              "neutral": "Neutral",
+              "orange": "Orange",
+              "red": "Red",
+              "rose": "Rose",
+              "violet": "Violet",
+              "yellow": "Yellow"
+            }
+          },
+          "filters": {
+            "title": "Filters",
+            "editFilter": "Edit filter",
+            "createFilter": "Create filter",
+            "where": "Where",
+            "and": "And",
+            "or": "Or",
+            "operator": "Operator",
+            "value": "Value",
+            "pickDate": "Pick a date",
+            "more": "More",
+            "deleteGroup": "Delete group",
+            "delete": "Delete",
+            "duplicate": "Duplicate",
+            "add": "Add",
+            "addCondition": "Condition",
+            "addConditionGroup": "Condition group",
+            "operators": {
+              "equals": "Equals",
+              "does_not_equal": "Does not equal",
+              "contains": "Contains",
+              "does_not_contain": "Does not contain",
+              "starts_with": "Starts with",
+              "ends_with": "Ends with",
+              "is_empty": "Is empty",
+              "is_not_empty": "Is not empty",
+              "greater_than": "Greater than",
+              "greater_than_or_equal_to": "Greater than or equal to",
+              "less_than": "Less than",
+              "less_than_or_equal_to": "Less than or equal to",
+              "after": "After",
+              "before": "Before",
+              "on_or_after": "On or after",
+              "on_or_before": "On or before",
+              "next_week": "Next week",
+              "next_month": "Next month",
+              "next_year": "Next year",
+              "past_week": "Past week",
+              "past_month": "Past month",
+              "past_year": "Past year",
+              "this_week": "This week"
+            }
+          },
+          "axis": {
+            "title": "Axes",
+            "axisX": "X Axis",
+            "axisY": "Y Axis",
+            "addAxisY": "Add Y Axis"
+          },
+          "cache": {
+            "title": "Caching",
+            "duration": "Cache duration",
+            "durationPlaceholder": "Select cache duration",
+            "durations": {
+              "without": "No caching",
+              "tenMin": "10 minutes",
+              "oneHour": "1 hour",
+              "sixHours": "6 hours",
+              "twelveHours": "12 hours",
+              "oneDay": "1 day"
+            }
+          },
+          "sort": {
+            "title": "Sorting",
+            "sortBy": "Sort by",
+            "sortByPlaceholder": "Select sort property",
+            "noSort": "No sorting",
+            "descending": "Sort descending?"
+          },
+          "limit": {
+            "title": "Limit",
+            "dataLimit": "Data limit",
+            "dataLimitTooltip": "Maximum number of data rows to display on the chart",
+            "dataLimitPlaceholder": "No limit"
+          },
+          "joins": {
+            "title": "Joins"
+          },
+          "property": "Property",
+          "selectProperty": "Select property"
+        }
+      }
     }
   },
   "nav": {

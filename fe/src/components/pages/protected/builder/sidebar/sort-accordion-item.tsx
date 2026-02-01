@@ -3,6 +3,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { useTranslations } from "next-intl";
 import { PropertyIcon } from "@/components/block/notion/property";
 import { useBuilderContext } from "../context";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
@@ -18,6 +19,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Checkbox } from "@/components/ui/checkbox";
 
 export const SortAccordionItem = () => {
+  const t = useTranslations("pages.chart.edit.nav.sort");
   const {
     sortAscending,
     availableSortProperties,
@@ -29,11 +31,11 @@ export const SortAccordionItem = () => {
 
   return (
     <AccordionItem value="chart-sort">
-      <AccordionTrigger>Сортування</AccordionTrigger>
+      <AccordionTrigger>{t("title")}</AccordionTrigger>
       <AccordionContent>
         <FieldGroup className="px-2">
           <Field>
-            <FieldLabel htmlFor="sortProperty">Сортувати за:</FieldLabel>
+            <FieldLabel htmlFor="sortProperty">{t("sortBy")}:</FieldLabel>
 
             {isLoading && <Skeleton className="h-9 w-full" />}
 
@@ -44,7 +46,7 @@ export const SortAccordionItem = () => {
                 key={sortProperty ? `sortProperty` : "sortPropertyNone"}
               >
                 <SelectTrigger id="sortProperty" className="w-full">
-                  <SelectValue placeholder="Виберіть властивість сортування" />
+                  <SelectValue placeholder={t("sortByPlaceholder")} />
                 </SelectTrigger>
 
                 <SelectContent>
@@ -60,7 +62,7 @@ export const SortAccordionItem = () => {
                     ))}
                     {sortProperty && (
                       <SelectItem key="sort-property-none" value="none">
-                        Без сортування
+                        {t("noSort")}
                       </SelectItem>
                     )}
                   </SelectGroup>
@@ -79,9 +81,7 @@ export const SortAccordionItem = () => {
                 disabled={!sortProperty}
               />
             )}
-            <FieldLabel htmlFor="sortAscending">
-              Сотувати за спаданням?
-            </FieldLabel>
+            <FieldLabel htmlFor="sortAscending">{t("descending")}</FieldLabel>
           </Field>
         </FieldGroup>
       </AccordionContent>

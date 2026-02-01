@@ -232,6 +232,120 @@
           "radial": "Радіальна"
         }
       }
+    },
+    "chart": {
+      "edit": {
+        "nav": {
+          "settings": {
+            "title": "Налаштування",
+            "chartName": "Назва графіка",
+            "chartNamePlaceholder": "Введіть назву графіка",
+            "chartType": {
+              "bar": "Стовпчикова",
+              "line": "Лінійна",
+              "pie": "Кругова",
+              "scatter": "Точкова",
+              "radar": "Радарна",
+              "area": "З областями",
+              "radial": "Радіальна",
+              "title": "Тип графіка",
+              "placeholder": "Виберіть тип графіка"
+            },
+            "chartTheme": {
+              "title": "Тема графіка",
+              "placeholder": "Виберіть тему графіка",
+              "green": "Зелена",
+              "blue": "Синя",
+              "neutral": "Нейтральна",
+              "orange": "Помаранчева",
+              "red": "Червона",
+              "rose": "Рожева",
+              "violet": "Фіолетова",
+              "yellow": "Жовта"
+            }
+          },
+          "filters": {
+            "title": "Фільтри",
+            "editFilter": "Редагувати фільтр",
+            "createFilter": "Створити фільтр",
+            "where": "Де",
+            "and": "Та",
+            "or": "АБО",
+            "operator": "Оператор",
+            "value": "Значення",
+            "pickDate": "Виберіть дату",
+            "more": "Більше",
+            "deleteGroup": "Видалити групу",
+            "delete": "Видалити",
+            "duplicate": "Дублювати",
+            "add": "Додати",
+            "addCondition": "Умову",
+            "addConditionGroup": "Групу умов",
+            "operators": {
+              "equals": "Дорівнює",
+              "does_not_equal": "Не дорівнює",
+              "contains": "Містить",
+              "does_not_contain": "Не містить",
+              "starts_with": "Починається з",
+              "ends_with": "Закінчується на",
+              "is_empty": "Порожнє",
+              "is_not_empty": "Не порожнє",
+              "greater_than": "Більше ніж",
+              "greater_than_or_equal_to": "Більше або дорівнює",
+              "less_than": "Менше ніж",
+              "less_than_or_equal_to": "Менше або дорівнює",
+              "after": "Після",
+              "before": "До",
+              "on_or_after": "В або після",
+              "on_or_before": "В або до",
+              "next_week": "Наступний тиждень",
+              "next_month": "Наступний місяць",
+              "next_year": "Наступний рік",
+              "past_week": "Минулий тиждень",
+              "past_month": "Минулий місяць",
+              "past_year": "Минулий рік",
+              "this_week": "Цей тиждень"
+            }
+          },
+          "axis": {
+            "title": "Осі",
+            "axisX": "Вісь X",
+            "axisY": "Вісь Y",
+            "addAxisY": "Додати вісь Y"
+          },
+          "cache": {
+            "title": "Кешування",
+            "duration": "Тривалість кешування",
+            "durationPlaceholder": "Виберіть тривалість кешування",
+            "durations": {
+              "without": "Без кешування",
+              "tenMin": "10 хвилин",
+              "oneHour": "1 година",
+              "sixHours": "6 годин",
+              "twelveHours": "12 годин",
+              "oneDay": "1 день"
+            }
+          },
+          "sort": {
+            "title": "Сортування",
+            "sortBy": "Сортувати за",
+            "sortByPlaceholder": "Виберіть властивість сортування",
+            "noSort": "Без сортування",
+            "descending": "Сортувати за спаданням?"
+          },
+          "limit": {
+            "title": "Ліміт",
+            "dataLimit": "Ліміт даних",
+            "dataLimitTooltip": "Максимальна кількість рядків даних, які будуть відображені на графіку",
+            "dataLimitPlaceholder": "Без ліміту"
+          },
+          "joins": {
+            "title": "З'єднання"
+          },
+          "property": "Властивість",
+          "selectProperty": "Виберіть властивість"
+        }
+      }
     }
   },
   "nav": {

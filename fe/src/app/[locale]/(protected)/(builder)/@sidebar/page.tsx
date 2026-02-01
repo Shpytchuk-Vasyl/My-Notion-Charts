@@ -15,7 +15,12 @@ export default async function AppSidebar() {
   const messages = await getMessages();
 
   return (
-    <NextIntlClientProvider messages={{ nav: messages.nav }}>
+    <NextIntlClientProvider
+      messages={{
+        nav: messages.nav,
+        pages: { chart: { edit: { nav: messages.pages.chart.edit.nav } } },
+      }}
+    >
       <Sidebar className="top-(--header-height) h-[calc(100svh-var(--header-height))]!">
         <SidebarHeader>
           <NavWorkspace />

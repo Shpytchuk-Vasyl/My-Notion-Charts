@@ -5,6 +5,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { useTranslations } from "next-intl";
 import { Input } from "@/components/ui/input";
 import { useBuilderContext } from "../context";
 import { Field, FieldLabel } from "@/components/ui/field";
@@ -16,6 +17,7 @@ import {
 } from "@/components/ui/tooltip";
 
 export const LimitAccordionItem = () => {
+  const t = useTranslations("pages.chart.edit.nav.limit");
   const { limit, setLimit, isLoading } = useBuilderContext();
 
   const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
@@ -34,18 +36,17 @@ export const LimitAccordionItem = () => {
 
   return (
     <AccordionItem value="chart-limit">
-      <AccordionTrigger>Ліміт</AccordionTrigger>
+      <AccordionTrigger>{t("title")}</AccordionTrigger>
       <AccordionContent asChild>
         <Field className="px-2">
           <Tooltip>
             <TooltipTrigger asChild>
               <FieldLabel htmlFor="chartLimit" className="w-fit!">
-                Ліміт даних:
+                {t("dataLimit")}:
               </FieldLabel>
             </TooltipTrigger>
             <TooltipContent side="right">
-              Мається на увазі максимальна кількість рядків даних, які будуть
-              відображені на графіку
+              {t("dataLimitTooltip")}
             </TooltipContent>
           </Tooltip>
 
@@ -57,7 +58,7 @@ export const LimitAccordionItem = () => {
               min={0}
               defaultValue={limit ?? ""}
               onBlur={handleBlur}
-              placeholder="Без ліміту"
+              placeholder={t("dataLimitPlaceholder")}
               id="chartLimit"
             />
           )}

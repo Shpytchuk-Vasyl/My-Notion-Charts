@@ -7,7 +7,7 @@ export type ChartConfigFilterType = {
   property?: string;
   type?: string;
   operator?: string;
-  value?: string | number | boolean;
+  value?: string | number | boolean | string[];
 };
 
 export type ChartConfigFilterGroupType = {
@@ -24,10 +24,11 @@ export type ChartConfig = {
   axis: {
     x: {
       property: string;
+      groupBy?: string;
     };
     y: {
       property: string;
-      aggregation: "none" | "count" | "sum" | "average" | "min" | "max";
+      aggregation?: "count" | "sum" | "average" | "min" | "max";
     }[];
   };
   sort?: {

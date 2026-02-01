@@ -3,6 +3,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { useTranslations } from "next-intl";
 import { PropertyIcon } from "@/components/block/notion/property";
 import { useBuilderContext } from "../context";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
@@ -16,6 +17,7 @@ import {
 } from "@/components/ui/select";
 
 export const JoinsAccordionItem = () => {
+  const t = useTranslations("pages.chart.edit.nav");
   const { isLoading, availableJoins, joins, onChangeJoin } =
     useBuilderContext();
 
@@ -25,7 +27,7 @@ export const JoinsAccordionItem = () => {
 
   return (
     <AccordionItem value="chart-joins">
-      <AccordionTrigger>З'єднання</AccordionTrigger>
+      <AccordionTrigger>{t("joins.title")}</AccordionTrigger>
       <AccordionContent>
         <FieldGroup className="px-2">
           {availableJoins.map((join, index) => (
@@ -47,7 +49,7 @@ export const JoinsAccordionItem = () => {
                   }
                 >
                   <SelectTrigger id={`join${join.name}From`} className="w-full">
-                    <SelectValue placeholder="Властивість" />
+                    <SelectValue placeholder={t("property")} />
                   </SelectTrigger>
 
                   <SelectContent>
@@ -83,7 +85,7 @@ export const JoinsAccordionItem = () => {
                     id={`join${join.name}To`}
                     className="w-full relative before:content-['-'] before:absolute before:-left-1.75"
                   >
-                    <SelectValue placeholder="Властивість" />
+                    <SelectValue placeholder={t("property")} />
                   </SelectTrigger>
 
                   <SelectContent>

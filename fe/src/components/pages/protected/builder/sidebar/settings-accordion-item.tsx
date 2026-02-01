@@ -3,6 +3,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { useTranslations } from "next-intl";
 import { useBuilderContext } from "../context";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import {
@@ -22,6 +23,7 @@ import {
 } from "@/components/block/chart/themes";
 
 export const SettingsAccordionItem = () => {
+  const t = useTranslations("pages.chart.edit.nav.settings");
   const {
     name,
     type,
@@ -35,17 +37,17 @@ export const SettingsAccordionItem = () => {
 
   return (
     <AccordionItem value="chart-configuration">
-      <AccordionTrigger>Налаштування</AccordionTrigger>
+      <AccordionTrigger>{t("title")}</AccordionTrigger>
       <AccordionContent>
         <FieldGroup className="px-2">
           <Field>
-            <FieldLabel htmlFor="chartName">Назва графіка:</FieldLabel>
+            <FieldLabel htmlFor="chartName">{t("chartName")}:</FieldLabel>
             {isLoading && <Skeleton className="h-9 w-full" />}
 
             {!isLoading && (
               <Input
                 id="chartName"
-                placeholder={"Введіть назву графіка"}
+                placeholder={t("chartNamePlaceholder")}
                 minLength={2}
                 maxLength={50}
                 defaultValue={name}
@@ -55,14 +57,14 @@ export const SettingsAccordionItem = () => {
           </Field>
 
           <Field>
-            <FieldLabel htmlFor="chartType">Тип графіка:</FieldLabel>
+            <FieldLabel htmlFor="chartType">{t("chartType.title")}:</FieldLabel>
 
             {isLoading && <Skeleton className="h-9 w-full" />}
 
             {!isLoading && (
               <Select value={type} onValueChange={setType}>
                 <SelectTrigger id="chartType" className="w-full">
-                  <SelectValue placeholder={"Виберіть тип графіка"} />
+                  <SelectValue placeholder={t("chartType.placeholder")} />
                 </SelectTrigger>
 
                 <SelectContent>
@@ -72,10 +74,8 @@ export const SettingsAccordionItem = () => {
                         key={`chart-type-field-${value}`}
                         value={value}
                       >
-                        <div className="flex items-center gap-2">
-                          <Icon className="size-4" />
-                          <span>{value}</span>
-                        </div>
+                        <Icon />
+                        {t(`chartType.${value}`)}
                       </SelectItem>
                     ))}
                   </SelectGroup>
@@ -85,7 +85,9 @@ export const SettingsAccordionItem = () => {
           </Field>
 
           <Field>
-            <FieldLabel htmlFor="chartTheme">Тема графіка:</FieldLabel>
+            <FieldLabel htmlFor="chartTheme">
+              {t("chartTheme.title")}:
+            </FieldLabel>
 
             {isLoading && <Skeleton className="h-9 w-full" />}
 
@@ -96,7 +98,7 @@ export const SettingsAccordionItem = () => {
                   className="w-full"
                   style={getChartThemeStyles(theme as ChartThemeType)}
                 >
-                  <SelectValue placeholder={"Виберіть тему графіка"} />
+                  <SelectValue placeholder={t("chartTheme.placeholder")} />
                 </SelectTrigger>
 
                 <SelectContent>
@@ -108,7 +110,7 @@ export const SettingsAccordionItem = () => {
                         className="chart-theme"
                         style={getChartThemeStyles(value as ChartThemeType)}
                       >
-                        {name}
+                        {t(`chartTheme.${name}`)}
                         {Array.from({ length: 5 }).map((_, index) => (
                           <span
                             key={`chart-theme-color-${name}-${index}`}

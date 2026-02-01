@@ -39,10 +39,8 @@ export function DatabaseSelect({ placeholder, promise }: DatabaseSelectProps) {
               key={`database-select-${database.id}`}
               value={database.id}
             >
-              <div className="flex items-center gap-2">
-                <NotionDatabaseIcon database={database} />
-                <span>{database.title[0].plain_text}</span>
-              </div>
+              <NotionDatabaseIcon database={database} />
+              {database.title[0].plain_text}
             </MultiSelectItem>
           ))}
         </MultiSelectGroup>
@@ -57,7 +55,7 @@ const NotionDatabaseIcon = ({ database }: { database: any }) => {
     database.icon.type === "emoji" ||
     database.icon.type === "custom_emoji"
   ) {
-    return <Database className="size-4" />;
+    return <Database />;
   } else {
     return (
       <Image
@@ -71,6 +69,7 @@ const NotionDatabaseIcon = ({ database }: { database: any }) => {
         alt="icon"
         width={16}
         height={16}
+        className="size-4"
       />
     );
   }

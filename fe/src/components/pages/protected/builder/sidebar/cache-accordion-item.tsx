@@ -3,6 +3,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { useTranslations } from "next-intl";
 import { useBuilderContext } from "../context";
 import { Field, FieldLabel } from "@/components/ui/field";
 import {
@@ -14,7 +15,14 @@ import {
   Select,
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Clock1, Clock6,  Clock12, ClockAlert, ClockCheck, Watch } from "lucide-react";
+import {
+  Clock1,
+  Clock6,
+  Clock12,
+  ClockAlert,
+  ClockCheck,
+  Watch,
+} from "lucide-react";
 
 const availableCacheDurations = [
   { name: "without", value: 0, icon: <ClockAlert /> },
@@ -26,14 +34,15 @@ const availableCacheDurations = [
 ];
 
 export const CacheAccordionItem = () => {
+  const t = useTranslations("pages.chart.edit.nav.cache");
   const { isLoading, cacheDuration, setCacheDuration } = useBuilderContext();
 
   return (
     <AccordionItem value="chart-cache">
-      <AccordionTrigger>Кешування</AccordionTrigger>
+      <AccordionTrigger>{t("title")}</AccordionTrigger>
       <AccordionContent>
         <Field className="px-2">
-          <FieldLabel htmlFor="cacheDuration">Тривалість кешування:</FieldLabel>
+          <FieldLabel htmlFor="cacheDuration">{t("duration")}:</FieldLabel>
 
           {isLoading && <Skeleton className="h-9 w-full" />}
 
@@ -45,7 +54,7 @@ export const CacheAccordionItem = () => {
               }
             >
               <SelectTrigger id="cacheDuration" className="w-full">
-                <SelectValue placeholder="Виберіть тривалість кешування" />
+                <SelectValue placeholder={t("durationPlaceholder")} />
               </SelectTrigger>
 
               <SelectContent>
@@ -56,7 +65,7 @@ export const CacheAccordionItem = () => {
                       value={value as unknown as string}
                     >
                       {icon}
-                      {name}
+                      {t(`durations.${name}`)}
                     </SelectItem>
                   ))}
                 </SelectGroup>

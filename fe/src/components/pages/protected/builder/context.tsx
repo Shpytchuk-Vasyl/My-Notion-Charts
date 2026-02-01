@@ -47,8 +47,9 @@ interface BuilderContextType {
   axisX: string | undefined;
   setAxisX: (property: string) => void;
   axisY: Chart["config"]["axis"]["y"];
-  setAxisY: (index: number, property: string, aggregation: string) => void;
+  setAxisY: (index: number, property: string, aggregation?: string) => void;
   addAxisY: () => void;
+  removeAxisY: (index: number) => void;
   availableAxisProperties: SortProperty[];
   filters: Chart["config"]["filters"] | undefined;
   availableFilterProperties: (PartialDataSourceObjectResponse["properties"]["key"] &
@@ -248,7 +249,7 @@ export function BuilderProvider({
       return prev;
     });
   };
-  const setAxisY = (index: number, property: string, aggregation: string) => {
+  const setAxisY = (index: number, property: string, aggregation?: string) => {
     setChart((prev) => {
       prev.config.axis.y[index] = {
         property,
@@ -260,7 +261,13 @@ export function BuilderProvider({
   };
   const addAxisY = () => {
     setChart((prev) => {
-      prev.config.axis.y.push({ property: "", aggregation: "none" });
+      prev.config.axis.y.push({ property: "" });
+      return prev;
+    });
+  };
+  const removeAxisY = (index: number) => {
+    setChart((prev) => {
+      prev.config.axis.y.splice(index, 1);
       return prev;
     });
   };
@@ -403,6 +410,7 @@ export function BuilderProvider({
         axisY,
         setAxisY,
         addAxisY,
+        removeAxisY,
         availableAxisProperties,
         filters,
         addFilter,

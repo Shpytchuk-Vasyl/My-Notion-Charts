@@ -3,6 +3,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { useTranslations } from "next-intl";
 import { useBuilderContext } from "../context";
 import { FieldGroup, FieldLabel } from "@/components/ui/field";
 
@@ -19,11 +20,12 @@ import {
 } from "@/components/block/notion/filter";
 
 export const FiltersAccordionItem = () => {
+  const t = useTranslations("pages.chart.edit.nav.filters");
   const { filters, addFilterGroup, isLoading } = useBuilderContext();
 
   return (
     <AccordionItem value="chart-filters">
-      <AccordionTrigger>Фільтри</AccordionTrigger>
+      <AccordionTrigger>{t("title")}</AccordionTrigger>
       <AccordionContent>
         <FieldGroup className="px-2 gap-2">
           <FieldLabel className="font-normal">
@@ -34,7 +36,7 @@ export const FiltersAccordionItem = () => {
               {Object.keys((filters ?? {}) as any).length ? (
                 <Button variant="outline">
                   <SquarePen />
-                  Редагувати фільтр
+                  {t("editFilter")}
                 </Button>
               ) : (
                 <Button
@@ -43,7 +45,7 @@ export const FiltersAccordionItem = () => {
                   disabled={isLoading}
                 >
                   <Plus />
-                  Створити фільтр
+                  {t("createFilter")}
                 </Button>
               )}
             </PopoverTrigger>

@@ -43,7 +43,7 @@ export function MultiSelect({
   values?: string[];
   defaultValues?: string[];
   onValuesChange?: (values: string[]) => void;
-  name: string;
+  name?: string;
   required?: boolean;
 }) {
   const [open, setOpen] = useState(false);
@@ -342,10 +342,11 @@ function RequiredField({
   required,
   values,
 }: {
-  name: string;
+  name?: string;
   required?: boolean;
   values?: string[];
 }) {
+  if (!name) return null;
   return (
     <>
       <input
