@@ -1,12 +1,17 @@
 "use client";
 
 import { type Chart, type ChartConfigFilterType } from "@/models/chart";
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useTransition,
+} from "react";
 import { useDashboardContext } from "@/pages/protected/general/dashboard/context";
-import { useParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { type PartialDataSourceObjectResponse } from "@notionhq/client";
 import { chartThemeNames } from "@/components/block/chart/themes";
-import path from "path";
 
 type SortProperty = {
   name: string;
@@ -108,6 +113,21 @@ export function BuilderProvider({
   }, [charts, databasesPromise, id]);
 
   //
+  // Refresh
+  //
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [_, startTransition] = useTransition();
+
+  const refresh = () => {
+    startTransition(() => {
+      const params = new URLSearchParams(searchParams);
+      params.set("refresh_preview", Date.now().toString());
+      router.replace(`?${params.toString()}`);
+    });
+  };
+
+  //
   // setChart wrapper
   //
   const setChart: React.Dispatch<React.SetStateAction<Chart>> = (updater) => {
@@ -119,6 +139,7 @@ export function BuilderProvider({
         return updated;
       });
     } else set(updater);
+    refresh();
   };
 
   //

@@ -1,6 +1,12 @@
 export { generateStaticParams } from "@/i18n/static-params";
 
-export default async function Page() {
-  await new Promise((resolve) => setTimeout(resolve, 10000));
-  return "test";
+import { ChartService } from "@/services/chart";
+
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const chart = await ChartService.getChartById((await params).id);
+  return chart.name;
 }

@@ -82,7 +82,10 @@ export const AxisAccordionItem = () => {
                       setAxisY(index, value, axis.aggregation)
                     }
                   >
-                    <SelectTrigger id={`axisY-${index}`} className="w-full truncate">
+                    <SelectTrigger
+                      id={`axisY-${index}`}
+                      className="w-full truncate"
+                    >
                       <SelectValue placeholder={t("selectProperty")} />
                     </SelectTrigger>
 

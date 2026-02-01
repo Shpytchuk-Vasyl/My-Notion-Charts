@@ -14,7 +14,6 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useSidebar } from "@/components/ui/sidebar";
 import { usePathname } from "@/i18n/routing";
-import { SearchForm } from "./search-form";
 
 export function SiteHeader() {
   const { toggleSidebar } = useSidebar();
@@ -32,7 +31,6 @@ export function SiteHeader() {
         </Button>
         <Separator orientation="vertical" className="mr-2 h-4" />
         <SiteBreadcrumb />
-        <SearchForm className="w-full sm:ml-auto sm:w-auto" />
       </div>
     </header>
   );
