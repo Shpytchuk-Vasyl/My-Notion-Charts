@@ -1,5 +1,5 @@
 export { generateStaticParams } from "@/i18n/static-params";
 
-export default function () {
-  return "chat page";
+export default function chatSlide() {
+  return null;
 }

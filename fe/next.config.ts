@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
   reactCompiler: true,
   experimental: {
     optimizePackageImports: ["zod", "next-intl", "@notionhq/client"],
+    // authInterrupts: true,
   },
 };
 

@@ -14,9 +14,11 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useSidebar } from "@/components/ui/sidebar";
 import { usePathname } from "@/i18n/routing";
+import { useBuilderContext } from "./context";
 
 export function SiteHeader() {
   const { toggleSidebar } = useSidebar();
+  const { isLoading, refresh } = useBuilderContext();
 
   return (
     <header className="bg-background sticky top-0 z-50 flex w-full items-center border-b">
@@ -31,6 +33,13 @@ export function SiteHeader() {
         </Button>
         <Separator orientation="vertical" className="mr-2 h-4" />
         <SiteBreadcrumb />
+        <Button
+          className="w-full sm:ml-auto sm:w-auto"
+          onClick={refresh}
+          disabled={isLoading}
+        >
+          Refresh
+        </Button>
       </div>
     </header>
   );

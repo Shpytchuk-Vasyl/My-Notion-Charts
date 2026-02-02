@@ -49,7 +49,7 @@ export type Chart = Tables<"charts"> & {
 };
 
 export const DEFAULT_CHART_CONFIG_CACHE_DURATION = 3600; // 1 hour
-export const DEFAULT_CHART_CONFIG_LIMIT = 1000;
+export const DEFAULT_CHART_CONFIG_LIMIT = 500;
 export const DEFAULT_CHART_CONFIG_THEME = "green";
 
 export class ChartRepository {
@@ -73,11 +73,28 @@ export class ChartRepository {
     return this.supabase.from("charts").select("*").eq("id", chartId).single();
   }
 
+  async getChartByIdWithWorkspace(chartId: string) {
+    return this.supabase
+      .from("charts")
+      .select("*, workspaces(access_token)")
+      .eq("id", chartId)
+      .single();
+  }
+
   async createChart(chart: TablesInsert<"charts">) {
     return this.supabase.from("charts").insert(chart).select().single();
   }
 
   async deleteChart(chartId: string) {
     return this.supabase.from("charts").delete().eq("id", chartId);
+  }
+
+  async updateChart(chartId: string, chart: Partial<Tables<"charts">>) {
+    return this.supabase
+      .from("charts")
+      .update(chart)
+      .eq("id", chartId)
+      .select()
+      .single();
   }
 }

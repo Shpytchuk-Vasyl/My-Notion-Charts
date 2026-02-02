@@ -25,4 +25,18 @@ export class ChartService {
 
     return chart as Chart;
   }
+
+  static async getChartByIdWithWorkspace(chartId: string) {
+    const supabase = await createClient();
+
+    const { data, error } = await new ChartRepository(
+      supabase,
+    ).getChartByIdWithWorkspace(chartId);
+
+    if (error) {
+      throw error;
+    }
+
+    return data as Chart & { workspaces: { access_token: string } };
+  }
 }

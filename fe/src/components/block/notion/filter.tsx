@@ -28,7 +28,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useBuilderContext } from "@/pages/protected/builder/context";
-import { createContext, useContext } from "react";
+import { createContext, Fragment, useContext } from "react";
 import { useTranslations } from "next-intl";
 import {
   MultiSelect,
@@ -222,8 +222,8 @@ const typeAndAllowedFilters = {
     inputType: "none",
   },
   relation: {
-    operators: ["contains", "does_not_contain", "is_empty", "is_not_empty"],
-    inputType: "multi-select",
+    operators: ["is_empty", "is_not_empty"],
+    inputType: "none",
   },
   rich_text: {
     operators: [
@@ -363,7 +363,9 @@ const usePathContext = (): PathContextType => useContext(PathContext)!;
 
 export const FilterForm = ({ group, path: outerPath }: FilterFormProps) => {
   return Object.entries(group).map(([groupKey, filtersAndGroups]) => (
-    <>
+    <Fragment
+      key={`filter-group-wrapper-${[...outerPath, groupKey].join("-")}`}
+    >
       {filtersAndGroups.map((filterOrGroup, index) => {
         const path = [...outerPath, groupKey, index];
 
@@ -395,7 +397,7 @@ export const FilterForm = ({ group, path: outerPath }: FilterFormProps) => {
         );
       })}
       <AddFilterMenuBar path={[...outerPath, groupKey]} />
-    </>
+    </Fragment>
   ));
 };
 
@@ -424,7 +426,7 @@ const AndOrWrapperDropdownMenu = () => {
           className="text-destructive"
           onClick={() => removeFilterGroup(path)}
         >
-          <CopyX />
+          <CopyX className="text-destructive" />
           {t("deleteGroup")}
         </DropdownMenuItem>
       </DropdownMenuContent>
@@ -720,7 +722,7 @@ const FilterRowDropDownMenu = () => {
           className="text-destructive"
           onSelect={() => removeFilter(path)}
         >
-          <Trash2 />
+          <Trash2 className="text-destructive" />
           {t("delete")}
         </DropdownMenuItem>
         <DropdownMenuItem onSelect={() => addFilter(path.slice(0, -1), filter)}>
@@ -785,7 +787,7 @@ export const FilterFormToString = (
     .join(" ");
 };
 
-export const FilterRowToSrting = (filter: ChartConfigFilterType): string => {
+const FilterRowToSrting = (filter: ChartConfigFilterType): string => {
   const { availableFilterProperties } = useBuilderContext();
   const property = availableFilterProperties.find(
     (prop) => prop.value === filter.property,

@@ -12,6 +12,8 @@ import { useDashboardContext } from "@/pages/protected/general/dashboard/context
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { type PartialDataSourceObjectResponse } from "@notionhq/client";
 import { chartThemeNames } from "@/components/block/chart/themes";
+import { updateChart } from "@/app/[locale]/(protected)/(general)/dashboard/actions";
+import { toast } from "sonner";
 
 type SortProperty = {
   name: string;
@@ -30,6 +32,7 @@ type PathType = (string | number)[];
 
 interface BuilderContextType {
   isLoading: boolean;
+  refresh: () => void;
   cacheDuration: number | undefined;
   setCacheDuration: (duration: number) => void;
   limit: number | undefined;
@@ -120,9 +123,23 @@ export function BuilderProvider({
   const [_, startTransition] = useTransition();
 
   const refresh = () => {
-    startTransition(() => {
+    startTransition(async () => {
+      if (!chart) return;
+      const { success, msg } = await updateChart(chart);
+      if (!success) {
+        toast.error(msg);
+        return;
+      }
+
       const params = new URLSearchParams(searchParams);
-      params.set("refresh_preview", Date.now().toString());
+      const hash = await window.crypto.subtle
+        .digest("SHA-1", new TextEncoder().encode(JSON.stringify(chart)))
+        .then((hashBuffer) =>
+          new Uint8Array(hashBuffer)
+            .map((b: any) => b.toString(16).padStart(2, "0"))
+            .join(""),
+        );
+      params.set("refresh_preview", hash);
       router.replace(`?${params.toString()}`);
     });
   };
@@ -139,7 +156,6 @@ export function BuilderProvider({
         return updated;
       });
     } else set(updater);
-    refresh();
   };
 
   //
@@ -407,6 +423,7 @@ export function BuilderProvider({
     <BuilderContext.Provider
       value={{
         isLoading,
+        refresh,
         cacheDuration,
         setCacheDuration,
         limit,

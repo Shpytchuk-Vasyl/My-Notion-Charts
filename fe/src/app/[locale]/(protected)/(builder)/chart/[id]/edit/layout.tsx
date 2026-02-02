@@ -7,10 +7,5 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
   const searchParams = useSearchParams();
   const refreshKey = searchParams.get("refresh_preview");
 
-  return (
-    <Fragment key={refreshKey}>
-      {refreshKey}
-      {children}
-    </Fragment>
-  );
+  return <Fragment key={refreshKey}>{children}</Fragment>;
 }

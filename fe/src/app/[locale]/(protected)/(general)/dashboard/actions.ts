@@ -4,7 +4,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { redirect, routing } from "@/i18n/routing";
 import { createClient } from "@/lib/supabase/server";
 import { WorkspaceRepository } from "@/models/workspace";
-import { z } from "zod";
+import { config, z } from "zod";
 import {
   ChartRepository,
   type ChartType,
@@ -12,6 +12,7 @@ import {
   DEFAULT_CHART_CONFIG_CACHE_DURATION,
   DEFAULT_CHART_CONFIG_THEME,
   DEFAULT_CHART_CONFIG_LIMIT,
+  type Chart,
 } from "@/models/chart";
 import { UserService } from "@/services/user";
 import { WorkspaceService } from "@/services/workspace";
@@ -103,7 +104,6 @@ export async function createChart(_: any, formData: FormData) {
         y: [
           {
             property: "",
-            aggregation: "none",
           },
         ],
       },
@@ -157,6 +157,95 @@ export async function deleteChart(chartId: string) {
       pathname: routing.pathnames["/dashboard"],
     },
   });
+  return { success: true, msg: "" };
+}
+
+export async function updateChart(newChart: Chart) {
+  const t = await getTranslations("validation");
+
+  const chartConfigSchema = z.object({
+    axis: z.object({
+      x: z.object({
+        property: z.string().optional(),
+        groupBy: z.string().optional(),
+      }),
+      y: z.array(
+        z.object({
+          property: z.string().optional(),
+          aggregation: z
+            .enum(["count", "sum", "average", "min", "max"])
+            .optional(),
+        }),
+      ),
+    }),
+    joins: z.array(
+      z.object({
+        from: z.string().optional(),
+        to: z.string().optional(),
+      }),
+    ),
+    filters: z.any().optional(),
+    sort: z
+      .object({
+        property: z.string().optional(),
+        ascending: z.boolean().optional(),
+      })
+      .optional(),
+    limit: z.number().min(1).optional(),
+    cache: z.object({
+      duration: z.number().min(0),
+    }),
+    customization: z.object({
+      theme: z.string(),
+    }),
+  });
+
+  const chartSchema = z.object({
+    id: z.uuid(),
+    databases: z
+      .array(z.uuid(), t("databases.required"))
+      .min(1, t("databases.min")),
+    name: z
+      .string(t("chartName.required"))
+      .min(2, t("chartName.min"))
+      .max(50, t("chartName.max")),
+    type: z.enum(
+      [
+        "bar",
+        "line",
+        "pie",
+        "scatter",
+        "radar",
+        "area",
+        "radial",
+      ] as ChartType[],
+      t("chartType.invalid"),
+    ),
+    config: chartConfigSchema,
+  });
+
+  const result = chartSchema.safeParse(newChart);
+  if (!result.success) {
+    return {
+      success: false,
+      msg: z.treeifyError(result.error).errors.join(", "),
+    };
+  }
+
+  const supabase = await createClient();
+  const repository = new ChartRepository(supabase);
+
+  const { error } = await repository.updateChart(result.data.id, {
+    name: result.data.name,
+    config: result.data.config as any,
+    type: result.data.type,
+    databases: result.data.databases,
+  });
+
+  if (error) {
+    return { success: false, msg: error.message };
+  }
+
   return { success: true, msg: "" };
 }
 
