@@ -9,7 +9,7 @@ export { generateStaticParams } from "@/i18n/static-params";
 
 export const dynamic = "force-static";
 
-export default function Home() {
+export default function Page() {
   return (
     <>
       <HeroSection />

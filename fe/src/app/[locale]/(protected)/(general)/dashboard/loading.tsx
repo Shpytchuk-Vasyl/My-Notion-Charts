@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default function () {
+export default function Loading() {
   return (
     <div className="grid auto-rows-min gap-4 md:grid-cols-3 p-4">
       {Array.from({ length: 9 }).map((_, index) => (

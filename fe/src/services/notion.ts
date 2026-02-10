@@ -20,7 +20,14 @@ export class NotionService {
   constructor(accessToken: string) {
     this.client = new Client({
       auth: accessToken,
-      fetch: globalThis.fetch,
+      fetch: (url, init) => {
+        console.log('[Notion API] Fetching:', url);
+        const startTime = Date.now();
+        return globalThis.fetch(url, init).then(res => {
+          console.log(`[Notion API] Response in ${Date.now() - startTime}ms:`, res.status, res.headers.get('x-vercel-cache') || 'no-cache');
+          return res;
+        });
+      },
     });
   }
 

@@ -1,3 +1,3 @@
-import { SiteHeader } from "@/pages/protected/general/header";
+import { AppHeader } from "@/pages/protected/general/header";
 
-export default SiteHeader;
+export default AppHeader;

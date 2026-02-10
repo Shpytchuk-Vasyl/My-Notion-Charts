@@ -2,7 +2,6 @@ export { generateStaticParams } from "@/i18n/static-params";
 
 import { type ChartThemeType } from "@/components/block/chart/themes";
 import { ChartView } from "@/components/block/chart/view";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartService } from "@/services/chart";
 import { NotionService } from "@/services/notion";
 

@@ -6,7 +6,7 @@ export { generateStaticParams } from "@/i18n/static-params";
 
 export const dynamic = "force-static";
 
-export default function LogoutPage() {
+export default function Loading() {
   const t = useTranslations("pages.logout");
 
   return (

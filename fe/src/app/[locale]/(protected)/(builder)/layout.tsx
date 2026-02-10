@@ -1,8 +1,10 @@
 import { SidebarInset } from "@/components/ui/sidebar";
 import { BuilderProvider } from "@/pages/protected/builder/context";
 import { getDatabeses } from "../(general)/dashboard/actions";
+import { ChatSidebarProvider } from "@/pages/protected/builder/chat/context";
+import { ChatSidebarTrigger } from "@/pages/protected/builder/chat/sidebar-trigger";
 
-export default function GeneralLayout({
+export default function BuilderLayout({
   children,
   sidebar,
   header,
@@ -19,8 +21,11 @@ export default function GeneralLayout({
       {header}
       <div className="flex flex-1">
         {sidebar}
-        <SidebarInset>{children}</SidebarInset>
-        {chat}
+          <SidebarInset>{children}</SidebarInset>
+          <ChatSidebarProvider>
+            {chat}
+            <ChatSidebarTrigger />
+          </ChatSidebarProvider>
       </div>
     </BuilderProvider>
   );

@@ -27,7 +27,16 @@ export async function createClient(cookiesStore?: NextRequest["cookies"]) {
         },
       },
       global: {
-        fetch: globalThis.fetch,
+        fetch: (url, init) => {
+          console.log('[Supabase API] Fetching:', url);
+          const start = Date.now();
+          return globalThis.fetch(url, init).then(response => {
+            const duration = Date.now() - start;
+            const cache = response.headers.get('x-vercel-cache') || 'UNKNOWN';
+            console.log(`[Supabase API] Response: ${response.status} in ${duration}ms [Cache: ${cache}]`);
+            return response;
+          });
+        },
       },
     },
   );

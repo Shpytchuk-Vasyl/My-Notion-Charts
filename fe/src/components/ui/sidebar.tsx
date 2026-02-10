@@ -64,19 +64,14 @@ function useSidebar() {
   return context;
 }
 
-function SidebarProvider({
-  defaultOpen = true,
-  open: openProp,
-  onOpenChange: setOpenProp,
-  className,
-  style,
-  children,
-  ...props
-}: React.ComponentProps<"div"> & {
-  defaultOpen?: boolean;
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-}) {
+function useSidebarProvider(
+  defaultOpen: boolean,
+  openProp?: boolean,
+  setOpenProp?: (open: boolean) => void,
+  COOKIE_NAME = SIDEBAR_COOKIE_NAME,
+  COOKIE_MAX_AGE = SIDEBAR_COOKIE_MAX_AGE,
+  KEYBOARD_SHORTCUT = SIDEBAR_KEYBOARD_SHORTCUT,
+): SidebarContextProps {
   const isMobile = useIsMobile();
   const [openMobile, setOpenMobile] = useState(false);
 
@@ -94,7 +89,7 @@ function SidebarProvider({
       }
 
       // This sets the cookie to keep the sidebar state.
-      document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`;
+      document.cookie = `${COOKIE_NAME}=${openState}; path=/; max-age=${COOKIE_MAX_AGE}`;
     },
     [setOpenProp, open],
   );
@@ -107,10 +102,7 @@ function SidebarProvider({
   // Adds a keyboard shortcut to toggle the sidebar.
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (
-        event.key === SIDEBAR_KEYBOARD_SHORTCUT &&
-        (event.metaKey || event.ctrlKey)
-      ) {
+      if (event.key === KEYBOARD_SHORTCUT && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();
         toggleSidebar();
       }
@@ -124,25 +116,87 @@ function SidebarProvider({
   // This makes it easier to style the sidebar with Tailwind classes.
   const state = open ? "expanded" : "collapsed";
 
+  return {
+    state,
+    open,
+    setOpen,
+    isMobile,
+    openMobile,
+    setOpenMobile,
+    toggleSidebar,
+  };
+}
+
+type SidebarProviderProps = {
+  defaultOpen?: boolean;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  COOKIE_NAME?: string;
+  COOKIE_MAX_AGE?: number;
+  WIDTH?: string;
+  WIDTH_ICON?: string;
+  KEYBOARD_SHORTCUT?: string;
+}
+
+function PureSidebarProvider({
+  defaultOpen = true,
+  open: openProp,
+  onOpenChange: setOpenProp,
+  children,
+  COOKIE_NAME = SIDEBAR_COOKIE_NAME,
+  COOKIE_MAX_AGE = SIDEBAR_COOKIE_MAX_AGE,
+  WIDTH = SIDEBAR_WIDTH,
+  WIDTH_ICON = SIDEBAR_WIDTH_ICON,
+  KEYBOARD_SHORTCUT = SIDEBAR_KEYBOARD_SHORTCUT,
+}:  React.PropsWithChildren<SidebarProviderProps>) {
+  const values = useSidebarProvider(
+    defaultOpen,
+    openProp,
+    setOpenProp,
+    COOKIE_NAME,
+    COOKIE_MAX_AGE,
+    KEYBOARD_SHORTCUT,
+  );
+
   return (
-    <SidebarContext.Provider
-      value={{
-        state,
-        open,
-        setOpen,
-        isMobile,
-        openMobile,
-        setOpenMobile,
-        toggleSidebar,
-      }}
-    >
+    <SidebarContext.Provider value={values}>
+          {children}
+    </SidebarContext.Provider>
+  );
+}
+
+function SidebarProvider({
+  defaultOpen = true,
+  open: openProp,
+  onOpenChange: setOpenProp,
+  className,
+  style,
+  children,
+  COOKIE_NAME = SIDEBAR_COOKIE_NAME,
+  COOKIE_MAX_AGE = SIDEBAR_COOKIE_MAX_AGE,
+  WIDTH = SIDEBAR_WIDTH,
+  WIDTH_ICON = SIDEBAR_WIDTH_ICON,
+  KEYBOARD_SHORTCUT = SIDEBAR_KEYBOARD_SHORTCUT,
+  ...props
+}: React.ComponentProps<"div"> & SidebarProviderProps) {
+  const values = useSidebarProvider(
+    defaultOpen,
+    openProp,
+    setOpenProp,
+    COOKIE_NAME,
+    COOKIE_MAX_AGE,
+    KEYBOARD_SHORTCUT,
+  );
+
+  return (
+    <SidebarContext.Provider value={values}>
       <TooltipProvider delayDuration={0}>
         <div
           data-slot="sidebar-wrapper"
           style={
             {
-              "--sidebar-width": SIDEBAR_WIDTH,
-              "--sidebar-width-icon": SIDEBAR_WIDTH_ICON,
+              "--sidebar-width": WIDTH,
+              "--sidebar-width-icon": WIDTH_ICON,
               ...style,
             } as React.CSSProperties
           }
@@ -165,11 +219,13 @@ function Sidebar({
   collapsible = "offcanvas",
   className,
   children,
+  WIDTH_MOBILE = SIDEBAR_WIDTH_MOBILE,
   ...props
 }: React.ComponentProps<"div"> & {
   side?: "left" | "right";
   variant?: "sidebar" | "floating" | "inset";
   collapsible?: "offcanvas" | "icon" | "none";
+  WIDTH_MOBILE?: string;
 }) {
   const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
 
@@ -198,7 +254,7 @@ function Sidebar({
           className="bg-sidebar text-sidebar-foreground w-(--sidebar-width) p-0 [&>button]:hidden"
           style={
             {
-              "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
+              "--sidebar-width": WIDTH_MOBILE,
             } as React.CSSProperties
           }
           side={side}
@@ -274,7 +330,7 @@ function SidebarTrigger({
       data-slot="sidebar-trigger"
       variant="ghost"
       size="icon"
-      className={cn("size-7", className)}
+      className={className}
       onClick={(event) => {
         onClick?.(event);
         toggleSidebar();
@@ -732,4 +788,5 @@ export {
   SidebarSeparator,
   SidebarTrigger,
   useSidebar,
+  PureSidebarProvider,
 };

@@ -1,6 +1,6 @@
 "use client";
 
-import { SidebarIcon } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { Fragment } from "react";
 import {
   Breadcrumb,
@@ -12,25 +12,17 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { useSidebar } from "@/components/ui/sidebar";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 import { usePathname } from "@/i18n/routing";
 import { useBuilderContext } from "./context";
 
-export function SiteHeader() {
-  const { toggleSidebar } = useSidebar();
+export function AppHeader() {
   const { isLoading, refresh } = useBuilderContext();
 
   return (
     <header className="bg-background sticky top-0 z-50 flex w-full items-center border-b">
       <div className="flex h-(--header-height) w-full items-center gap-2 px-4">
-        <Button
-          className="h-8 w-8"
-          variant="ghost"
-          size="icon"
-          onClick={toggleSidebar}
-        >
-          <SidebarIcon />
-        </Button>
+        <SidebarTrigger />
         <Separator orientation="vertical" className="mr-2 h-4" />
         <SiteBreadcrumb />
         <Button
@@ -39,6 +31,14 @@ export function SiteHeader() {
           disabled={isLoading}
         >
           Save
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          id="chat-sidebar-trigger"
+          disabled
+        >
+          <Sparkles />
         </Button>
       </div>
     </header>
