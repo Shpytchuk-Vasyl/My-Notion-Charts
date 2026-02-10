@@ -1,10 +1,14 @@
 "use client";
 
+import type {
+  NameType,
+  ValueType,
+} from "recharts/types/component/DefaultTooltipContent";
 import {
-  ResponsiveContainer,
   Tooltip,
   Legend,
-  type LegendProps,
+  type DefaultTooltipContentProps,
+  type DefaultLegendContentProps,
 } from "recharts";
 
 import { cn } from "@/lib/utils";
@@ -13,19 +17,20 @@ import { createContext, useContext, useMemo } from "react";
 // Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: "", dark: ".dark" } as const;
 
-export type ChartConfig = {
-  [k in string]: {
+export type ChartConfig = Record<
+  string,
+  {
     label?: React.ReactNode;
     icon?: React.ComponentType;
   } & (
     | { color?: string; theme?: never }
     | { color?: never; theme: Record<keyof typeof THEMES, string> }
-  );
-};
+  )
+>;
 
-type ChartContextProps = {
+interface ChartContextProps {
   config: ChartConfig;
-};
+}
 
 const ChartContext = createContext<ChartContextProps | null>(null);
 
@@ -46,9 +51,8 @@ function ChartContainer({
   config,
   ...props
 }: React.ComponentProps<"div"> & {
-  id: string;
   config: ChartConfig;
-  children: React.ComponentProps<typeof ResponsiveContainer>["children"];
+  children: React.ReactNode;
 }) {
   return (
     <ChartContext.Provider value={{ config }}>
@@ -61,8 +65,8 @@ function ChartContainer({
         )}
         {...props}
       >
-        <ChartStyle id={id} config={config} />
-        <ResponsiveContainer>{children}</ResponsiveContainer>
+        <ChartStyle id={id!} config={config} />
+        {children}
       </div>
     </ChartContext.Provider>
   );
@@ -124,7 +128,10 @@ function ChartTooltipContent({
     indicator?: "line" | "dot" | "dashed";
     nameKey?: string;
     labelKey?: string;
-  }) {
+  } & Omit<
+    DefaultTooltipContentProps<ValueType, NameType>,
+    "accessibilityLayer"
+  >) {
   const { config } = useChart();
 
   const tooltipLabel = useMemo(() => {
@@ -187,7 +194,7 @@ function ChartTooltipContent({
 
             return (
               <div
-                key={item.dataKey}
+                key={key}
                 className={cn(
                   "[&>svg]:text-muted-foreground flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5",
                   indicator === "dot" && "items-center",
@@ -258,7 +265,7 @@ function ChartLegendContent({
   verticalAlign = "bottom",
   nameKey,
 }: React.ComponentProps<"div"> &
-  Pick<LegendProps, "payload" | "verticalAlign"> & {
+  DefaultLegendContentProps & {
     hideIcon?: boolean;
     nameKey?: string;
   }) {

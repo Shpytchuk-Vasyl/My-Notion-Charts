@@ -1,3 +1,5 @@
+"use client";
+
 import {
   ChartContainer,
   ChartLegend,
@@ -12,7 +14,6 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
-  Cell,
   Line,
   LineChart,
   Pie,
@@ -26,17 +27,22 @@ import {
   RadialBarChart,
   Scatter,
   ScatterChart,
+  Sector,
   XAxis,
   YAxis,
   ZAxis,
-} from "@/lib/recharts";
+} from "recharts";
 import { type Chart } from "@/models/chart";
 import { type ChartThemeType, getChartThemeStyles } from "./themes";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { NotionService } from "@/services/notion";
 
 type ChartViewProps = {
-  chart: Chart & { workspaces: { access_token: string } };
+  xKey: string;
+  yKeys: string[];
+  theme: ChartThemeType;
+  id: Chart["id"];
+  type: Chart["type"];
+  chartData: Record<string, any>[];
+  labels: Record<string, string>;
   className?: string;
 };
 
@@ -51,54 +57,46 @@ function getColorByIndex(index: number) {
   return colors[index % colors.length];
 }
 
-export async function ChartView({ chart, className = "" }: ChartViewProps) {
-  const { data, error } = await new NotionService(
-    chart.workspaces.access_token,
-  ).getChartData(chart);
-
-  if (error) {
-    return <div>Error loading chart data: {error}</div>;
-  }
-
-  // const chartData = (data ?? []) as Record<string, unknown>[];
-  const xKey = chart.config.axis.x?.property;
-  const yKeys = chart.config.axis.y.map((axis) => axis.property);
+export function ChartView({
+  xKey,
+  yKeys,
+  theme,
+  id,
+  type,
+  chartData,
+  labels,
+  className,
+}: ChartViewProps) {
   const primaryYKey = yKeys[0];
   const zKey = yKeys[1];
-  // testing data
-  const chartData = Array.from({ length: 10 }).map((_, idx) => {
-    const entry: Record<string, unknown> = {};
-    if (xKey) {
-      entry[xKey] = idx;
-    }
-    yKeys.forEach((key) => {
-      entry[key] = Math.floor(Math.random() * 100) + 1;
-    });
-    return entry;
-  });
 
   const chartConfig = Object.fromEntries(
-    chart.config.axis.y.map((axis, idx) => [
-      axis.property,
+    yKeys.map((axis, idx) => [
+      axis,
       {
-        label: axis.property,
+        label: labels[axis] || axis,
         color: getColorByIndex(idx),
       },
     ]),
   ) satisfies ChartConfig;
 
   const renderChart = () => {
-    switch (chart.type) {
+    switch (type) {
       case "line":
         return (
-          <LineChart accessibilityLayer data={chartData}>
+          <LineChart
+            responsive
+            accessibilityLayer
+            data={chartData}
+            className="w-full aspect-video"
+          >
             <CartesianGrid vertical={false} />
             {xKey ? <XAxis dataKey={xKey} /> : null}
             <ChartTooltip content={<ChartTooltipContent />} />
             <ChartLegend content={<ChartLegendContent />} />
             {yKeys.map((key, idx) => (
               <Line
-                key={`${chart.id}-${key}`}
+                key={`${id}-${key}`}
                 dataKey={key}
                 name={key}
                 stroke={getColorByIndex(idx)}
@@ -116,7 +114,12 @@ export async function ChartView({ chart, className = "" }: ChartViewProps) {
         );
       case "area":
         return (
-          <AreaChart accessibilityLayer data={chartData}>
+          <AreaChart
+            responsive
+            accessibilityLayer
+            data={chartData}
+            className="w-full aspect-video"
+          >
             <defs>
               {yKeys.map((key, idx) => (
                 <linearGradient
@@ -146,7 +149,7 @@ export async function ChartView({ chart, className = "" }: ChartViewProps) {
             <ChartLegend content={<ChartLegendContent />} />
             {yKeys.map((key, idx) => (
               <Area
-                key={`${chart.id}-${key}`}
+                key={`${id}-${key}`}
                 type="natural"
                 dataKey={key}
                 name={key}
@@ -158,7 +161,12 @@ export async function ChartView({ chart, className = "" }: ChartViewProps) {
         );
       case "scatter":
         return (
-          <ScatterChart accessibilityLayer data={chartData}>
+          <ScatterChart
+            responsive
+            accessibilityLayer
+            data={chartData}
+            className="w-full aspect-video"
+          >
             <CartesianGrid />
             {xKey ? <XAxis dataKey={xKey} /> : null}
             <YAxis dataKey={primaryYKey} />
@@ -167,7 +175,7 @@ export async function ChartView({ chart, className = "" }: ChartViewProps) {
             <ChartLegend content={<ChartLegendContent />} />
             {yKeys.map((key, idx) => (
               <Scatter
-                key={`${chart.id}-${key}`}
+                key={`${id}-${key}`}
                 dataKey={key}
                 name={key}
                 fill={getColorByIndex(idx)}
@@ -178,21 +186,35 @@ export async function ChartView({ chart, className = "" }: ChartViewProps) {
       case "pie":
         if (!primaryYKey) return null;
         return (
-          <PieChart accessibilityLayer>
+          <PieChart
+            responsive
+            accessibilityLayer
+            className="w-full aspect-video"
+          >
             <ChartTooltip content={<ChartTooltipContent />} />
             <ChartLegend content={<ChartLegendContent />} />
-            <Pie data={chartData} dataKey={primaryYKey} nameKey={xKey} label>
-              {chartData.map((_, idx) => (
-                <Cell key={`cell-${idx}`} fill={getColorByIndex(idx)} />
-              ))}
-            </Pie>
+            <Pie
+              data={chartData}
+              dataKey={primaryYKey}
+              nameKey={xKey}
+              label
+              shape={(props) => {
+                const index = props.index ?? 0;
+                return <Sector {...props} fill={getColorByIndex(index)} />;
+              }}
+            />
           </PieChart>
         );
       case "radar":
         const showCircle =
           new Set(chartData.map((entry) => entry[xKey])).size > 10;
         return (
-          <RadarChart accessibilityLayer data={chartData}>
+          <RadarChart
+            responsive
+            accessibilityLayer
+            data={chartData}
+            className="w-full aspect-video"
+          >
             <PolarGrid gridType={showCircle ? "circle" : "polygon"} />
             <PolarAngleAxis dataKey={xKey} />
             <PolarRadiusAxis />
@@ -200,7 +222,7 @@ export async function ChartView({ chart, className = "" }: ChartViewProps) {
             <ChartLegend content={<ChartLegendContent />} />
             {yKeys.map((key, idx) => (
               <Radar
-                key={`${chart.id}-${key}`}
+                key={`${id}-${key}`}
                 dataKey={key}
                 name={key}
                 stroke={getColorByIndex(idx)}
@@ -218,19 +240,28 @@ export async function ChartView({ chart, className = "" }: ChartViewProps) {
         if (!primaryYKey) return null;
         return (
           <RadialBarChart
+            responsive
             accessibilityLayer
             data={chartData}
             startAngle={-90}
             endAngle={380}
             innerRadius={30}
+            className="w-full aspect-video"
           >
             <ChartTooltip content={<ChartTooltipContent />} />
             <ChartLegend content={<ChartLegendContent />} />
-            <RadialBar dataKey={primaryYKey} name={primaryYKey} background>
-              {chartData.map((_, idx) => (
-                <Cell key={`cell-${idx}`} fill={getColorByIndex(idx)} />
-              ))}
-            </RadialBar>
+            <RadialBar
+              dataKey={primaryYKey}
+              name={primaryYKey}
+              background
+              shape={(props) => {
+                // as temporary solution, always use index 0
+                const index = 0;
+                return (
+                  <path {...props} fill={getColorByIndex(index)} d={props.d} />
+                );
+              }}
+            />
           </RadialBarChart>
         );
       case "bar":
@@ -238,14 +269,19 @@ export async function ChartView({ chart, className = "" }: ChartViewProps) {
         const showRadius =
           new Set(chartData.map((entry) => entry[xKey])).size <= 10;
         return (
-          <BarChart accessibilityLayer data={chartData}>
+          <BarChart
+            responsive
+            accessibilityLayer
+            data={chartData}
+            className="w-full aspect-video"
+          >
             <CartesianGrid vertical={false} />
             {xKey ? <XAxis dataKey={xKey} /> : null}
-            <ChartTooltip content={<ChartTooltipContent />} />
-            <ChartLegend content={<ChartLegendContent />} />
+            {/* <ChartTooltip content={<ChartTooltipContent />} /> */}
+            {/* <ChartLegend content={<ChartLegendContent />} /> */}
             {yKeys.map((key, idx) => (
               <Bar
-                key={`${chart.id}-${key}`}
+                key={`${id}-${key}`}
                 dataKey={key}
                 name={key}
                 fill={getColorByIndex(idx)}
@@ -257,15 +293,17 @@ export async function ChartView({ chart, className = "" }: ChartViewProps) {
     }
   };
 
+  const chartElement = renderChart();
+  if (!chartElement) return null;
+
   return (
     <ChartContainer
-      style={getChartThemeStyles(
-        chart.config.customization.theme as ChartThemeType,
-      )}
-      id={chart.id}
+      style={getChartThemeStyles(theme)}
+      id={id}
       config={chartConfig}
+      className={className}
     >
-      {renderChart()!}
+      {chartElement}
     </ChartContainer>
   );
 }

@@ -1,7 +1,10 @@
 export { generateStaticParams } from "@/i18n/static-params";
 
+import { type ChartThemeType } from "@/components/block/chart/themes";
 import { ChartView } from "@/components/block/chart/view";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartService } from "@/services/chart";
+import { NotionService } from "@/services/notion";
 
 export default async function Page({
   params,
@@ -9,6 +12,24 @@ export default async function Page({
   params: Promise<{ id: string }>;
 }) {
   const chart = await ChartService.getChartByIdWithWorkspace((await params).id);
-  console.log(chart, "chart@@@@@@@@@@@");
-  return <ChartView chart={chart} />;
+
+  const { chartData, chartLabels } = await new NotionService(
+    chart.workspaces.access_token,
+  ).getChartData(chart);
+
+  const xKey = chart.config.axis.x?.property;
+  const yKeys = chart.config.axis.y.map((axis) => axis.property);
+
+  return (
+    <ChartView
+      xKey={xKey}
+      yKeys={yKeys}
+      theme={chart.config.customization.theme as ChartThemeType}
+      id={chart.id}
+      type={chart.type}
+      chartData={chartData}
+      labels={chartLabels}
+      className="bg-card border m-4 p-6 rounded-xl shadow-sm max-h-[calc(100%-(--spacing(8)))]"
+    />
+  );
 }

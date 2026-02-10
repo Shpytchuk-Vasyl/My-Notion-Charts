@@ -38,7 +38,7 @@ export function SiteHeader() {
           onClick={refresh}
           disabled={isLoading}
         >
-          Refresh
+          Save
         </Button>
       </div>
     </header>

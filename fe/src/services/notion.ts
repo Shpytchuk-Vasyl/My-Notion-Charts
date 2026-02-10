@@ -1,6 +1,7 @@
-import { type Chart } from "@/models/chart";
+import { type ChartConfigFilterType, type Chart } from "@/models/chart";
 import {
   Client,
+  type PageObjectResponse,
   type DataSourceObjectResponse,
   type QueryDataSourceParameters,
 } from "@notionhq/client";
@@ -35,34 +36,69 @@ export class NotionService {
       },
     });
 
-    return response.results.filter(
-      (result): result is DataSourceObjectResponse =>
-        result.object === "data_source",
-    );
+    return response.results
+      .filter(
+        (result): result is DataSourceObjectResponse =>
+          result.object === "data_source",
+      )
+      .map((dataSource) => ({
+        id: dataSource.id,
+        title: dataSource.title,
+        properties: dataSource.properties,
+      }));
   }
 
   async getChartData(chart: Chart) {
-    try {
-      if (chart.databases.length === 1) {
-        const body = {
-          data_source_id: chart.databases[0],
-          page_size: chart.config.limit,
-          filter_properties: this.getFilterProperties(chart),
-          sorts: this.getSorts(chart),
-          filter: this.getFilter(chart.config.filters),
-          result_type: "page",
-        } as QueryDataSourceParameters;
-        const res = await this.client.dataSources.query(body);
-        console.log("NotionService.getChartData", res, body);
-        return { data: res.results, error: null };
-      }
+    if (chart.databases.length === 1) {
+      const res = await this.client.dataSources.query({
+        data_source_id: chart.databases[0],
+        page_size: chart.config.limit,
+        filter_properties: this.getFilterProperties(chart),
+        sorts: this.getSorts(chart),
+        filter: this.getFilter(chart.config.filters),
+        result_type: "page",
+      });
 
-      this.validateChartConfig(chart);
-
-      return { data: [], error: null };
-    } catch (error) {
-      return { data: [], error: (error as Error).message };
+      const chartData = res.results.map((r) =>
+        this.buildChartDataItem(r as PageObjectResponse, chart.databases[0]),
+      );
+      const chartLabels = this.getChartLabels(
+        res.results[0] as PageObjectResponse,
+        chart.databases[0],
+      );
+      return {
+        chartData,
+        chartLabels,
+      };
     }
+
+    this.validateChartConfig(chart);
+
+    return {
+      chartData: [],
+      chartLabels: {},
+    };
+  }
+
+  private buildChartDataItem(r: PageObjectResponse, id: string) {
+    return Object.entries(
+      (r as unknown as PageObjectResponse).properties,
+    ).reduce(
+      (acc, [_, value]) => {
+        acc[`${id}::${value.id}`] = this.getPropertiesValue(value);
+        return acc;
+      },
+      {} as Record<string, any>,
+    );
+  }
+
+  private getChartLabels(r: PageObjectResponse, id: string) {
+    if (!r) return {};
+    return Object.fromEntries(
+      Object.entries(r.properties).map(([key, value]) => {
+        return [`${id}::${value.id}`, key];
+      }),
+    );
   }
 
   private splitProperty(property: string) {
@@ -106,27 +142,67 @@ export class NotionService {
     ];
   }
 
-  private getFilter(group: Chart["config"]["filters"]) {
-    if (!(group.and || group.or)) return undefined;
+  private getFilter(
+    group: Chart["config"]["filters"],
+    first: boolean = true,
+  ): any {
+    if ((group.and || group.or || []).length === 0) return undefined;
 
-    (group.and || group.or)!.forEach((filterOrGroup: any) => {
-      if ("and" in filterOrGroup || "or" in filterOrGroup) {
-        return this.getFilter(filterOrGroup);
-      }
+    if (first && group.and && group.and.length === 1)
+      return this.formFilterFromData(group.and[0] as ChartConfigFilterType);
 
-      if ("type" in filterOrGroup) {
-        filterOrGroup[filterOrGroup.type] = {
-          [filterOrGroup.operator]: filterOrGroup.value,
-        };
-        delete filterOrGroup.operator;
-        delete filterOrGroup.value;
-        delete filterOrGroup.type;
-        const { propertyId } = this.splitProperty(filterOrGroup.property!);
-        filterOrGroup.property = propertyId;
-      }
-      return filterOrGroup;
-    });
-    return group as any;
+    return (group.and || group.or)!
+      .map((filterOrGroup) => {
+        if ("and" in filterOrGroup || "or" in filterOrGroup) {
+          return this.getFilter(filterOrGroup, false);
+        }
+
+        return this.formFilterFromData(filterOrGroup as ChartConfigFilterType);
+      })
+      .filter((f) => f !== undefined);
+  }
+
+  private formFilterFromData(data: ChartConfigFilterType) {
+    const value = this.getValueBasedOnOperator(data);
+    if (
+      !(
+        data.operator &&
+        data.property &&
+        data.type &&
+        typeof value !== "undefined"
+      )
+    )
+      return undefined;
+
+    return {
+      property: this.splitProperty(data.property!).propertyId,
+      [data.type]: {
+        [data.operator]: value,
+      },
+    };
+  }
+
+  private getValueBasedOnOperator(data: ChartConfigFilterType) {
+    if (["is_empty", "is_not_empty"].includes(data.operator!)) return true;
+
+    if (
+      [
+        "next_month",
+        "next_week",
+        "next_year",
+        "past_month",
+        "past_week",
+        "past_year",
+        "this_week",
+      ].includes(data.operator!)
+    )
+      return {};
+
+    if (data.type === "checkbox") {
+      return data.value == "true";
+    }
+
+    return data.value;
   }
 
   private validateChartConfig(chart: Chart) {
@@ -144,5 +220,21 @@ export class NotionService {
     }
 
     return true;
+  }
+
+  private getPropertiesValue(
+    property: PageObjectResponse["properties"][string],
+  ): any {
+    if (property.type === "date") {
+      return property[property.type]?.start;
+    }
+    if (property.type === "formula") {
+      return this.getPropertiesValue(
+        property[property.type] as PageObjectResponse["properties"][string],
+      );
+    }
+
+    //@ts-expect-error
+    return property[property.type];
   }
 }

@@ -259,7 +259,6 @@ export async function getDatabeses() {
   const databases = await new NotionService(
     workspace.access_token,
   ).getDatabases();
-  console.log(databases);
 
   return { databases, id: workspace.id };
 }

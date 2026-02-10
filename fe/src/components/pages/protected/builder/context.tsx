@@ -14,6 +14,7 @@ import { type PartialDataSourceObjectResponse } from "@notionhq/client";
 import { chartThemeNames } from "@/components/block/chart/themes";
 import { updateChart } from "@/app/[locale]/(protected)/(general)/dashboard/actions";
 import { toast } from "sonner";
+import { generateHashForObject } from "@/helpers/hash";
 
 type SortProperty = {
   name: string;
@@ -78,18 +79,22 @@ interface BuilderContextType {
 
 const BuilderContext = createContext<BuilderContextType | undefined>(undefined);
 
+type DatabasesType = {
+  id: PartialDataSourceObjectResponse["id"];
+  title: any[];
+  properties: PartialDataSourceObjectResponse["properties"];
+}[];
+
 export function BuilderProvider({
   children,
   databasesPromise,
 }: React.PropsWithChildren<{
-  databasesPromise: Promise<PartialDataSourceObjectResponse[]>;
+  databasesPromise: Promise<DatabasesType>;
 }>) {
   const { id } = useParams();
   const { charts } = useDashboardContext();
   const [chart, set] = useState<Chart | null>(null);
-  const [databases, setDatabases] = useState<PartialDataSourceObjectResponse[]>(
-    [],
-  );
+  const [databases, setDatabases] = useState<DatabasesType>([]);
 
   //
   // data loading
@@ -132,13 +137,7 @@ export function BuilderProvider({
       }
 
       const params = new URLSearchParams(searchParams);
-      const hash = await window.crypto.subtle
-        .digest("SHA-1", new TextEncoder().encode(JSON.stringify(chart)))
-        .then((hashBuffer) =>
-          new Uint8Array(hashBuffer)
-            .map((b: any) => b.toString(16).padStart(2, "0"))
-            .join(""),
-        );
+      const hash = await generateHashForObject(chart);
       params.set("refresh_preview", hash);
       router.replace(`?${params.toString()}`);
     });
@@ -229,7 +228,7 @@ export function BuilderProvider({
 
       return {
         id: nextDb?.id ?? "",
-        name: (nextDb as any)?.title?.[0]?.plain_text,
+        name: nextDb?.title?.[0]?.plain_text,
         from: db.properties.concat(prevDb?.properties ?? []),
         to: nextDb?.properties ?? [],
       };
