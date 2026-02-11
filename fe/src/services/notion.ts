@@ -5,7 +5,6 @@ import {
   type DataSourceObjectResponse,
   type QueryDataSourceParameters,
 } from "@notionhq/client";
-import { useTranslations } from "next-intl";
 import { getMessages } from "next-intl/server";
 
 const ErrorCodes = {
@@ -62,6 +61,10 @@ export class NotionService {
   }
 
   async getChartData(chart: Chart) {
+
+    await this.validateChartConfig(chart);
+
+    
     if (chart.databases.length === 1) {
       const res = await this.client.dataSources.query({
         data_source_id: chart.databases[0],
@@ -85,7 +88,6 @@ export class NotionService {
       };
     }
 
-    await this.validateChartConfig(chart);
 
     return {
       chartData: [],
