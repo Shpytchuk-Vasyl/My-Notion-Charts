@@ -1,7 +1,7 @@
 "use client";
 import { use } from "react";
 import { useDashboardContext } from "./context";
-import { ChartGrid } from "./grid";
+import { ChartGrid } from "./grid/grid";
 import { NextIntlClientProvider, useLocale, useTranslations } from "next-intl";
 import { TourProvider } from "@/components/ui/tour";
 import { getTours } from "./tour";

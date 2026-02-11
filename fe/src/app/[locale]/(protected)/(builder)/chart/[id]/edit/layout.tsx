@@ -13,5 +13,3 @@ function LayoutContent({ children }: React.PropsWithChildren<{}>) {
 
   return <Fragment key={refreshKey}>{children}</Fragment>;
 }
-
-

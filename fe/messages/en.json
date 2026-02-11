@@ -32,6 +32,18 @@
     },
     "chartType": {
       "invalid": "Invalid chart type"
+    },
+    "x-axis": {
+      "required": "X-axis is required. Select a property for the X-axis"
+    },
+    "y-axis": {
+      "min": "At least one Y-axis is required. Add a property for the Y-axis"
+    },
+    "limit": {
+      "invalid": "Record limit cannot be negative"
+    },
+    "joins": {
+      "invalid": "Invalid join configuration. All joins must have source and target properties"
     }
   },
   "pages": {

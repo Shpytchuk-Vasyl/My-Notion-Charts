@@ -1,7 +1,7 @@
 "use client";
 import { ChartIcon } from "@/components/block/chart/icons";
 import { AvatarInfo } from "@/components/ui/avatar-info";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardHeader } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,13 +13,14 @@ import { Link, routing } from "@/i18n/routing";
 import { useGridStackContext } from "@/lib/gridstack";
 import { type Chart } from "@/models/chart";
 import { CircleMinus, Folder, MoreVertical, Share, Trash2 } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 export function GridChart({ chart }: { chart: Chart }) {
   const t = useTranslations("pages.dashboard.grid.chartType");
+  const locale = useLocale();
   return (
-    <Card data-tour-step-id="grid-chart" className="size-full shadow-none">
-      <CardHeader className="grid-rows-1 grid-cols-[min-content_auto_min-content] items-center">
+    <Card data-tour-step-id="grid-chart" className="size-full shadow-none p-6">
+      <CardHeader className="grid-rows-1 grid-cols-[min-content_auto_min-content] items-center p-0">
         <AvatarInfo
           title={chart.name}
           description={t(chart.type)}
@@ -27,7 +28,14 @@ export function GridChart({ chart }: { chart: Chart }) {
         />
         <DropdownOptions id={chart.id} />
       </CardHeader>
-      <CardContent className="flex flex-col items-center gap-6 pt-6"></CardContent>
+      <iframe
+        key={`grid-chart-view-${chart.id}`}
+        src={`/${locale}/chart/${chart.id}/view`}
+        title={chart.name}
+        className="size-full border-none grid-chart-view"
+        frameBorder={0}
+        allowFullScreen
+      />
     </Card>
   );
 }

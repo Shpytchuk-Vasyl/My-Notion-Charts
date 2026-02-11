@@ -21,11 +21,11 @@ export default function BuilderLayout({
       {header}
       <div className="flex flex-1">
         {sidebar}
-          <SidebarInset>{children}</SidebarInset>
-          <ChatSidebarProvider>
-            {chat}
-            <ChatSidebarTrigger />
-          </ChatSidebarProvider>
+        <SidebarInset>{children}</SidebarInset>
+        <ChatSidebarProvider>
+          {chat}
+          <ChatSidebarTrigger />
+        </ChatSidebarProvider>
       </div>
     </BuilderProvider>
   );

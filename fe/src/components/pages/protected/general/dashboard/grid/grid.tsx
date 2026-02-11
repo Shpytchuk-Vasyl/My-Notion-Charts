@@ -10,9 +10,9 @@ import {
   useGridStackContext,
 } from "@/lib/gridstack";
 import { useEffect, useState } from "react";
-import { GridChart } from "./grid-chart";
+import { GridChart } from "./chart";
 import { useTour } from "@/components/ui/tour";
-import { TOUR_DASHBOARD_DRAG_CHART_ID } from "./tour";
+import { TOUR_DASHBOARD_DRAG_CHART_ID } from "./../tour";
 
 const LAYOUT_KEY = "chartGridLayout";
 
@@ -68,10 +68,34 @@ const SetupDragIn = () => {
       }
     };
 
+    const handDragStart = () => {
+      Array.from(document.getElementsByClassName("grid-chart-view")).forEach(
+        (iframe) => {
+          iframe.classList.add("pointer-events-none");
+        },
+      );
+    };
+
+    const handleDragStop = () => {
+      Array.from(document.getElementsByClassName("grid-chart-view")).forEach(
+        (iframe) => {
+          iframe.classList.remove("pointer-events-none");
+        },
+      );
+    };
+
+    gridStack.on("resizestart", handDragStart);
+    gridStack.on("resizestop", handleDragStop);
+    gridStack.on("dragstop", handleDragStop);
+    gridStack.on("dragstart", handDragStart);
     gridStack.on("dropped", handleDropped);
 
     return () => {
+      gridStack.off("resizestart");
+      gridStack.off("resizestop");
       gridStack.off("dropped");
+      gridStack.off("dragstart");
+      gridStack.off("dragstop");
     };
   }, [gridStack, _rawWidgetMetaMap]);
 

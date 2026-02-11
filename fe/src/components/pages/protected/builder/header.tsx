@@ -32,12 +32,7 @@ export function AppHeader() {
         >
           Save
         </Button>
-        <Button
-          variant="ghost"
-          size="icon"
-          id="chat-sidebar-trigger"
-          disabled
-        >
+        <Button variant="ghost" size="icon" id="chat-sidebar-trigger" disabled>
           <Sparkles />
         </Button>
       </div>

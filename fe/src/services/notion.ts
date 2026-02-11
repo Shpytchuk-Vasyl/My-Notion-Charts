@@ -5,12 +5,14 @@ import {
   type DataSourceObjectResponse,
   type QueryDataSourceParameters,
 } from "@notionhq/client";
+import { useTranslations } from "next-intl";
+import { getMessages } from "next-intl/server";
 
 const ErrorCodes = {
-  missing_x_axis: "MISSING_X_AXIS",
-  missing_y_axis: "MISSING_Y_AXIS",
-  invalid_limit: "INVALID_LIMIT",
-  invalid_joins: "INVALID_JOINS",
+  missing_x_axis: "x-axis.required",
+  missing_y_axis: "y-axis.min",
+  invalid_limit: "limit.invalid",
+  invalid_joins: "joins.invalid",
   something_went_wrong: "SOMETHING_WENT_WRONG",
 };
 
@@ -21,10 +23,14 @@ export class NotionService {
     this.client = new Client({
       auth: accessToken,
       fetch: (url, init) => {
-        console.log('[Notion API] Fetching:', url);
+        console.log("[Notion API] Fetching:", url);
         const startTime = Date.now();
-        return globalThis.fetch(url, init).then(res => {
-          console.log(`[Notion API] Response in ${Date.now() - startTime}ms:`, res.status, res.headers.get('x-vercel-cache') || 'no-cache');
+        return globalThis.fetch(url, init).then((res) => {
+          console.log(
+            `[Notion API] Response in ${Date.now() - startTime}ms:`,
+            res.status,
+            res.headers.get("x-vercel-cache") || "no-cache",
+          );
           return res;
         });
       },
@@ -79,7 +85,7 @@ export class NotionService {
       };
     }
 
-    this.validateChartConfig(chart);
+    await this.validateChartConfig(chart);
 
     return {
       chartData: [],
@@ -212,18 +218,19 @@ export class NotionService {
     return data.value;
   }
 
-  private validateChartConfig(chart: Chart) {
+  private async validateChartConfig(chart: Chart) {
+    const t = (await getMessages())["validation"];
     if (!chart.config.axis.x || !chart.config.axis.x.property) {
-      throw new Error(ErrorCodes.missing_x_axis);
+      throw new Error(t[ErrorCodes.missing_x_axis]);
     }
     if (chart.config.axis.y.length === 0 || !chart.config.axis.y[0].property) {
-      throw new Error(ErrorCodes.missing_y_axis);
+      throw new Error(t[ErrorCodes.missing_y_axis]);
     }
     if (chart.config.limit && chart.config.limit < 0) {
-      throw new Error(ErrorCodes.invalid_limit);
+      throw new Error(t[ErrorCodes.invalid_limit]);
     }
     if (chart.config.joins.some((join) => !(join.to && join.from))) {
-      throw new Error(ErrorCodes.invalid_joins);
+      throw new Error(t[ErrorCodes.invalid_joins]);
     }
 
     return true;

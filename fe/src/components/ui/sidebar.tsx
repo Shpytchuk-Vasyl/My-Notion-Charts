@@ -136,7 +136,7 @@ type SidebarProviderProps = {
   WIDTH?: string;
   WIDTH_ICON?: string;
   KEYBOARD_SHORTCUT?: string;
-}
+};
 
 function PureSidebarProvider({
   defaultOpen = true,
@@ -148,7 +148,7 @@ function PureSidebarProvider({
   WIDTH = SIDEBAR_WIDTH,
   WIDTH_ICON = SIDEBAR_WIDTH_ICON,
   KEYBOARD_SHORTCUT = SIDEBAR_KEYBOARD_SHORTCUT,
-}:  React.PropsWithChildren<SidebarProviderProps>) {
+}: React.PropsWithChildren<SidebarProviderProps>) {
   const values = useSidebarProvider(
     defaultOpen,
     openProp,
@@ -159,9 +159,7 @@ function PureSidebarProvider({
   );
 
   return (
-    <SidebarContext.Provider value={values}>
-          {children}
-    </SidebarContext.Provider>
+    <SidebarContext.Provider value={values}>{children}</SidebarContext.Provider>
   );
 }
 

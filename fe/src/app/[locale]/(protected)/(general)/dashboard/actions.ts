@@ -4,7 +4,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { redirect, routing } from "@/i18n/routing";
 import { createClient } from "@/lib/supabase/server";
 import { WorkspaceRepository } from "@/models/workspace";
-import { config, z } from "zod";
+import { z } from "zod";
 import {
   ChartRepository,
   type ChartType,
