@@ -1,22 +1,22 @@
 "use server";
 
 import { getLocale, getTranslations } from "next-intl/server";
+import { z } from "zod";
 import { redirect, routing } from "@/i18n/routing";
 import { createClient } from "@/lib/supabase/server";
-import { WorkspaceRepository } from "@/models/workspace";
-import { z } from "zod";
 import {
+  type Chart,
+  type ChartConfig,
   ChartRepository,
   type ChartType,
-  type ChartConfig,
   DEFAULT_CHART_CONFIG_CACHE_DURATION,
-  DEFAULT_CHART_CONFIG_THEME,
   DEFAULT_CHART_CONFIG_LIMIT,
-  type Chart,
+  DEFAULT_CHART_CONFIG_THEME,
 } from "@/models/chart";
+import { WorkspaceRepository } from "@/models/workspace";
+import { NotionService } from "@/services/notion";
 import { UserService } from "@/services/user";
 import { WorkspaceService } from "@/services/workspace";
-import { NotionService } from "@/services/notion";
 
 export async function deleteWorkspace(workspaceId: string) {
   const supabase = await createClient();
@@ -247,18 +247,4 @@ export async function updateChart(newChart: Chart) {
   }
 
   return { success: true, msg: "" };
-}
-
-export async function getDatabeses() {
-  const workspace = await WorkspaceService.getCurrentWorkspace();
-
-  if (!workspace) {
-    return { databases: [], id: "" };
-  }
-
-  const databases = await new NotionService(
-    workspace.access_token,
-  ).getDatabases();
-
-  return { databases, id: workspace.id };
 }

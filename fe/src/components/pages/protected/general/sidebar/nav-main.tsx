@@ -6,7 +6,7 @@ import {
   type LucideIcon,
   Settings2,
 } from "lucide-react";
-
+import { useTranslations } from "next-intl";
 import {
   Collapsible,
   CollapsibleContent,
@@ -23,7 +23,6 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
-import { useTranslations } from "next-intl";
 
 type NavItem = {
   titleKey: "documentation" | "settings";

@@ -1,4 +1,6 @@
 "use client";
+import { CircleMinus, Folder, MoreVertical, Share, Trash2 } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 import { ChartIcon } from "@/components/block/chart/icons";
 import { AvatarInfo } from "@/components/ui/avatar-info";
 import { Card, CardHeader } from "@/components/ui/card";
@@ -11,9 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Link, routing } from "@/i18n/routing";
 import { useGridStackContext } from "@/lib/gridstack";
-import { type Chart } from "@/models/chart";
-import { CircleMinus, Folder, MoreVertical, Share, Trash2 } from "lucide-react";
-import { useLocale, useTranslations } from "next-intl";
+import type { Chart } from "@/models/chart";
 
 export function GridChart({ chart }: { chart: Chart }) {
   const t = useTranslations("pages.dashboard.grid.chartType");
@@ -28,14 +28,16 @@ export function GridChart({ chart }: { chart: Chart }) {
         />
         <DropdownOptions id={chart.id} />
       </CardHeader>
-      <iframe
-        key={`grid-chart-view-${chart.id}`}
-        src={`/${locale}/chart/${chart.id}/view`}
-        title={chart.name}
-        className="size-full border-none grid-chart-view"
-        frameBorder={0}
-        allowFullScreen
-      />
+      {process.env.NEXT_PUBLIC_OMIT_IFRAME_FOR_SPEEDUP_DEV ? null : (
+        <iframe
+          key={`grid-chart-view-${chart.id}`}
+          src={`/${locale}/chart/${chart.id}/view`}
+          title={chart.name}
+          className="size-full border-none grid-chart-view"
+          frameBorder={0}
+          allowFullScreen
+        />
+      )}
     </Card>
   );
 }

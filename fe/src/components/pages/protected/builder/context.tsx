@@ -1,6 +1,7 @@
 "use client";
 
-import { type Chart, type ChartConfigFilterType } from "@/models/chart";
+import type { PartialDataSourceObjectResponse } from "@notionhq/client";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import {
   createContext,
   useContext,
@@ -8,13 +9,11 @@ import {
   useState,
   useTransition,
 } from "react";
-import { useDashboardContext } from "@/pages/protected/general/dashboard/context";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { type PartialDataSourceObjectResponse } from "@notionhq/client";
-import { chartThemeNames } from "@/components/block/chart/themes";
-import { updateChart } from "@/app/[locale]/(protected)/(general)/dashboard/actions";
 import { toast } from "sonner";
+import { updateChart } from "@/app/[locale]/(protected)/(general)/dashboard/actions";
+import { chartThemeNames } from "@/components/block/chart/themes";
 import { generateHashForObject } from "@/helpers/hash";
+import type { Chart, ChartConfigFilterType } from "@/models/chart";
 
 type SortProperty = {
   name: string;
@@ -85,14 +84,8 @@ type DatabasesType = {
   properties: PartialDataSourceObjectResponse["properties"];
 }[];
 
-export function BuilderProvider({
-  children,
-  databasesPromise,
-}: React.PropsWithChildren<{
-  databasesPromise: Promise<DatabasesType>;
-}>) {
+export function BuilderProvider({ children }: React.PropsWithChildren<{}>) {
   const { id } = useParams();
-  const { charts } = useDashboardContext();
   const [chart, set] = useState<Chart | null>(null);
   const [databases, setDatabases] = useState<DatabasesType>([]);
 
@@ -102,12 +95,17 @@ export function BuilderProvider({
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     async function loadData() {
-      const [awaitedCharts, awaitedDatabases] = await Promise.all([
-        charts,
-        databasesPromise,
-      ]);
-      const currentChart = awaitedCharts.find((c) => c.id === id) ?? null;
-      set(currentChart);
+      if (!id) return;
+      const [awaitedDatabases, currentChart] = (await Promise.all([
+        fetch("/api/notion/databases").then((res) =>
+          res.json().then(({ databases }) => databases),
+        ),
+        fetch(`/api/chart/${id}`).then((res) =>
+          res.json().then(({ chart }) => chart),
+        ),
+      ])) as [DatabasesType, Chart];
+
+      set(currentChart as Chart);
       setDatabases(
         currentChart
           ? awaitedDatabases.filter((db) =>
@@ -118,7 +116,7 @@ export function BuilderProvider({
       setIsLoading(false);
     }
     loadData();
-  }, [charts, databasesPromise, id]);
+  }, [id]);
 
   //
   // Refresh
@@ -329,7 +327,7 @@ export function BuilderProvider({
     newFilter: Partial<ChartConfigFilterType> = {},
   ) => {
     setChart((prev) => {
-      let node = getNodeAtPath(
+      const node = getNodeAtPath(
         prev.config.filters,
         path,
         path.length,
@@ -343,7 +341,7 @@ export function BuilderProvider({
     props: Partial<ChartConfigFilterType>,
   ) => {
     setChart((prev) => {
-      let node = getNodeAtPath(
+      const node = getNodeAtPath(
         prev.config.filters,
         path,
         path.length - 1,
@@ -357,7 +355,7 @@ export function BuilderProvider({
   };
   const removeFilter = (path: PathType) => {
     setChart((prev) => {
-      let node = getNodeAtPath(
+      const node = getNodeAtPath(
         prev.config.filters,
         path,
         path.length - 1,
@@ -382,7 +380,7 @@ export function BuilderProvider({
   };
   const addFilterGroup = (path: PathType) => {
     setChart((prev) => {
-      let node = getNodeAtPath(prev.config.filters, path, path.length);
+      const node = getNodeAtPath(prev.config.filters, path, path.length);
       if (Array.isArray(node)) {
         node.push({ and: [{}] });
       } else {
@@ -396,7 +394,7 @@ export function BuilderProvider({
     newKey: "and" | "or" | (string & {}),
   ) => {
     setChart((prev) => {
-      let node = getNodeAtPath(prev.config.filters, path, path.length);
+      const node = getNodeAtPath(prev.config.filters, path, path.length);
       const oldKey = newKey === "and" ? "or" : "and";
       node[newKey] = node[oldKey];
       delete node[oldKey];
@@ -405,7 +403,7 @@ export function BuilderProvider({
   };
   const removeFilterGroup = (path: PathType) => {
     setChart((prev) => {
-      let node = getNodeAtPath(
+      const node = getNodeAtPath(
         prev.config.filters,
         path,
         path.length - 1,

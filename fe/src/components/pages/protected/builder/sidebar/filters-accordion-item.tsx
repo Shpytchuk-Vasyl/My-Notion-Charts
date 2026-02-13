@@ -1,23 +1,23 @@
+import { Plus, SquarePen } from "lucide-react";
+import { useTranslations } from "next-intl";
+import {
+  FilterForm,
+  FilterFormToString,
+} from "@/components/block/notion/filter";
 import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { useTranslations } from "next-intl";
-import { useBuilderContext } from "../context";
-import { FieldGroup, FieldLabel } from "@/components/ui/field";
 
 import { Button } from "@/components/ui/button";
-import { Plus, SquarePen } from "lucide-react";
+import { FieldGroup, FieldLabel } from "@/components/ui/field";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-  FilterForm,
-  FilterFormToString,
-} from "@/components/block/notion/filter";
+import { useBuilderContext } from "../context";
 
 export const FiltersAccordionItem = () => {
   const t = useTranslations("pages.chart.edit.nav.filters");

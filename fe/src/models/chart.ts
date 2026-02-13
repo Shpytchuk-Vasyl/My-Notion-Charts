@@ -1,5 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { Tables, Database, Enums, TablesInsert } from "./_database.types";
+import type { Database, Enums, Tables, TablesInsert } from "./_database.types";
 
 export type ChartType = Enums<"chart_type">;
 
@@ -58,19 +58,26 @@ export class ChartRepository {
   async getWorkspaceCharts(workspaceId: string) {
     return this.supabase
       .from("charts")
-      .select("*")
+      .select("created_at,databases,id,name,type,updated_at,workspace_id")
       .eq("workspace_id", workspaceId)
       .order("updated_at", { ascending: false })
       .then((res) => {
         if (res.error) {
           return { data: [], error: res.error };
         }
-        return { ...res, data: res.data as Chart[] };
+        return { ...res, data: res.data as Omit<Chart, "config">[] };
       });
   }
 
-  async getChartById(chartId: string) {
-    return this.supabase.from("charts").select("*").eq("id", chartId).single();
+  async getChartById<Query extends string = "*">(
+    chartId: string,
+    fields: Query = "*" as Query,
+  ) {
+    return this.supabase
+      .from("charts")
+      .select(fields)
+      .eq("id", chartId)
+      .single();
   }
 
   async getChartByIdWithWorkspace(chartId: string) {

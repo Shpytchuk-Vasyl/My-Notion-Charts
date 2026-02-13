@@ -1,5 +1,5 @@
-import { type Chart, ChartRepository } from "@/models/chart";
 import { createClient } from "@/lib/supabase/server";
+import { type Chart, ChartRepository } from "@/models/chart";
 
 export class ChartService {
   static async getChartsByWorkspace(workspaceId: string) {
@@ -12,18 +12,21 @@ export class ChartService {
     return { charts };
   }
 
-  static async getChartById(chartId: string) {
+  static async getChartById<Query extends string = "*">(
+    chartId: string,
+    fields?: Query,
+  ) {
     const supabase = await createClient();
 
     const { data: chart, error } = await new ChartRepository(
       supabase,
-    ).getChartById(chartId);
+    ).getChartById(chartId, fields);
 
     if (error) {
       throw error;
     }
 
-    return chart as Chart;
+    return chart;
   }
 
   static async getChartByIdWithWorkspace(chartId: string) {

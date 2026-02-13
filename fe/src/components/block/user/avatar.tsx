@@ -1,7 +1,7 @@
 "use client";
-import { AvatarInfo, AvatarInfoSckeleton } from "@/components/ui/avatar-info";
-import { useDashboardContext } from "@/pages/protected/general/dashboard/context";
 import { Suspense, use } from "react";
+import { AvatarInfo, AvatarInfoSckeleton } from "@/components/ui/avatar-info";
+import { useProtectedContext } from "@/pages/protected/context";
 
 export function UserAvatar() {
   return (
@@ -12,7 +12,7 @@ export function UserAvatar() {
 }
 
 const Avatar = () => {
-  const { user } = useDashboardContext();
+  const { user } = useProtectedContext();
   const resolvedUser = use(user);
   return (
     <AvatarInfo

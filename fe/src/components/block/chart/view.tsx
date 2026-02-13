@@ -1,14 +1,6 @@
 "use client";
 
 import {
-  ChartContainer,
-  ChartLegend,
-  ChartLegendContent,
-  ChartTooltip,
-  ChartTooltipContent,
-  type ChartConfig,
-} from "@/components/ui/chart";
-import {
   Area,
   AreaChart,
   Bar,
@@ -32,7 +24,15 @@ import {
   YAxis,
   ZAxis,
 } from "recharts";
-import { type Chart } from "@/models/chart";
+import {
+  type ChartConfig,
+  ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
+import type { Chart } from "@/models/chart";
 import { type ChartThemeType, getChartThemeStyles } from "./themes";
 
 type ChartViewProps = {
@@ -205,7 +205,7 @@ export function ChartView({
             />
           </PieChart>
         );
-      case "radar":
+      case "radar": {
         const showCircle =
           new Set(chartData.map((entry) => entry[xKey])).size > 10;
         return (
@@ -236,6 +236,7 @@ export function ChartView({
             ))}
           </RadarChart>
         );
+      }
       case "radial":
         if (!primaryYKey) return null;
         return (
@@ -265,7 +266,7 @@ export function ChartView({
           </RadialBarChart>
         );
       case "bar":
-      default:
+      default: {
         const showRadius =
           new Set(chartData.map((entry) => entry[xKey])).size <= 10;
         return (
@@ -290,6 +291,7 @@ export function ChartView({
             ))}
           </BarChart>
         );
+      }
     }
   };
 

@@ -3,14 +3,14 @@ import { deleteChart } from "@/app/[locale]/(protected)/(general)/dashboard/acti
 import { ChartService } from "@/services/chart";
 import { DeleteChartForm } from "./form";
 
-export function DeleteChartModal({
+export function ShareChartModal({
   params,
   isIntercepted = false,
 }: {
   params: Promise<{ id: string }>;
   isIntercepted?: boolean;
 }) {
-  const chart = params.then(({ id }) => ChartService.getChartById(id, "name"));
+  const chart = params.then(({ id }) => ChartService.getChartById(id));
 
   const t = useTranslations("pages.dashboard.charts.delete");
   return (
@@ -24,7 +24,7 @@ export function DeleteChartModal({
         successMessage: t("successMessage"),
       }}
       isIntercepted={isIntercepted}
-      chart={chart}
+      chart={chart as any}
     />
   );
 }

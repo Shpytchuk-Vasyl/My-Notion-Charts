@@ -1,25 +1,18 @@
-import { PropertyIcon } from "@/components/block/notion/property";
 import {
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  Select,
-} from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Plus,
-  ChevronDown,
-  MoreVertical,
-  LayersPlus,
   CalendarIcon,
+  ChevronDown,
   Copy,
-  Trash2,
   CopyX,
+  LayersPlus,
+  MoreVertical,
+  Plus,
+  Trash2,
 } from "lucide-react";
-import { type ChartConfigFilterType, type Chart } from "@/models/chart";
+import { useTranslations } from "next-intl";
+import { createContext, Fragment, useContext } from "react";
+import { PropertyIcon } from "@/components/block/notion/property";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import { Card } from "@/components/ui/card";
 import {
   DropdownMenu,
@@ -27,9 +20,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useBuilderContext } from "@/pages/protected/builder/context";
-import { createContext, Fragment, useContext } from "react";
-import { useTranslations } from "next-intl";
+import { Input } from "@/components/ui/input";
 import {
   MultiSelect,
   MultiSelectContent,
@@ -43,7 +34,16 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import type { Chart, ChartConfigFilterType } from "@/models/chart";
+import { useBuilderContext } from "@/pages/protected/builder/context";
 
 const typeAndAllowedFilters = {
   checkbox: {
@@ -768,7 +768,7 @@ export const FilterFormToString = (
     .map(([groupKey, filtersAndGroups]) =>
       filtersAndGroups
         .map((filterOrGroup, index) => {
-          let strs = [index === 0 ? "Де" : groupKey];
+          const strs = [index === 0 ? "Де" : groupKey];
           if ("and" in filterOrGroup || "or" in filterOrGroup) {
             strs.push("(");
             strs.push(

@@ -1,10 +1,9 @@
-import { useRef, memo } from "react";
+import type { GridStackWidget } from "gridstack";
+import { type ComponentType, memo, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useGridStackContext } from "./grid-stack-context";
 import { useGridStackRenderContext } from "./grid-stack-render-context";
 import { GridStackWidgetContext } from "./grid-stack-widget-context";
-import { GridStackWidget } from "gridstack";
-import { ComponentType } from "react";
 
 export interface ComponentDataType<T = object> {
   name: string;

@@ -1,8 +1,7 @@
 import { SidebarInset } from "@/components/ui/sidebar";
-import { BuilderProvider } from "@/pages/protected/builder/context";
-import { getDatabeses } from "../(general)/dashboard/actions";
 import { ChatSidebarProvider } from "@/pages/protected/builder/chat/context";
 import { ChatSidebarTrigger } from "@/pages/protected/builder/chat/sidebar-trigger";
+import { BuilderProvider } from "@/pages/protected/builder/context";
 
 export default function BuilderLayout({
   children,
@@ -15,14 +14,12 @@ export default function BuilderLayout({
   chat: React.ReactNode;
 }>) {
   return (
-    <BuilderProvider
-      databasesPromise={getDatabeses().then(({ databases }) => databases)}
-    >
+    <BuilderProvider>
       {header}
       <div className="flex flex-1">
         {sidebar}
         <SidebarInset>{children}</SidebarInset>
-        <ChatSidebarProvider>
+        <ChatSidebarProvider defaultOpen={false}>
           {chat}
           <ChatSidebarTrigger />
         </ChatSidebarProvider>

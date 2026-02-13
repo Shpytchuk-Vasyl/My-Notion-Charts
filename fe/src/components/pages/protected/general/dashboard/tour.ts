@@ -1,4 +1,4 @@
-import { type Tour } from "@/components/ui/tour";
+import type { Tour } from "@/components/ui/tour";
 
 export const TOUR_DASHBOARD_DRAG_CHART_ID = "drag-chart-to-dashboard";
 

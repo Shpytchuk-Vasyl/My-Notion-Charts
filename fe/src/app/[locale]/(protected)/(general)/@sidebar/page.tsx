@@ -1,16 +1,17 @@
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
 } from "@/components/ui/sidebar";
-import { getMessages } from "next-intl/server";
-import { NextIntlClientProvider } from "next-intl";
 import { NavCharts } from "@/pages/protected/general/sidebar/nav-charts";
 import { NavMain } from "@/pages/protected/general/sidebar/nav-main";
 import { NavSecondary } from "@/pages/protected/general/sidebar/nav-secondary";
 import { NavUser } from "@/pages/protected/general/sidebar/nav-user";
 import { NavWorkspace } from "@/pages/protected/general/sidebar/nav-workspace";
+
 export { generateStaticParams } from "@/i18n/static-params";
 
 export default async function AppSidebar() {

@@ -121,12 +121,13 @@ export class WorkspaceRepository {
       .eq("user_id", userId);
   }
 
-  async getWorkspaceById(id: string) {
+  async getWorkspaceById<Query extends string = "*">(
+    id: string,
+    fields: Query = "created_at, id, updated_at, user_id, workspace_icon, workspace_id, workspace_name" as Query,
+  ) {
     return this.supabase
       .from("workspaces")
-      .select(
-        "created_at, id, updated_at, user_id, workspace_icon, workspace_id, workspace_name",
-      )
+      .select(fields)
       .eq("id", id)
       .single();
   }

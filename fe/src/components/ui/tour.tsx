@@ -3,11 +3,10 @@
 import type { Content } from "@radix-ui/react-popover";
 import { XIcon } from "lucide-react";
 import Link from "next/link";
-import { createPortal } from "react-dom";
-
-import { cn } from "@/lib/utils";
 import { createContext, useContext, useEffect, useState } from "react";
-import { Popover, PopoverAnchor, PopoverContent } from "./popover";
+import { createPortal } from "react-dom";
+import { cn } from "@/lib/utils";
+import { Button } from "./button";
 import {
   Card,
   CardAction,
@@ -17,7 +16,7 @@ import {
   CardHeader,
   CardTitle,
 } from "./card";
-import { Button } from "./button";
+import { Popover, PopoverAnchor, PopoverContent } from "./popover";
 
 const TourContext = createContext<{
   start: (tourId: string) => void;

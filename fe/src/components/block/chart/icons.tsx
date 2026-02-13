@@ -1,13 +1,13 @@
-import { ChartType } from "@/models/chart";
 import {
   AreaChart,
   BarChart,
   LineChart,
-  LucideIcon,
+  type LucideIcon,
   PieChart,
   Radar,
   ScatterChart,
 } from "lucide-react";
+import type { ChartType } from "@/models/chart";
 
 export const chartIcons: Record<ChartType, LucideIcon> = {
   bar: BarChart,

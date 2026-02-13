@@ -1,6 +1,7 @@
 "use client";
 import { Bell, ChevronsUpDown, LogOut } from "lucide-react";
-
+import { useTranslations } from "next-intl";
+import { UserAvatar } from "@/components/block/user/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,8 +17,6 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { Link, routing } from "@/i18n/routing";
-import { useTranslations } from "next-intl";
-import { UserAvatar } from "@/components/block/user/avatar";
 
 export function NavUser() {
   const t = useTranslations("nav");

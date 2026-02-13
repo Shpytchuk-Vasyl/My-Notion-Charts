@@ -1,11 +1,11 @@
-import { type ChartConfigFilterType, type Chart } from "@/models/chart";
 import {
   Client,
-  type PageObjectResponse,
   type DataSourceObjectResponse,
+  type PageObjectResponse,
   type QueryDataSourceParameters,
 } from "@notionhq/client";
 import { getMessages } from "next-intl/server";
+import type { Chart, ChartConfigFilterType } from "@/models/chart";
 
 const ErrorCodes = {
   missing_x_axis: "x-axis.required",
@@ -61,10 +61,8 @@ export class NotionService {
   }
 
   async getChartData(chart: Chart) {
-
     await this.validateChartConfig(chart);
 
-    
     if (chart.databases.length === 1) {
       const res = await this.client.dataSources.query({
         data_source_id: chart.databases[0],
@@ -87,7 +85,6 @@ export class NotionService {
         chartLabels,
       };
     }
-
 
     return {
       chartData: [],
@@ -214,7 +211,7 @@ export class NotionService {
       return {};
 
     if (data.type === "checkbox") {
-      return data.value == "true";
+      return data.value === "true";
     }
 
     return data.value;
@@ -248,6 +245,9 @@ export class NotionService {
       return this.getPropertiesValue(
         property[property.type] as PageObjectResponse["properties"][string],
       );
+    }
+    if (property.type === "title") {
+      return property[property.type][0]?.plain_text;
     }
 
     //@ts-expect-error

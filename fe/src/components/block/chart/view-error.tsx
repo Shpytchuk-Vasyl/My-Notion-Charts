@@ -1,5 +1,5 @@
-import { Card, CardDescription } from "@/components/ui/card";
 import { AlertCircle } from "lucide-react";
+import { Card, CardDescription } from "@/components/ui/card";
 
 type Props = {
   error: string;

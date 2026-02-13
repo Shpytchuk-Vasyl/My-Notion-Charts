@@ -1,8 +1,8 @@
+import { BarChart3 } from "lucide-react";
 import NextLink from "next/link";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { useTranslations } from "next-intl";
-import { BarChart3 } from "lucide-react";
 import { Link, routing } from "@/i18n/routing";
 
 export function AddWorkspace() {

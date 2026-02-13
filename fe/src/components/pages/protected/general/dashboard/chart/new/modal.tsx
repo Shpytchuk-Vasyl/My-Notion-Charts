@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl";
-import { DefaultModal } from "@/components/ui/modal";
 import { createChart } from "@/app/[locale]/(protected)/(general)/dashboard/actions";
+import { DefaultModal } from "@/components/ui/modal";
 import { NewChartForm } from "./form";
 
 export { generateStaticParams } from "@/i18n/static-params";

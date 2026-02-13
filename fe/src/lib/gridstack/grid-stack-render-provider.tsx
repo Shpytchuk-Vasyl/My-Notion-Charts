@@ -1,13 +1,17 @@
 import {
-  PropsWithChildren,
+  GridStack,
+  type GridStackOptions,
+  type GridStackWidget,
+} from "gridstack";
+import {
+  type PropsWithChildren,
   useCallback,
   useLayoutEffect,
   useMemo,
-  useRef,
   useReducer,
+  useRef,
 } from "react";
 import { useGridStackContext } from "./grid-stack-context";
-import { GridStack, GridStackOptions, GridStackWidget } from "gridstack";
 import { GridStackRenderContext } from "./grid-stack-render-context";
 // import isEqual from "react-fast-compare";
 

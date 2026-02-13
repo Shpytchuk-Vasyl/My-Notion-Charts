@@ -1,9 +1,9 @@
+import { useMessages } from "next-intl";
 import {
   AddChart,
   AddWorkspace,
 } from "@/pages/protected/general/dashboard/empty-state";
 import { DashboardPage } from "@/pages/protected/general/dashboard/page";
-import { useMessages } from "next-intl";
 
 export { generateStaticParams } from "@/i18n/static-params";
 

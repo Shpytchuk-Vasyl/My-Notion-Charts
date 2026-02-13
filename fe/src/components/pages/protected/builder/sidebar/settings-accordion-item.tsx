@@ -1,26 +1,26 @@
+import { useTranslations } from "next-intl";
+import { chartIcons } from "@/components/block/chart/icons";
+import {
+  type ChartThemeType,
+  getChartThemeStyles,
+} from "@/components/block/chart/themes";
 import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { useTranslations } from "next-intl";
-import { useBuilderContext } from "../context";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
 import {
-  SelectTrigger,
-  SelectValue,
+  Select,
   SelectContent,
   SelectGroup,
   SelectItem,
-  Select,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
-import { chartIcons } from "@/components/block/chart/icons";
-import { Input } from "@/components/ui/input";
-import {
-  getChartThemeStyles,
-  type ChartThemeType,
-} from "@/components/block/chart/themes";
+import { useBuilderContext } from "../context";
 
 export const SettingsAccordionItem = () => {
   const t = useTranslations("pages.chart.edit.nav.settings");

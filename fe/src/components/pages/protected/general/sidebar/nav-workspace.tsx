@@ -8,6 +8,7 @@ import {
   Trash2,
 } from "lucide-react";
 import NextLink from "next/link";
+import { useTranslations } from "next-intl";
 import { Suspense, use, useTransition } from "react";
 import { setWorkspaceAsCurrent } from "@/app/[locale]/(protected)/(general)/dashboard/actions";
 import { AvatarInfo, AvatarInfoSckeleton } from "@/components/ui/avatar-info";
@@ -26,9 +27,8 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Link, routing } from "@/i18n/routing";
-import { useTranslations } from "next-intl";
-import { type Workspace } from "@/models/workspace";
-import { useDashboardContext } from "@/pages/protected/general/dashboard/context";
+import type { Workspace } from "@/models/workspace";
+import { useProtectedContext } from "@/pages/protected/context";
 
 type NavWorkspaceProps = {
   editable?: boolean;
@@ -53,7 +53,7 @@ export function NavWorkspace(props: NavWorkspaceProps) {
 }
 
 function NavWorkspaceInner({ editable }: NavWorkspaceProps) {
-  const { workspaces, currentWorkspace } = useDashboardContext();
+  const { workspaces, currentWorkspace } = useProtectedContext();
   const [isPending, startTransition] = useTransition();
 
   const onSelectWorkspace = (workspaceId: string) => {

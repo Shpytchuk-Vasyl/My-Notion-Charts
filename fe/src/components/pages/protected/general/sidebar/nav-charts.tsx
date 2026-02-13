@@ -8,7 +8,9 @@ import {
   Share,
   Trash2,
 } from "lucide-react";
-
+import { useTranslations } from "next-intl";
+import { Suspense, use, useState } from "react";
+import { ChartIcon } from "@/components/block/chart/icons";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,17 +27,14 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Link, routing } from "@/i18n/routing";
-import { useTranslations } from "next-intl";
-import { Suspense, use, useState } from "react";
-import { useDashboardContext } from "@/pages/protected/general/dashboard/context";
-import { Skeleton } from "@/components/ui/skeleton";
-import { ChartIcon } from "@/components/block/chart/icons";
+import { useProtectedContext } from "@/pages/protected/context";
 
 const CHART_DISPLAY_LIMIT = 5;
 
@@ -65,7 +64,7 @@ export function NavCharts() {
 }
 
 function NavChartsInner() {
-  const { charts, currentWorkspace } = useDashboardContext();
+  const { charts, currentWorkspace } = useProtectedContext();
   const chartsData = use(charts);
   const currentWorkspaceData = use(currentWorkspace);
 

@@ -1,6 +1,6 @@
-import { Workspace, WorkspaceRepository } from "@/models/workspace";
-import { UserService } from "./user";
 import { createClient } from "@/lib/supabase/server";
+import { WorkspaceRepository } from "@/models/workspace";
+import { UserService } from "./user";
 
 export class WorkspaceService {
   static async getCachedWorkspaces() {
@@ -29,16 +29,19 @@ export class WorkspaceService {
     return workspace?.workspace || null;
   }
 
-  static async getWorkspaceById(id: string) {
+  static async getWorkspaceById<Query extends string = "*">(
+    id: string,
+    fields?: Query,
+  ) {
     const supabase = await createClient();
     const workspaceRepository = new WorkspaceRepository(supabase);
     const { data: workspace, error } =
-      await workspaceRepository.getWorkspaceById(id);
+      await workspaceRepository.getWorkspaceById(id, fields);
 
     if (error) {
       throw error;
     }
 
-    return workspace as Workspace;
+    return workspace;
   }
 }

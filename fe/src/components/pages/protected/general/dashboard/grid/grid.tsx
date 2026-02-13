@@ -1,7 +1,10 @@
 "use client";
 import "gridstack/dist/gridstack.min.css";
+import { de } from "date-fns/locale";
 import { GridStack, type GridStackOptions } from "gridstack";
-import { type Chart } from "@/models/chart";
+import { useEffect, useState } from "react";
+import { useTour } from "@/components/ui/tour";
+import { debounce } from "@/helpers/debounce";
 import { LocalCashe } from "@/helpers/local-cashe";
 import {
   GridStackProvider,
@@ -9,10 +12,9 @@ import {
   GridStackRenderProvider,
   useGridStackContext,
 } from "@/lib/gridstack";
-import { useEffect, useState } from "react";
-import { GridChart } from "./chart";
-import { useTour } from "@/components/ui/tour";
+import type { Chart } from "@/models/chart";
 import { TOUR_DASHBOARD_DRAG_CHART_ID } from "./../tour";
+import { GridChart } from "./chart";
 
 const LAYOUT_KEY = "chartGridLayout";
 
@@ -31,17 +33,8 @@ const COMPONENT_MAP = {
   GridChart,
 };
 
-const SaveGridLayout = () => {
-  const { saveOptions } = useGridStackContext();
-  useEffect(() => {
-    return () => LocalCashe.set(LAYOUT_KEY, saveOptions());
-  }, []);
-
-  return <div className="sr-only" />;
-};
-
 const SetupDragIn = () => {
-  const { gridStack, _rawWidgetMetaMap } = useGridStackContext();
+  const { gridStack, _rawWidgetMetaMap, saveOptions } = useGridStackContext();
 
   useEffect(() => {
     if (!gridStack) return;
@@ -49,6 +42,12 @@ const SetupDragIn = () => {
       appendTo: "body",
       helper: "clone",
     });
+
+    const save = debounce(() => {
+      debugger;
+      const t = saveOptions();
+      LocalCashe.set(LAYOUT_KEY, t);
+    }, 4000);
 
     const handleDropped = (
       event: Event,
@@ -66,6 +65,7 @@ const SetupDragIn = () => {
           return newMap;
         });
       }
+      save();
     };
 
     const handDragStart = () => {
@@ -82,6 +82,7 @@ const SetupDragIn = () => {
           iframe.classList.remove("pointer-events-none");
         },
       );
+      save();
     };
 
     gridStack.on("resizestart", handDragStart);
@@ -145,7 +146,6 @@ export function ChartGrid({ charts }: { charts: Chart[] }) {
     <GridStackProvider initialOptions={options}>
       <GridStackRenderProvider>
         <GridStackRender componentMap={COMPONENT_MAP} />
-        <SaveGridLayout />
         <SetupDragIn />
       </GridStackRenderProvider>
     </GridStackProvider>

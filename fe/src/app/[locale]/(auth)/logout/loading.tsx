@@ -1,6 +1,6 @@
+import { useTranslations } from "next-intl";
 import { FieldGroup } from "@/components/ui/field";
 import { Spinner } from "@/components/ui/spinner";
-import { useTranslations } from "next-intl";
 
 export { generateStaticParams } from "@/i18n/static-params";
 

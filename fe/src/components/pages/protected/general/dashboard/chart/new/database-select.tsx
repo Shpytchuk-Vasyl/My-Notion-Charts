@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import { Database } from "lucide-react";
-import { use, useState } from "react";
+import Image from "next/image";
+import { use, useRef, useState } from "react";
 import {
   MultiSelect,
   MultiSelectContent,
@@ -14,11 +14,13 @@ import {
 
 type DatabaseSelectProps = {
   placeholder: string;
-  promise: Promise<{ databases: any[]; id: string }>;
 };
 
-export function DatabaseSelect({ placeholder, promise }: DatabaseSelectProps) {
-  const { databases, id } = use(promise);
+export function DatabaseSelect({ placeholder }: DatabaseSelectProps) {
+  const promiseRef = useRef<Promise<{ databases: any[]; id: string }>>(
+    fetch("/api/notion/databases").then((res) => res.json()),
+  );
+  const { databases, id } = use(promiseRef.current!);
   const [values, setValues] = useState<string[]>([]);
 
   return (

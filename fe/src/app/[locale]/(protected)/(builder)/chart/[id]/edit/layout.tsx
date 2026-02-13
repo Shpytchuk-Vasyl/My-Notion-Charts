@@ -1,7 +1,7 @@
 "use client";
-import { Fragment } from "react";
 
 import { useSearchParams } from "next/navigation";
+import { Fragment } from "react";
 
 export default function Layout({ children }: React.PropsWithChildren<{}>) {
   return <LayoutContent>{children}</LayoutContent>;

@@ -1,21 +1,4 @@
 import {
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { useTranslations } from "next-intl";
-import { useBuilderContext } from "../context";
-import { Field, FieldLabel } from "@/components/ui/field";
-import {
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  Select,
-} from "@/components/ui/select";
-import { Skeleton } from "@/components/ui/skeleton";
-import {
   Clock1,
   Clock6,
   Clock12,
@@ -23,6 +6,23 @@ import {
   ClockCheck,
   Watch,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
+import {
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Field, FieldLabel } from "@/components/ui/field";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useBuilderContext } from "../context";
 
 const availableCacheDurations = [
   { name: "without", value: 0, icon: <ClockAlert /> },

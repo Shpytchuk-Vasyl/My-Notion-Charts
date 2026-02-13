@@ -1,7 +1,7 @@
 import { useTranslations } from "next-intl";
-import { ResendButton } from "@/pages/auth/verify-email/resend-button";
 import { FieldGroup } from "@/components/ui/field";
 import { Link, routing } from "@/i18n/routing";
+import { ResendButton } from "@/pages/auth/verify-email/resend-button";
 import { resendVerificationEmail } from "../actions";
 
 export { generateStaticParams } from "@/i18n/static-params";

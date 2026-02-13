@@ -1,3 +1,7 @@
+import { useTranslations } from "next-intl";
+import { Suspense } from "react";
+import { chartIcons } from "@/components/block/chart/icons";
+import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -7,13 +11,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useTranslations } from "next-intl";
-import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
-import { chartIcons } from "@/components/block/chart/icons";
-import { DatabaseSelect } from "./database-select";
-import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getDatabeses } from "@/app/[locale]/(protected)/(general)/dashboard/actions";
+import { DatabaseSelect } from "./database-select";
 
 export function NewChartForm() {
   const t = useTranslations("pages.dashboard.charts.new");
@@ -38,10 +37,7 @@ function DatabaseField({ t }: DatabaseFieldProps) {
     <Field>
       <FieldLabel htmlFor="database">{t("databaseLabel")}</FieldLabel>
       <Suspense fallback={<Skeleton className="h-9 w-full" />}>
-        <DatabaseSelect
-          placeholder={t("databasePlaceholder")}
-          promise={getDatabeses()}
-        />
+        <DatabaseSelect placeholder={t("databasePlaceholder")} />
       </Suspense>
     </Field>
   );

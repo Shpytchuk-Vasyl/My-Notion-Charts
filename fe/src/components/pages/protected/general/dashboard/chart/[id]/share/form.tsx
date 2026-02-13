@@ -2,11 +2,10 @@
 import { useParams } from "next/navigation";
 import { DefaultModal } from "@/components/ui/modal";
 import { SuspenseSkeleton } from "@/components/ui/skeleton-suspense";
-import { Link, routing } from "@/i18n/routing";
-import type { Workspace } from "@/models/workspace";
+import type { Chart } from "@/models/chart";
 
-type DeleteWorkspaceFormProps = {
-  deleteWorkspace: (id: string) => Promise<{
+type DeleteChartFormProps = {
+  deleteChart: (id: string) => Promise<{
     success: boolean;
     msg: string;
   }>;
@@ -15,42 +14,31 @@ type DeleteWorkspaceFormProps = {
     description: string;
     cancelButtonText: string;
     deleteButtonText: string;
-    moreDetailsLink: string;
     successMessage: string;
   };
   isIntercepted?: boolean;
-  workspace: Promise<Pick<Workspace, "workspace_name">>;
+  chart: Promise<Chart>;
 };
 
-export function DeleteWorkspaceForm({
-  deleteWorkspace,
+export function DeleteChartForm({
+  deleteChart,
   translation,
   isIntercepted = false,
-  workspace,
-}: DeleteWorkspaceFormProps) {
+  chart,
+}: DeleteChartFormProps) {
   const { id } = useParams();
   const handleDelete = () => {
-    return deleteWorkspace(id as string);
+    return deleteChart(id as string);
   };
 
   return (
     <DefaultModal
       title={
         <>
-          {translation.title}: {<Name workspace={workspace} />}
+          {translation.title}: {<Name chart={chart} />}
         </>
       }
-      description={
-        <>
-          {translation.description}{" "}
-          <Link
-            href={routing.pathnames["/help/workspace/delete"]}
-            className="underline"
-          >
-            {translation.moreDetailsLink}
-          </Link>
-        </>
-      }
+      description={translation.description}
       cancel={translation.cancelButtonText}
       submit={translation.deleteButtonText}
       action={handleDelete}
@@ -60,12 +48,12 @@ export function DeleteWorkspaceForm({
   );
 }
 
-const Name = ({ workspace }: Pick<DeleteWorkspaceFormProps, "workspace">) => {
+const Name = ({ chart }: { chart: Promise<Chart> }) => {
   return (
     <SuspenseSkeleton
+      promise={chart}
       className="w-40 h-full inline-block"
-      afterKey="workspace_name"
-      promise={workspace}
+      afterKey="name"
     />
   );
 };

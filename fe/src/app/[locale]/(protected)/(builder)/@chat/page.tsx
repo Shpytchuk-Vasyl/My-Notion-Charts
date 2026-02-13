@@ -1,10 +1,11 @@
+import { NextIntlClientProvider } from "next-intl";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
 } from "@/components/ui/sidebar";
-import { NextIntlClientProvider } from "next-intl";
+
 export { generateStaticParams } from "@/i18n/static-params";
 
 export default function Page() {

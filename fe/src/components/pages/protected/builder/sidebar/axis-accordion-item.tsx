@@ -1,24 +1,24 @@
+import { Plus, Trash2 } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { PropertyIcon } from "@/components/block/notion/property";
 import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { useTranslations } from "next-intl";
-import { PropertyIcon } from "@/components/block/notion/property";
+import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import {
-  SelectTrigger,
-  SelectValue,
+  Select,
   SelectContent,
   SelectGroup,
   SelectItem,
-  Select,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useBuilderContext } from "../context";
-import { Button } from "@/components/ui/button";
-import { Plus, Trash2 } from "lucide-react";
-import { ButtonGroup } from "@/components/ui/button-group";
 
 export const AxisAccordionItem = () => {
   const t = useTranslations("pages.chart.edit.nav");

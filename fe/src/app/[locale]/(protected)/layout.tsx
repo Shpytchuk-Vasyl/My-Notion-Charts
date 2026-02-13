@@ -1,7 +1,7 @@
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { WorkspaceService } from "@/services/workspace";
+import { ProtectedProvider } from "@/pages/protected/context";
 import { ChartService } from "@/services/chart";
-import { DashboardProvider } from "@/pages/protected/general/dashboard/context";
+import { WorkspaceService } from "@/services/workspace";
 
 export default function ProtectedLayout({
   children,
@@ -23,7 +23,7 @@ export default function ProtectedLayout({
   });
 
   return (
-    <DashboardProvider
+    <ProtectedProvider
       workspaces={workspaces}
       currentWorkspace={currentWorkspace}
       user={user}
@@ -32,6 +32,6 @@ export default function ProtectedLayout({
       <SidebarProvider className="[--header-height:calc(--spacing(14))] flex flex-col">
         {children}
       </SidebarProvider>
-    </DashboardProvider>
+    </ProtectedProvider>
   );
 }

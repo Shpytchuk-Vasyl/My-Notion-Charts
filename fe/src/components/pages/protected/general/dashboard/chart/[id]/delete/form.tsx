@@ -1,8 +1,8 @@
 "use client";
-import { DefaultModal } from "@/components/ui/modal";
 import { useParams } from "next/navigation";
-import { type Chart } from "@/models/chart";
+import { DefaultModal } from "@/components/ui/modal";
 import { SuspenseSkeleton } from "@/components/ui/skeleton-suspense";
+import type { Chart } from "@/models/chart";
 
 type DeleteChartFormProps = {
   deleteChart: (id: string) => Promise<{
@@ -17,7 +17,7 @@ type DeleteChartFormProps = {
     successMessage: string;
   };
   isIntercepted?: boolean;
-  chart: Promise<Chart>;
+  chart: Promise<Pick<Chart, "name">>;
 };
 
 export function DeleteChartForm({
@@ -48,7 +48,7 @@ export function DeleteChartForm({
   );
 }
 
-const Name = ({ chart }: { chart: Promise<Chart> }) => {
+const Name = ({ chart }: Pick<DeleteChartFormProps, "chart">) => {
   return (
     <SuspenseSkeleton
       promise={chart}

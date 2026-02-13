@@ -1,8 +1,8 @@
 "use client";
 
 import { LifeBuoy, type LucideIcon, Send } from "lucide-react";
+import { useTranslations } from "next-intl";
 import type * as React from "react";
-
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -11,7 +11,6 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { Link, routing } from "@/i18n/routing";
-import { useTranslations } from "next-intl";
 
 type NavItem = {
   titleKey: "support" | "feedback";

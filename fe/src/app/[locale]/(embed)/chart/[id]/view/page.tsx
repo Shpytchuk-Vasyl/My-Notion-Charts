@@ -1,4 +1,4 @@
-import { type ChartThemeType } from "@/components/block/chart/themes";
+import type { ChartThemeType } from "@/components/block/chart/themes";
 import { ChartView } from "@/components/block/chart/view";
 import { ChartService } from "@/services/chart";
 import { NotionService } from "@/services/notion";

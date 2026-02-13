@@ -1,20 +1,20 @@
+import { useTranslations } from "next-intl";
+import { PropertyIcon } from "@/components/block/notion/property";
 import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { useTranslations } from "next-intl";
-import { PropertyIcon } from "@/components/block/notion/property";
-import { useBuilderContext } from "../context";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import {
-  SelectTrigger,
-  SelectValue,
+  Select,
   SelectContent,
   SelectGroup,
   SelectItem,
-  Select,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
+import { useBuilderContext } from "../context";
 
 export const JoinsAccordionItem = () => {
   const t = useTranslations("pages.chart.edit.nav");

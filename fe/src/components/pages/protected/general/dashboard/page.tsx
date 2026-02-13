@@ -1,9 +1,9 @@
 "use client";
-import { use } from "react";
-import { useDashboardContext } from "./context";
-import { ChartGrid } from "./grid/grid";
 import { NextIntlClientProvider, useLocale, useTranslations } from "next-intl";
+import { use } from "react";
 import { TourProvider } from "@/components/ui/tour";
+import { useProtectedContext } from "../../context";
+import { ChartGrid } from "./grid/grid";
 import { getTours } from "./tour";
 
 export function DashboardPage({
@@ -17,7 +17,7 @@ export function DashboardPage({
   tourMessages: Record<string, string>;
   dashboardMessages: Record<string, string>;
 }) {
-  const { workspaces, charts } = useDashboardContext();
+  const { workspaces, charts } = useProtectedContext();
   const locale = useLocale();
 
   const workspacesData = use(workspaces);

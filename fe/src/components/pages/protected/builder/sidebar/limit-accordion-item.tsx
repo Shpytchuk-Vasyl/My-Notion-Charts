@@ -1,20 +1,20 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { useTranslations } from "next-intl";
-import { Input } from "@/components/ui/input";
-import { useBuilderContext } from "../context";
 import { Field, FieldLabel } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useBuilderContext } from "../context";
 
 export const LimitAccordionItem = () => {
   const t = useTranslations("pages.chart.edit.nav.limit");
@@ -55,6 +55,8 @@ export const LimitAccordionItem = () => {
           {!isLoading && (
             <Input
               type="number"
+              inputMode="decimal"
+              pattern="[0-9]*"
               min={0}
               defaultValue={limit ?? ""}
               onBlur={handleBlur}

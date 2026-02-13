@@ -1,6 +1,6 @@
 "use client";
-import { redirect, routing } from "@/i18n/routing";
 import { useLocale } from "next-intl";
+import { redirect, routing } from "@/i18n/routing";
 
 export default function () {
   const locale = useLocale();
