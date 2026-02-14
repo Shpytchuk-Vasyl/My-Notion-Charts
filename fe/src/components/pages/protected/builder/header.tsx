@@ -1,36 +1,53 @@
 "use client";
 
 import { Sparkles } from "lucide-react";
-import { Fragment } from "react";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+import { SiteBreadcrumb } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { usePathname } from "@/i18n/routing";
 import { useBuilderContext } from "./context";
+import { Skeleton } from "@/components/ui/skeleton";
+import { routing } from "@/i18n/routing";
+import { usePathname } from "next/navigation";
 
-export function AppHeader() {
-  const { isLoading, refresh } = useBuilderContext();
+type AppHeaderProps = {
+  translations: {
+    save: string;
+    dashboard: string;
+    edit: string;
+  };
+};
+
+export function AppHeader({
+  translations: { save, dashboard, edit },
+}: AppHeaderProps) {
+  const { isLoading, refresh, name } = useBuilderContext();
+  const pathname = usePathname();
 
   return (
     <header className="bg-background sticky top-0 z-50 flex w-full items-center border-b">
       <div className="flex h-(--header-height) w-full items-center gap-2 px-4">
         <SidebarTrigger />
         <Separator orientation="vertical" className="mr-2 h-4" />
-        <SiteBreadcrumb />
+        <SiteBreadcrumb
+          list={[
+            {
+              title: dashboard,
+              url: routing.pathnames["/dashboard"],
+            },
+            {
+              title: name || <Skeleton className="h-8 w-32" />,
+              url: `/${pathname.split("/").slice(2, -1).join("/")}`,
+            },
+            { title: edit, url: "#" },
+          ]}
+        />
         <Button
           className="w-full sm:ml-auto sm:w-auto"
           onClick={refresh}
           disabled={isLoading}
         >
-          Save
+          {save}
         </Button>
         <Button variant="ghost" size="icon" id="chat-sidebar-trigger" disabled>
           <Sparkles />
@@ -39,32 +56,3 @@ export function AppHeader() {
     </header>
   );
 }
-
-const SiteBreadcrumb = () => {
-  const pathname = usePathname();
-
-  const breadcrumbs: any[] = [];
-
-  // Simple breadcrumb generation based on pathname
-
-  return (
-    <Breadcrumb className="hidden sm:block">
-      <BreadcrumbList>
-        {breadcrumbs.map((breadcrumb, index) => (
-          <Fragment key={`breadcrumb-${index}`}>
-            <BreadcrumbItem>
-              {index < breadcrumbs.length - 1 ? (
-                <BreadcrumbLink href={breadcrumb.url}>
-                  {breadcrumb.title}
-                </BreadcrumbLink>
-              ) : (
-                <BreadcrumbPage>{breadcrumb.title}</BreadcrumbPage>
-              )}
-            </BreadcrumbItem>
-            <BreadcrumbSeparator className="last:hidden" />
-          </Fragment>
-        ))}
-      </BreadcrumbList>
-    </Breadcrumb>
-  );
-};

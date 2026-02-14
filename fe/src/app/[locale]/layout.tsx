@@ -4,6 +4,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import "../globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "@/components/ui/theme-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -55,7 +56,16 @@ export default async function RootLayout({
         className={`bg-linear-to-b from-white to-gray-50 ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <NextIntlClientProvider messages={{}}>
-          {children}
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange={false}
+            enableColorScheme
+            themes={["light", "dark"]}
+          >
+            {children}
+          </ThemeProvider>
         </NextIntlClientProvider>
         <Toaster />
       </body>

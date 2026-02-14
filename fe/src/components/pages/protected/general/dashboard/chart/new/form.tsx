@@ -36,9 +36,7 @@ function DatabaseField({ t }: DatabaseFieldProps) {
   return (
     <Field>
       <FieldLabel htmlFor="database">{t("databaseLabel")}</FieldLabel>
-      <Suspense fallback={<Skeleton className="h-9 w-full" />}>
-        <DatabaseSelect placeholder={t("databasePlaceholder")} />
-      </Suspense>
+      <DatabaseSelect placeholder={t("databasePlaceholder")} />
     </Field>
   );
 }

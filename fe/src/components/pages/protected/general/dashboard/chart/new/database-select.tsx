@@ -2,7 +2,7 @@
 
 import { Database } from "lucide-react";
 import Image from "next/image";
-import { use, useRef, useState } from "react";
+import { Suspense, use, useRef, useState } from "react";
 import {
   MultiSelect,
   MultiSelectContent,
@@ -11,16 +11,33 @@ import {
   MultiSelectTrigger,
   MultiSelectValue,
 } from "@/components/ui/multi-select";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type DatabaseSelectProps = {
   placeholder: string;
+  databasesPromise?: Promise<{ databases: any[]; id: string }>;
 };
 
 export function DatabaseSelect({ placeholder }: DatabaseSelectProps) {
   const promiseRef = useRef<Promise<{ databases: any[]; id: string }>>(
     fetch("/api/notion/databases").then((res) => res.json()),
   );
-  const { databases, id } = use(promiseRef.current!);
+
+  return (
+    <Suspense fallback={<Skeleton className="h-9 w-full" />}>
+      <DatabaseSelectInner
+        placeholder={placeholder}
+        databasesPromise={promiseRef.current}
+      />
+    </Suspense>
+  );
+}
+
+function DatabaseSelectInner({
+  placeholder,
+  databasesPromise,
+}: DatabaseSelectProps) {
+  const { databases, id } = use(databasesPromise!);
   const [values, setValues] = useState<string[]>([]);
 
   return (

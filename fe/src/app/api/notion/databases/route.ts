@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { WorkspaceService } from "@/services/workspace";
 import { NotionService } from "@/services/notion";
 
-export const revalidate = 60;
+export const revalidate = 600;
 
 export async function GET(_request: Request) {
   try {
@@ -13,7 +13,7 @@ export async function GET(_request: Request) {
         { databases: [], id: "" },
         {
           headers: {
-            "Cache-Control": "public, s-maxage=60, stale-while-revalidate=60",
+            "Cache-Control": "public, s-maxage=600, stale-while-revalidate=600",
           },
         },
       );
@@ -30,7 +30,7 @@ export async function GET(_request: Request) {
       },
       {
         headers: {
-          "Cache-Control": "public, s-maxage=60, stale-while-revalidate=60",
+          "Cache-Control": "public, s-maxage=600, stale-while-revalidate=600",
         },
       },
     );

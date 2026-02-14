@@ -375,7 +375,16 @@
       "edit": "Edit",
       "delete": "Delete"
     },
+    "header": {
+      "edit": "edit",
+      "dashboard": "Dashboard",
+      "save": "Save"
+    },
     "notifications": "Notifications",
+    "theme": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
     "logout": "Log out",
     "support": "Support",
     "feedback": "Feedback",

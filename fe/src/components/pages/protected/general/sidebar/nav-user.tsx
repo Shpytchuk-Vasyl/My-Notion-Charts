@@ -1,5 +1,5 @@
 "use client";
-import { Bell, ChevronsUpDown, LogOut } from "lucide-react";
+import { Bell, ChevronsUpDown, LogOut, Moon, Sun } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { UserAvatar } from "@/components/block/user/avatar";
 import {
@@ -10,6 +10,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
   SidebarMenu,
@@ -17,9 +20,12 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { Link, routing } from "@/i18n/routing";
+import { useTheme } from "next-themes";
 
 export function NavUser() {
   const t = useTranslations("nav");
+  const { setTheme } = useTheme();
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -43,7 +49,36 @@ export function NavUser() {
               <UserAvatar />
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
+
             <DropdownMenuGroup>
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger>
+                  <Sun className="scale-100 rotate-0 transition-all duration-500 dark:scale-0 dark:-rotate-90" />
+                  <Moon className="absolute scale-0 rotate-90 transition-all duration-500 dark:scale-100 dark:rotate-0" />
+                  {t("theme")}
+                </DropdownMenuSubTrigger>
+                <DropdownMenuSubContent>
+                  <DropdownMenuItem
+                    onClick={() => setTheme("light")}
+                    onSelect={(e) => e.preventDefault()}
+                  >
+                    {t("light")}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => setTheme("dark")}
+                    onSelect={(e) => e.preventDefault()}
+                  >
+                    {t("dark")}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => setTheme("system")}
+                    onSelect={(e) => e.preventDefault()}
+                  >
+                    {t("system")}
+                  </DropdownMenuItem>
+                </DropdownMenuSubContent>
+              </DropdownMenuSub>
+
               <DropdownMenuItem>
                 <Bell />
                 {t("notifications")}

@@ -44,7 +44,6 @@ const SetupDragIn = () => {
     });
 
     const save = debounce(() => {
-      debugger;
       const t = saveOptions();
       LocalCashe.set(LAYOUT_KEY, t);
     }, 4000);

@@ -115,6 +115,7 @@ function NavChartsInner() {
           >
             <SidebarMenuButton asChild className="flex-1">
               <Link
+                prefetch={false}
                 href={{
                   pathname: routing.pathnames["/chart/[id]"],
                   params: {

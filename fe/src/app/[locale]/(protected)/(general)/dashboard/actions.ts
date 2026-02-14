@@ -14,9 +14,7 @@ import {
   DEFAULT_CHART_CONFIG_THEME,
 } from "@/models/chart";
 import { WorkspaceRepository } from "@/models/workspace";
-import { NotionService } from "@/services/notion";
 import { UserService } from "@/services/user";
-import { WorkspaceService } from "@/services/workspace";
 
 export async function deleteWorkspace(workspaceId: string) {
   const supabase = await createClient();

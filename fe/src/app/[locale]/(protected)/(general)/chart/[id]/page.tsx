@@ -1,4 +1,4 @@
-import { ChartEditPage } from "@/pages/protected/builder/chart/[id]/edit/page";
+import { ChartPage } from "@/pages/protected/general/chart/[id]/page";
 
 export default async function Page({
   params,
@@ -6,6 +6,5 @@ export default async function Page({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-
-  return <ChartEditPage id={id} />;
+  return <ChartPage id={id} />;
 }
