@@ -133,7 +133,63 @@
         "features": "Zero code needed • Free account to start"
       },
       "footer": {
-        "copyright": "© 2025 Your Company. All rights reserved."
+        "copyright": "© 2025 Your Company. All rights reserved.",
+        "termsLink": "Terms of Service",
+        "privacyLink": "Privacy Policy"
+      }
+    },
+    "legal": {
+      "termsOfService": {
+        "title": "Terms of Service",
+        "lastUpdated": "February 15, 2025",
+        "sections": [
+          {
+            "title": "Acceptance of Terms",
+            "content": "By accessing and using this website and the Notion Charts service, you accept and agree to be bound by the terms and provision of this agreement."
+          },
+          {
+            "title": "Use License",
+            "content": "Permission is granted to temporarily download one copy of the materials (information or software) on Notion Charts for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not: modify or copy the materials; use the materials for any commercial purpose or for any public display; attempt to decompile, disassemble, or reverse engineer any software contained on Notion Charts; remove any copyright or other proprietary notations from the materials."
+          },
+          {
+            "title": "Disclaimer",
+            "content": "The materials on Notion Charts are provided on an 'as is' basis. Notion Charts makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights."
+          },
+          {
+            "title": "Limitations",
+            "content": "In no event shall Notion Charts or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on Notion Charts."
+          },
+          {
+            "title": "Contact Us",
+            "content": "If you have any questions about these Terms of Service, please contact us at support@notionchart.com."
+          }
+        ]
+      },
+      "privacyPolicy": {
+        "title": "Privacy Policy",
+        "lastUpdated": "February 15, 2025",
+        "sections": [
+          {
+            "title": "Information We Collect",
+            "content": "We collect information you provide directly to us, such as when you create an account, connect your Notion workspace, or contact us for support. This may include your name, email address, and information about your Notion workspace."
+          },
+          {
+            "title": "How We Use Your Information",
+            "content": "We use the information we collect to provide, maintain, and improve our services. We will not sell or rent your personal information to third parties. Your Notion data is never stored on our servers – we only access it temporarily to generate your charts."
+          },
+          {
+            "title": "Data Security",
+            "content": "We take reasonable measures to protect your personal information. However, no security system is impenetrable. We cannot guarantee the absolute security of your information."
+          },
+          {
+            "title": "Your Rights",
+            "content": "You have the right to access, correct, or delete your personal information at any time. You can disconnect your Notion workspace and request deletion of your account data."
+          },
+          {
+            "title": "Contact Us",
+            "content": "If you have any questions about this Privacy Policy, please contact us at privacy@notionchart.com."
+          }
+        ]
       }
     },
     "login": {

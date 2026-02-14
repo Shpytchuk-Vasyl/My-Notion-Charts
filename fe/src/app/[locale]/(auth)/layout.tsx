@@ -1,5 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { FieldDescription } from "@/components/ui/field";
+import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 
 export default function Layout({
@@ -21,8 +22,8 @@ export default function Layout({
             </CardContent>
           </Card>
           <FieldDescription className="px-6 text-center">
-            {t("termsText")}{" "}
-            <a href="#">{t("termsLink")}</a> {t("and")} <a href="#">{t("privacyLink")}</a>.
+            {t("termsText")} <Link href="/legal/terms">{t("termsLink")}</Link>{" "}
+            {t("and")} <Link href="/legal/privacy">{t("privacyLink")}</Link>.
           </FieldDescription>
         </div>
       </div>

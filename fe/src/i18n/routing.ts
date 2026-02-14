@@ -36,6 +36,10 @@ export const routing = defineRouting({
 
     "/feedback": "/feedback",
     "/support": "/support",
+
+    // legal
+    "/legal/terms": "/legal/terms",
+    "/legal/privacy": "/legal/privacy",
   },
 });
 
