@@ -35,7 +35,7 @@ import {
 import type { Chart } from "@/models/chart";
 import { type ChartThemeType, getChartThemeStyles } from "./themes";
 
-type ChartViewProps = {
+export type ChartViewProps = {
   xKey: string;
   yKeys: string[];
   theme: ChartThemeType;
@@ -92,6 +92,7 @@ export function ChartView({
           >
             <CartesianGrid vertical={false} />
             {xKey ? <XAxis dataKey={xKey} /> : null}
+            <YAxis />
             <ChartTooltip content={<ChartTooltipContent />} />
             <ChartLegend content={<ChartLegendContent />} />
             {yKeys.map((key, idx) => (
@@ -145,6 +146,7 @@ export function ChartView({
             </defs>
             <CartesianGrid />
             {xKey ? <XAxis dataKey={xKey} /> : null}
+            <YAxis />
             <ChartTooltip content={<ChartTooltipContent />} />
             <ChartLegend content={<ChartLegendContent />} />
             {yKeys.map((key, idx) => (
@@ -278,6 +280,7 @@ export function ChartView({
           >
             <CartesianGrid vertical={false} />
             {xKey ? <XAxis dataKey={xKey} /> : null}
+            <YAxis />
             {/* <ChartTooltip content={<ChartTooltipContent />} /> */}
             {/* <ChartLegend content={<ChartLegendContent />} /> */}
             {yKeys.map((key, idx) => (

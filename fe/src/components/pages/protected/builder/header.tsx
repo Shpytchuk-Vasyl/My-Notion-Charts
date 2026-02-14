@@ -25,34 +25,32 @@ export function AppHeader({
   const pathname = usePathname();
 
   return (
-    <header className="bg-background sticky top-0 z-50 flex w-full items-center border-b">
-      <div className="flex h-(--header-height) w-full items-center gap-2 px-4">
-        <SidebarTrigger />
-        <Separator orientation="vertical" className="mr-2 h-4" />
-        <SiteBreadcrumb
-          list={[
-            {
-              title: dashboard,
-              url: routing.pathnames["/dashboard"],
-            },
-            {
-              title: name || <Skeleton className="h-8 w-32" />,
-              url: `/${pathname.split("/").slice(2, -1).join("/")}`,
-            },
-            { title: edit, url: "#" },
-          ]}
-        />
-        <Button
-          className="w-full sm:ml-auto sm:w-auto"
-          onClick={refresh}
-          disabled={isLoading}
-        >
-          {save}
-        </Button>
-        <Button variant="ghost" size="icon" id="chat-sidebar-trigger" disabled>
-          <Sparkles />
-        </Button>
-      </div>
+    <header className="sticky top-0 z-50 flex w-full items-center border-b h-(--header-height) gap-2 px-4">
+      <SidebarTrigger />
+      <Separator orientation="vertical" className="mr-2 h-4" />
+      <SiteBreadcrumb
+        list={[
+          {
+            title: dashboard,
+            url: routing.pathnames["/dashboard"],
+          },
+          {
+            title: name || <Skeleton className="h-8 w-32" />,
+            url: `/${pathname.split("/").slice(2, -1).join("/")}`,
+          },
+          { title: edit, url: "#" },
+        ]}
+      />
+      <Button
+        className="w-full sm:ml-auto sm:w-auto"
+        onClick={refresh}
+        disabled={isLoading}
+      >
+        {save}
+      </Button>
+      <Button variant="ghost" size="icon" id="chat-sidebar-trigger" disabled>
+        <Sparkles />
+      </Button>
     </header>
   );
 }

@@ -1,27 +1,29 @@
-import type { ChartThemeType } from "@/components/block/chart/themes";
-import { ChartView } from "@/components/block/chart/view";
-import { ChartService } from "@/services/chart";
-import { NotionService } from "@/services/notion";
+'use client'
+import { ChartView, type ChartViewProps } from "@/components/block/chart/view";
+import { useBuilderContext } from "../../../context";
 
-export async function ChartEditPage({ id }: { id: string }) {
-  const chart = await ChartService.getChartByIdWithWorkspace(id);
+export function ChartEditPage({
+  xKey,
+  yKeys,
+  theme,
+  id,
+  type,
+  labels,
+  chartData
+}: Omit<ChartViewProps, "className">) {
 
-  const { chartData, chartLabels } = await new NotionService(
-    chart.workspaces.access_token,
-  ).getChartData(chart);
 
-  const xKey = chart.config.axis.x?.property;
-  const yKeys = chart.config.axis.y.map((axis) => axis.property);
+  const {theme: themeFromContext, type: typeFromContext} = useBuilderContext()
 
   return (
     <ChartView
       xKey={xKey}
       yKeys={yKeys}
-      theme={chart.config.customization.theme as ChartThemeType}
-      id={chart.id}
-      type={chart.type}
+      theme={themeFromContext as ChartViewProps['theme'] || theme}
+      id={id}
+      type={typeFromContext || type }
       chartData={chartData}
-      labels={chartLabels}
+      labels={labels}
       className="bg-card border m-4 p-6 rounded-xl shadow-sm max-h-[calc(100%-(--spacing(8)))]"
     />
   );
