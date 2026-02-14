@@ -1,5 +1,5 @@
 "use client";
-import { CircleMinus, Folder, MoreVertical, Share, Trash2 } from "lucide-react";
+import { MoreVertical } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { ChartIcon } from "@/components/block/chart/icons";
 import { AvatarInfo } from "@/components/ui/avatar-info";
@@ -7,13 +7,16 @@ import { Card, CardHeader } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Link, routing } from "@/i18n/routing";
-import { useGridStackContext } from "@/lib/gridstack";
 import type { Chart } from "@/models/chart";
+import {
+  ChartDropdownMenuEditOption,
+  ChartDropdownMenuShareOption,
+  ChartDropdownMenuDeleteOption,
+  ChartDropdownMenuExcludeFromDashboardOption,
+} from "@/components/block/chart/dropdown-menu-options";
 
 export function GridChart({ chart }: { chart: Chart }) {
   const t = useTranslations("pages.dashboard.grid.chartType");
@@ -52,56 +55,15 @@ const DropdownOptions = ({ id }: { id: string }) => {
         <span className="sr-only">{t("more")}</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-48" side="bottom" align="end">
-        <DropdownMenuItem asChild>
-          <Link
-            href={{
-              pathname: routing.pathnames["/chart/[id]/edit"],
-              params: {
-                id,
-              },
-            }}
-          >
-            <Folder />
-            <span>{t("edit")}</span>
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <Share />
-          <span>{t("share")}</span>
-        </DropdownMenuItem>
+        <ChartDropdownMenuEditOption id={id} t={t} />
+        <ChartDropdownMenuShareOption id={id} t={t} />
         <DropdownMenuSeparator />
-        <DropdownMenuItem variant="destructive" asChild>
-          <Link
-            href={{
-              pathname: routing.pathnames["/dashboard/chart/[id]/delete"],
-              params: {
-                id,
-              },
-            }}
-          >
-            <Trash2 className="text-destructive" />
-            <span>{t("delete")}</span>
-          </Link>
-        </DropdownMenuItem>
-        <ExcludeFromDashboard id={id} />
+        <ChartDropdownMenuDeleteOption id={id} t={t} />
+        <ChartDropdownMenuExcludeFromDashboardOption
+          id={id}
+          t={useTranslations("pages.dashboard.grid")}
+        />
       </DropdownMenuContent>
     </DropdownMenu>
-  );
-};
-
-const ExcludeFromDashboard = ({ id }: { id: string }) => {
-  const t = useTranslations("pages.dashboard.grid");
-  const { removeWidget } = useGridStackContext();
-
-  return (
-    <DropdownMenuItem
-      variant="destructive"
-      onClick={() => {
-        removeWidget(id);
-      }}
-    >
-      <CircleMinus className="text-destructive" />
-      <span>{t("exclude")}</span>
-    </DropdownMenuItem>
   );
 };

@@ -31,6 +31,7 @@ export const routing = defineRouting({
     // Charts
     "/chart/all": "/chart/all",
     "/chart/[id]/edit": "/chart/[id]/edit",
+    "/chart/[id]/share": "/chart/[id]/share",
     "/chart/[id]": "/chart/[id]",
 
     "/feedback": "/feedback",

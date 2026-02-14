@@ -7,7 +7,6 @@ import { HowItWorksSection } from "@/pages/open/root/how-it-works-section";
 
 export { generateStaticParams } from "@/i18n/static-params";
 
-export const dynamic = "force-static";
 
 export default function Page() {
   return (

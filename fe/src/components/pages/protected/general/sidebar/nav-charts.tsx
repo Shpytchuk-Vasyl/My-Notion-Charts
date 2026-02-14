@@ -1,20 +1,12 @@
 "use client";
 
-import {
-  Folder,
-  GripVertical,
-  MoreHorizontal,
-  Plus,
-  Share,
-  Trash2,
-} from "lucide-react";
+import { MoreHorizontal, Plus } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Suspense, use, useState } from "react";
 import { ChartIcon } from "@/components/block/chart/icons";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -35,6 +27,11 @@ import {
 } from "@/components/ui/tooltip";
 import { Link, routing } from "@/i18n/routing";
 import { useProtectedContext } from "@/pages/protected/context";
+import {
+  ChartDropdownMenuDeleteOption,
+  ChartDropdownMenuEditOption,
+  ChartDropdownMenuShareOption,
+} from "@/components/block/chart/dropdown-menu-options";
 
 const CHART_DISPLAY_LIMIT = 5;
 
@@ -165,37 +162,10 @@ const DropdownOptions = ({ chartId }: { chartId: string }) => {
         side={isMobile ? "bottom" : "right"}
         align={isMobile ? "end" : "start"}
       >
-        <DropdownMenuItem asChild>
-          <Link
-            href={{
-              pathname: routing.pathnames["/chart/[id]/edit"],
-              params: {
-                id: chartId,
-              },
-            }}
-          >
-            <Folder />
-            <span>{t("edit")}</span>
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <Share />
-          <span>{t("share")}</span>
-        </DropdownMenuItem>
+        <ChartDropdownMenuEditOption id={chartId} t={t} />
+        <ChartDropdownMenuShareOption id={chartId} t={t} />
         <DropdownMenuSeparator />
-        <DropdownMenuItem variant="destructive" asChild>
-          <Link
-            href={{
-              pathname: routing.pathnames["/dashboard/chart/[id]/delete"],
-              params: {
-                id: chartId,
-              },
-            }}
-          >
-            <Trash2 className="text-destructive" />
-            <span>{t("delete")}</span>
-          </Link>
-        </DropdownMenuItem>
+        <ChartDropdownMenuDeleteOption id={chartId} t={t} />
       </DropdownMenuContent>
     </DropdownMenu>
   );

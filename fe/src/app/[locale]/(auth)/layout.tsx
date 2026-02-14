@@ -1,11 +1,13 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { FieldDescription } from "@/components/ui/field";
+import { useTranslations } from "next-intl";
 
 export default function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const t = useTranslations("pages.login");
   return (
     <main className="bg-muted flex min-h-svh flex-col items-center justify-center p-6 md:p-10">
       <div className="w-full max-w-sm md:max-w-4xl">
@@ -19,8 +21,8 @@ export default function Layout({
             </CardContent>
           </Card>
           <FieldDescription className="px-6 text-center">
-            By clicking continue, you agree to our{" "}
-            <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+            {t("termsText")}{" "}
+            <a href="#">{t("termsLink")}</a> {t("and")} <a href="#">{t("privacyLink")}</a>.
           </FieldDescription>
         </div>
       </div>

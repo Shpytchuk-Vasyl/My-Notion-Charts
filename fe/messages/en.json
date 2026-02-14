@@ -147,9 +147,10 @@
       "googleLoginButtonText": "Login with Google",
       "signUpPromptText": "Don't have an account?",
       "signUpLinkText": "Sign up",
-      "termsText": "By clicking continue, you agree to our",
+      "termsText": "By using this service, you agree to our",
       "termsLink": "Terms of Service",
-      "privacyLink": "Privacy Policy"
+      "privacyLink": "Privacy Policy",
+      "and": "and"
     },
     "signup": {
       "title": "Create your account",
