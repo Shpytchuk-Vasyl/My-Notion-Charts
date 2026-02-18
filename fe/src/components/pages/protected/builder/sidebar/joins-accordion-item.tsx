@@ -15,6 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useBuilderContext } from "../context";
+import { cn } from "@/lib/utils";
 
 export const JoinsAccordionItem = () => {
   const t = useTranslations("pages.chart.edit.nav");
@@ -32,7 +33,12 @@ export const JoinsAccordionItem = () => {
         <FieldGroup className="px-2">
           {availableJoins.map((join, index) => (
             <div
-              className="grid grid-cols-2 gap-2"
+              className={cn(
+                "grid gap-2 grid-cols-2",
+                joins[index].to &&
+                  !joins[index].to.includes("::") &&
+                  "grid-cols-1",
+              )}
               key={`join-grid-item-${join.name}`}
             >
               <Field>
@@ -44,9 +50,22 @@ export const JoinsAccordionItem = () => {
                 </FieldLabel>
                 <Select
                   value={joins?.[index]?.from}
-                  onValueChange={(value) =>
-                    onChangeJoin(index, value, undefined)
-                  }
+                  onValueChange={(value) => {
+                    if (joins[index].to && !joins[index].to.includes("::")) {
+                      onChangeJoin(index, value, null);
+                    } else if (
+                      join.from.find(
+                        (option) =>
+                          option.value === value &&
+                          option.type === "relation" &&
+                          (option as any).relation?.data_source_id === join.id,
+                      )
+                    ) {
+                      onChangeJoin(index, value, join.id);
+                    } else {
+                      onChangeJoin(index, value);
+                    }
+                  }}
                 >
                   <SelectTrigger id={`join${join.name}From`} className="w-full">
                     <SelectValue placeholder={t("property")} />
@@ -68,7 +87,13 @@ export const JoinsAccordionItem = () => {
                 </Select>
               </Field>
 
-              <Field>
+              <Field
+                className={cn(
+                  joins[index].to && !joins[index].to.includes("::")
+                    ? "hidden"
+                    : "",
+                )}
+              >
                 <FieldLabel
                   className="opacity-0"
                   htmlFor={`join${join.name}To`}

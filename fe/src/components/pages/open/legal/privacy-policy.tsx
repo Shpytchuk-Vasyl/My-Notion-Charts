@@ -20,15 +20,13 @@ export function PrivacyPolicy() {
         {t("lastUpdated")}
       </p>
 
-      <Accordion type="single" collapsible>
+      <Accordion type="multiple">
         {sections.map((section, index) => (
           <AccordionItem
             key={`privacy-policy-item-${index}`}
             value={`item-${index}`}
           >
-            <AccordionTrigger>
-              {section.title}
-            </AccordionTrigger>
+            <AccordionTrigger>{section.title}</AccordionTrigger>
             <AccordionContent asChild>
               <p className="text-secondary-foreground">{section.content}</p>
             </AccordionContent>

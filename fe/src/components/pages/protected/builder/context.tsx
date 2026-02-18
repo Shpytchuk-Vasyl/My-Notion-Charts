@@ -44,7 +44,7 @@ interface BuilderContextType {
   toggleSortAscending: (ascending: boolean) => void;
   joins: Chart["config"]["joins"];
   availableJoins: AvailableJoinType[];
-  onChangeJoin: (index: number, fromId?: string, toId?: string) => void;
+  onChangeJoin: (index: number, fromId?: string, toId?: string | null) => void;
   name: string | undefined;
   setName: (newName: string) => void;
   type: Chart["type"] | undefined;
@@ -108,9 +108,14 @@ export function BuilderProvider({ children }: React.PropsWithChildren<{}>) {
       set(currentChart as Chart);
       setDatabases(
         currentChart
-          ? awaitedDatabases.filter((db) =>
-              currentChart.databases.includes(db.id),
-            )
+          ? currentChart.databases
+              .map(
+                (dbId) =>
+                  awaitedDatabases.find(
+                    (db) => db.id === dbId,
+                  ) as DatabasesType[number],
+              )
+              .filter(Boolean)
           : [],
       );
       setIsLoading(false);
@@ -232,11 +237,15 @@ export function BuilderProvider({ children }: React.PropsWithChildren<{}>) {
       };
     })
     .slice(0, -1);
-  const onChangeJoin = (index: number, fromId?: string, toId?: string) => {
+  const onChangeJoin = (
+    index: number,
+    fromId?: string,
+    toId?: string | null,
+  ) => {
     setChart((prev) => {
       const joins = prev.config.joins;
-      if (fromId) joins[index].from = fromId;
-      if (toId) joins[index].to = toId;
+      if (fromId !== undefined) joins[index].from = fromId;
+      if (toId !== undefined) joins[index].to = toId!;
       prev.config.joins = joins;
       return prev;
     });

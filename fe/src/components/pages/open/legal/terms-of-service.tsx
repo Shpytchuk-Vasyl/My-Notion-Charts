@@ -20,15 +20,13 @@ export function TermsOfService() {
         {t("lastUpdated")}
       </p>
 
-      <Accordion type="single" collapsible>
+      <Accordion type="multiple">
         {sections.map((section, index) => (
           <AccordionItem
             key={`term-of-service-item-${index}`}
             value={`item-${index}`}
           >
-            <AccordionTrigger>
-              {section.title}
-            </AccordionTrigger>
+            <AccordionTrigger>{section.title}</AccordionTrigger>
             <AccordionContent asChild>
               <p className="text-secondary-foreground">{section.content}</p>
             </AccordionContent>

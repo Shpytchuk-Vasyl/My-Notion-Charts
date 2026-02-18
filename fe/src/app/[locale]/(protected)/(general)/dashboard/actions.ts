@@ -69,13 +69,28 @@ export async function createChart(_: any, formData: FormData) {
       ] as ChartType[],
       t("chartType.invalid"),
     ),
+    joins: z.array(
+      z.object({
+        from: z.string(),
+        to: z.string(),
+      }),
+    ),
   });
+
+  const joins = [];
+  for (let i = 0; i < formData.getAll("database").length - 1; i++) {
+    joins.push({
+      from: formData.get(`joins[${i}][from]`) || "",
+      to: formData.get(`joins[${i}][to]`) || "",
+    });
+  }
 
   const values = {
     chartName: formData.get("chartName"),
     databases: formData.getAll("database"),
     workspaceId: formData.get("workspaceId"),
     chartType: formData.get("chartType"),
+    joins,
   };
 
   const result = chartCreateSchema.safeParse(values);
@@ -105,10 +120,7 @@ export async function createChart(_: any, formData: FormData) {
           },
         ],
       },
-      joins: Array.from({ length: result.data.databases.length - 1 }, () => ({
-        from: "",
-        to: "",
-      })),
+      joins: result.data.joins,
       filters: {},
       limit: DEFAULT_CHART_CONFIG_LIMIT,
       sort: undefined,
