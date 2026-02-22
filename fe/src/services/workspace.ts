@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { WorkspaceRepository } from "@/models/workspace";
 import { UserService } from "./user";
+import { forbidden } from "next/navigation";
 
 export class WorkspaceService {
   static async getCachedWorkspaces() {
@@ -39,7 +40,7 @@ export class WorkspaceService {
       await workspaceRepository.getWorkspaceById(id, fields);
 
     if (error) {
-      throw error;
+      forbidden();
     }
 
     return workspace;

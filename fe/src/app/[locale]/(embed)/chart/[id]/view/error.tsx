@@ -1,6 +1,6 @@
 "use client";
 
-import { ViewError } from "@/components/block/chart/view-error";
+import { ChartErrorView } from "@/components/block/chart/error-view";
 
 export default function Error({
   error,
@@ -8,6 +8,9 @@ export default function Error({
   error: Error & { digest?: string };
 }) {
   return (
-    <ViewError error={error.message} className="border-none p-0 shadow-none" />
+    <ChartErrorView
+      error={error.message}
+      className="border-none p-0 shadow-none"
+    />
   );
 }

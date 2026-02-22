@@ -192,6 +192,11 @@
         ]
       }
     },
+    "forbidden": {
+      "title": "Forbidden",
+      "description": "This action or resource is forbidden. If you believe this is a mistake, please contact us.",
+      "backToDashboard": "Dashboard"
+    },
     "login": {
       "title": "Welcome back",
       "description": "Login to your account",

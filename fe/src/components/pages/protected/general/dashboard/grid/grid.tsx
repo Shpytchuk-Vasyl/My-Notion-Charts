@@ -102,7 +102,7 @@ const SetupDragIn = () => {
   return null;
 };
 
-export function ChartGrid({ charts }: { charts: Chart[] }) {
+export function ChartGrid({ charts }: { charts: Omit<Chart, "config">[] }) {
   const { start } = useTour();
 
   function getGridOptions() {

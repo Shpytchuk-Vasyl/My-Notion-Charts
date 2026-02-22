@@ -1,6 +1,6 @@
 "use client";
 
-import { ViewError } from "@/components/block/chart/view-error";
+import { ChartErrorView } from "@/components/block/chart/error-view";
 
 export default function Error({
   error,
@@ -8,7 +8,7 @@ export default function Error({
   error: Error & { digest?: string };
 }) {
   return (
-    <ViewError
+    <ChartErrorView
       error={error.message}
       className="place-self-center my-auto mx-4 p-6"
     />

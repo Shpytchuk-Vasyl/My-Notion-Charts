@@ -6,7 +6,7 @@ type Props = {
   className?: string;
 };
 
-export function ViewError({ error, className }: Props) {
+export function ChartErrorView({ error, className }: Props) {
   return (
     <Card className={className}>
       <AlertCircle className="place-self-center size-16" />

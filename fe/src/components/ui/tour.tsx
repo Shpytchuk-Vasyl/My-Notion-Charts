@@ -1,6 +1,6 @@
 "use client";
 
-import type { Content } from "@radix-ui/react-popover";
+import { type Content } from "radix-ui";
 import { XIcon } from "lucide-react";
 import Link from "next/link";
 import { createContext, useContext, useEffect, useState } from "react";

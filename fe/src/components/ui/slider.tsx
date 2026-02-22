@@ -1,6 +1,6 @@
 "use client";
 
-import { Range, Root, Thumb, Track } from "@radix-ui/react-slider";
+import { Range, Root, Thumb, Track } from "radix-ui";
 import { useMemo } from "react";
 import { cn } from "@/lib/utils";
 
