@@ -60,13 +60,7 @@ export class ChartRepository {
       .from("charts")
       .select("created_at,databases,id,name,type,updated_at,workspace_id")
       .eq("workspace_id", workspaceId)
-      .order("updated_at", { ascending: false })
-      .then((res) => {
-        if (res.error) {
-          return { data: [], error: res.error };
-        }
-        return { ...res, data: res.data as Omit<Chart, "config">[] };
-      });
+      .order("updated_at", { ascending: false });
   }
 
   async getChartById<Query extends string = "*">(

@@ -44,6 +44,9 @@
     },
     "joins": {
       "invalid": "Invalid join configuration. All joins must have source and target properties"
+    },
+    "public": {
+      "denied": "Chart is not public. To make it public, please change the chart settings and set it to public"
     }
   },
   "pages": {

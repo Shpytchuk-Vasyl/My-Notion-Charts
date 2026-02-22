@@ -12,6 +12,7 @@ const ErrorCodes = {
   missing_y_axis: "y-axis.min",
   invalid_limit: "limit.invalid",
   invalid_joins: "joins.invalid",
+  not_public: "public.denied",
   something_went_wrong: "SOMETHING_WENT_WRONG",
 };
 
@@ -60,8 +61,8 @@ export class NotionService {
       }));
   }
 
-  async getChartData(chart: Chart) {
-    await this.validateChartConfig(chart);
+  async getChartData(chart: Chart, isPublic: boolean = false) {
+    await this.validateChartConfig(chart, isPublic);
 
     if (chart.databases.length === 1) {
       const res = await this.client.dataSources.query({
@@ -217,7 +218,7 @@ export class NotionService {
     return data.value;
   }
 
-  private async validateChartConfig(chart: Chart) {
+  private async validateChartConfig(chart: Chart, isPublic: boolean) {
     const t = (await getMessages())["validation"];
     if (!chart.config.axis.x || !chart.config.axis.x.property) {
       throw new Error(t[ErrorCodes.missing_x_axis]);
@@ -230,6 +231,10 @@ export class NotionService {
     }
     if (chart.config.joins.some((join) => !(join.to && join.from))) {
       throw new Error(t[ErrorCodes.invalid_joins]);
+    }
+    //TODO: validate if chart is public
+    if (isPublic && !(chart as any).is_public) {
+      throw new Error(t[ErrorCodes.not_public]);
     }
 
     return true;

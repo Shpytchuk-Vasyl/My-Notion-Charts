@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { createAdminClient, createClient } from "@/lib/supabase/server";
 import {
   type Chart,
   ChartRepository,
@@ -16,9 +16,13 @@ export class ChartService {
   static async getChartsByWorkspace(workspaceId: string) {
     const supabase = await createClient();
 
-    const { data: charts } = await new ChartRepository(
+    const { data: charts, status } = await new ChartRepository(
       supabase,
     ).getWorkspaceCharts(workspaceId);
+
+    if (status === 403 || status === 406) {
+      forbidden();
+    }
 
     return { charts };
   }
@@ -33,7 +37,6 @@ export class ChartService {
       data: chart,
       error,
       status,
-      statusText,
     } = await new ChartRepository(supabase).getChartById(chartId, fields);
 
     if (status === 403 || status === 406) {
@@ -49,6 +52,25 @@ export class ChartService {
 
   static async getChartByIdWithWorkspace(chartId: string) {
     const supabase = await createClient();
+
+    const { data, error, status } = await new ChartRepository(
+      supabase,
+    ).getChartByIdWithWorkspace(chartId);
+
+
+    if (status === 403 || status === 406) {
+      forbidden();
+    }
+
+    if (error) {
+      throw error;
+    }
+
+    return data as Chart & { workspaces: { access_token: string } };
+  }
+
+  static async getOpenChartByIdWithWorkspace(chartId: string) {
+    const supabase = await createAdminClient();
 
     const { data, error } = await new ChartRepository(
       supabase,
