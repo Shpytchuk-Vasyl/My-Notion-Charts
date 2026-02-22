@@ -1,4 +1,5 @@
 "use client";
+
 import { useLocale } from "next-intl";
 import { redirect, routing } from "@/i18n/routing";
 

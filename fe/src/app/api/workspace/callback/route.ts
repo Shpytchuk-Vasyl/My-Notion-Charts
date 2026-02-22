@@ -35,7 +35,9 @@ export async function GET(request: NextRequest) {
     const { user, supabase } = await UserService.getCurrentUser();
 
     if (!user) {
-      return NextResponse.redirect(new URL("/sign-in", request.url));
+      return NextResponse.redirect(
+        new URL(routing.pathnames["/login"], request.url),
+      );
     }
 
     const notionUser = (tokenResponse.owner as any)?.user;

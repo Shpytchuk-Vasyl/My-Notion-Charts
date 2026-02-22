@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { createClient } from "../lib/supabase/server";
 
 export type User = {
@@ -16,7 +17,7 @@ export class UserService {
     } = await supabase.auth.getUser();
 
     if (!user) {
-      throw new Error("No user logged in");
+      redirect("/login");
     }
 
     return {

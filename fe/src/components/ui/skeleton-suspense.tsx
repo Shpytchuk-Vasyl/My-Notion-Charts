@@ -1,4 +1,5 @@
 "use client";
+
 import { Suspense, use } from "react";
 import { Skeleton } from "./skeleton";
 

@@ -61,9 +61,7 @@ export function LoginForm({
             aria-invalid={!!state?.errors?.email}
             required
           />
-          {state?.errors?.email && (
-            <FieldError>{state.errors.email[0]}</FieldError>
-          )}
+          {state?.errors?.email && <FieldError errors={state.errors.email} />}
         </Field>
         <Field>
           <div className="flex items-center">
@@ -87,7 +85,7 @@ export function LoginForm({
             required
           />
           {state?.errors?.password && (
-            <FieldError>{state.errors.password[0]}</FieldError>
+            <FieldError errors={state.errors.password} />
           )}
         </Field>
         {state?.error && (

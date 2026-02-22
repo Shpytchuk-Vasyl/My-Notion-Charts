@@ -1,7 +1,4 @@
-"use client";
-
 import { cva, type VariantProps } from "class-variance-authority";
-import { useMemo } from "react";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
@@ -142,7 +139,7 @@ function FieldDescription({ className, ...props }: React.ComponentProps<"p">) {
     <p
       data-slot="field-description"
       className={cn(
-        "text-muted-foreground text-sm leading-normal font-normal group-has-[[data-orientation=horizontal]]/field:text-balance",
+        "text-muted-foreground text-sm leading-normal font-normal group-has-data-[orientation=horizontal]/field:text-balance",
         "last:mt-0 nth-last-2:-mt-1 [[data-variant=legend]+&]:-mt-1.5",
         "[&>a:hover]:text-primary [&>a]:underline [&>a]:underline-offset-4",
         className,
@@ -190,7 +187,7 @@ function FieldError({
 }: React.ComponentProps<"div"> & {
   errors?: Array<{ message?: string } | undefined>;
 }) {
-  const content = useMemo(() => {
+  const getContent = () => {
     if (children) {
       return children;
     }
@@ -215,7 +212,9 @@ function FieldError({
         )}
       </ul>
     );
-  }, [children, errors]);
+  };
+
+  const content = getContent();
 
   if (!content) {
     return null;

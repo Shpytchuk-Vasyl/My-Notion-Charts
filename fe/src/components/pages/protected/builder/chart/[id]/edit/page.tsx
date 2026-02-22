@@ -1,4 +1,5 @@
 "use client";
+
 import { ChartView, type ChartViewProps } from "@/components/block/chart/view";
 import { useBuilderContext } from "../../../context";
 

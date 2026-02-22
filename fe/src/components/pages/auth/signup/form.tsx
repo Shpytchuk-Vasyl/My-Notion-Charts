@@ -62,9 +62,7 @@ export function SignupForm({
             aria-invalid={!!state?.errors?.email}
             required
           />
-          {state?.errors?.email && (
-            <FieldError>{state.errors.email[0]}</FieldError>
-          )}
+          {state?.errors?.email && <FieldError errors={state.errors.email} />}
         </Field>
 
         <Field className="grid grid-cols-2 gap-4">
@@ -83,7 +81,7 @@ export function SignupForm({
               required
             />
             {state?.errors?.password && (
-              <FieldError>{state.errors.password[0]}</FieldError>
+              <FieldError errors={state.errors.password} />
             )}
           </Field>
 
@@ -102,7 +100,7 @@ export function SignupForm({
               aria-invalid={!!state?.errors?.["confirm-password"]}
             />
             {state?.errors?.["confirm-password"] && (
-              <FieldError>{state.errors["confirm-password"][0]}</FieldError>
+              <FieldError errors={state.errors["confirm-password"]} />
             )}
           </Field>
         </Field>

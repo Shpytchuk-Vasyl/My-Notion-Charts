@@ -57,7 +57,6 @@ export class ChartService {
       supabase,
     ).getChartByIdWithWorkspace(chartId);
 
-
     if (status === 403 || status === 406) {
       forbidden();
     }
@@ -125,12 +124,7 @@ export class ChartService {
     const supabase = await createClient();
     const repository = new ChartRepository(supabase);
 
-    const res = await repository.updateChart(chart.id, {
-      name: chart.name,
-      config: chart.config as any,
-      type: chart.type,
-      databases: chart.databases,
-    });
+    const res = await repository.updateChart(chart.id, chart);
     if (res.status === 403) {
       forbidden();
     }

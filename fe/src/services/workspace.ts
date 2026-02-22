@@ -36,8 +36,11 @@ export class WorkspaceService {
   ) {
     const supabase = await createClient();
     const workspaceRepository = new WorkspaceRepository(supabase);
-    const { data: workspace, error, status } =
-      await workspaceRepository.getWorkspaceById(id, fields);
+    const {
+      data: workspace,
+      error,
+      status,
+    } = await workspaceRepository.getWorkspaceById(id, fields);
 
     if (status === 403 || status === 406) {
       forbidden();
@@ -57,7 +60,7 @@ export class WorkspaceService {
 
     const res = await repository.deleteWorkspace(workspaceId);
     if (res.status === 403) {
-      forbidden()
+      forbidden();
     }
     return res;
   }

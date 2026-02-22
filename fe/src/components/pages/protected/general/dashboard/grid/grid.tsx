@@ -1,6 +1,6 @@
 "use client";
+
 import "gridstack/dist/gridstack.min.css";
-import { de } from "date-fns/locale";
 import { GridStack, type GridStackOptions } from "gridstack";
 import { useEffect, useState } from "react";
 import { useTour } from "@/components/ui/tour";

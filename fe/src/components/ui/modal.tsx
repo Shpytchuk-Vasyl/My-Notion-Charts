@@ -1,4 +1,5 @@
 "use client";
+
 import { useActionState, useEffect } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -99,6 +100,35 @@ export function DefaultModal({
           </DialogFooter>
         </form>
       </DialogContent>
+    </Dialog>
+  );
+}
+
+type DialogProps = {
+  isIntercepted?: boolean;
+  children?: React.ReactNode;
+  backPath?: string;
+};
+
+export function DefaultDialog({
+  isIntercepted = false,
+  children = null,
+  backPath = routing.pathnames["/dashboard"],
+}: DialogProps) {
+  const router = useRouter();
+
+  const goBack = () => {
+    if (isIntercepted) {
+      router.back();
+    } else {
+      // @ts-expect-error
+      router.push(backPath);
+    }
+  };
+
+  return (
+    <Dialog open onOpenChange={goBack}>
+      <DialogContent>{children}</DialogContent>
     </Dialog>
   );
 }

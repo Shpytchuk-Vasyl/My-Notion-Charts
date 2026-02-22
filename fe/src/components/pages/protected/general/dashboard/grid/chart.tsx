@@ -1,4 +1,5 @@
 "use client";
+
 import { MoreVertical } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { ChartIcon } from "@/components/block/chart/icons";

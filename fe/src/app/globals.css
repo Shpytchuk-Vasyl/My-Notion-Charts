@@ -45,6 +45,7 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --default-transition-duration: 500ms;
 }
 
 :root {

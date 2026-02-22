@@ -1,4 +1,5 @@
 "use client";
+
 import { NextIntlClientProvider, useLocale, useTranslations } from "next-intl";
 import { use } from "react";
 import { TourProvider } from "@/components/ui/tour";

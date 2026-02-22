@@ -1,4 +1,5 @@
 "use client";
+
 import { Suspense, use } from "react";
 import { AvatarInfo, AvatarInfoSckeleton } from "@/components/ui/avatar-info";
 import { useProtectedContext } from "@/pages/protected/context";

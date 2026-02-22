@@ -271,6 +271,17 @@
           "cancelButtonText": "Cancel",
           "deleteButtonText": "Delete",
           "successMessage": "Chart deleted successfully"
+        },
+        "share": {
+          "title": "Share chart",
+          "description": "Anyone with this link can view the data displayed on the chart.",
+          "makePublicLabel": "Make chart public",
+          "makePublicDescription": "Only public charts can be embedded and viewed without authorization.",
+          "link": "Link",
+          "linkCopied": "Link copied",
+          "copy": "Copy",
+          "share": "Share",
+          "embed": "Embed on website"
         }
       },
       "workspace": {

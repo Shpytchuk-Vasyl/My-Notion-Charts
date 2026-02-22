@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS public.charts (
     type public.chart_type NOT NULL,
     workspace_id UUID NOT NULL REFERENCES public.workspaces(id) ON DELETE CASCADE,
     databases UUID[] NOT NULL DEFAULT '{}'::uuid[],
+    is_public BOOLEAN NOT NULL DEFAULT FALSE,
     config JSONB NOT NULL DEFAULT '{}'::jsonb,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL

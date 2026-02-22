@@ -1,4 +1,5 @@
 "use client";
+
 import { useParams } from "next/navigation";
 import { DefaultModal } from "@/components/ui/modal";
 import { SuspenseSkeleton } from "@/components/ui/skeleton-suspense";

@@ -40,6 +40,7 @@ export type Database = {
           created_at: string;
           databases: string[];
           id: string;
+          is_public: boolean;
           name: string;
           type: Database["public"]["Enums"]["chart_type"];
           updated_at: string;
@@ -50,6 +51,7 @@ export type Database = {
           created_at?: string;
           databases?: string[];
           id?: string;
+          is_public?: boolean;
           name: string;
           type: Database["public"]["Enums"]["chart_type"];
           updated_at?: string;
@@ -60,6 +62,7 @@ export type Database = {
           created_at?: string;
           databases?: string[];
           id?: string;
+          is_public?: boolean;
           name?: string;
           type?: Database["public"]["Enums"]["chart_type"];
           updated_at?: string;

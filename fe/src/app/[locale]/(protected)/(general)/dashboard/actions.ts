@@ -121,3 +121,22 @@ export async function updateChart(newChart: Chart) {
 
   return { success: true, msg: "" };
 }
+
+export async function updateChartPublicStatus({
+  id,
+  is_public,
+}: {
+  id: string;
+  is_public: boolean;
+}) {
+  const { error } = await ChartService.updateChart({
+    id,
+    is_public,
+  } as Chart);
+
+  if (error) {
+    return { success: false, msg: error.message };
+  }
+
+  return { success: true, msg: "" };
+}

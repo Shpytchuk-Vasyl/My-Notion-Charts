@@ -1,4 +1,5 @@
 "use client";
+
 import { Bell, ChevronsUpDown, LogOut, Moon, Sun } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { UserAvatar } from "@/components/block/user/avatar";
@@ -53,8 +54,8 @@ export function NavUser() {
             <DropdownMenuGroup>
               <DropdownMenuSub>
                 <DropdownMenuSubTrigger>
-                  <Sun className="scale-100 rotate-0 transition-all duration-500 dark:scale-0 dark:-rotate-90" />
-                  <Moon className="absolute scale-0 rotate-90 transition-all duration-500 dark:scale-100 dark:rotate-0" />
+                  <Sun className="scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+                  <Moon className="absolute scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
                   {t("theme")}
                 </DropdownMenuSubTrigger>
                 <DropdownMenuSubContent>

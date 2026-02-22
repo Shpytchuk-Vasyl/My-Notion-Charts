@@ -1,7 +1,6 @@
 import { useTranslations } from "next-intl";
-import { deleteChart } from "@/app/[locale]/(protected)/(general)/dashboard/actions";
 import { ChartService } from "@/services/chart";
-import { DeleteChartForm } from "./form";
+import { ShareChartForm } from "./form";
 
 export function ShareChartModal({
   params,
@@ -10,21 +9,26 @@ export function ShareChartModal({
   params: Promise<{ id: string }>;
   isIntercepted?: boolean;
 }) {
-  const chart = params.then(({ id }) => ChartService.getChartById(id));
+  const chart = params.then(({ id }) =>
+    ChartService.getChartById(id, "name,is_public"),
+  );
 
-  const t = useTranslations("pages.dashboard.charts.delete");
+  const t = useTranslations("pages.dashboard.charts.share");
   return (
-    <DeleteChartForm
-      deleteChart={deleteChart}
+    <ShareChartForm
       translation={{
         title: t("title"),
         description: t("description"),
-        cancelButtonText: t("cancelButtonText"),
-        deleteButtonText: t("deleteButtonText"),
-        successMessage: t("successMessage"),
+        link: t("link"),
+        linkCopied: t("linkCopied"),
+        copy: t("copy"),
+        share: t("share"),
+        makePublicLabel: t("makePublicLabel"),
+        makePublicDescription: t("makePublicDescription"),
+        embed: t("embed"),
       }}
       isIntercepted={isIntercepted}
-      chart={chart as any}
+      chart={chart}
     />
   );
 }

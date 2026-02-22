@@ -233,7 +233,7 @@ export class NotionService {
       throw new Error(t[ErrorCodes.invalid_joins]);
     }
     //TODO: validate if chart is public
-    if (isPublic && !(chart as any).is_public) {
+    if (isPublic && !chart.is_public) {
       throw new Error(t[ErrorCodes.not_public]);
     }
 
