@@ -45,4 +45,16 @@ export class WorkspaceService {
 
     return workspace;
   }
+
+  static async deleteWorkspace(workspaceId: string) {
+    const supabase = await createClient();
+
+    const repository = new WorkspaceRepository(supabase);
+
+    const res = await repository.deleteWorkspace(workspaceId);
+    if (res.status === 403) {
+      forbidden()
+    }
+    return res;
+  }
 }

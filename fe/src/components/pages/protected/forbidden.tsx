@@ -36,13 +36,11 @@ export const ForbiddenModal = ({
             <Ban />
           </AlertDialogMedia>
           <AlertDialogTitle>{t("title")}</AlertDialogTitle>
-          <AlertDialogDescription>
-            {t("description")}
-          </AlertDialogDescription>
+          <AlertDialogDescription>{t("description")}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel className="w-full" variant="outline" asChild>
-            <Link href="/">{t("backToDashboard")}</Link>
+          <AlertDialogCancel className="w-full" variant="outline">
+            <Link href="/dashboard">{t("backToDashboard")}</Link>
           </AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>

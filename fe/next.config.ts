@@ -7,7 +7,12 @@ const nextConfig: NextConfig = {
   /* config options here */
   reactCompiler: true,
   experimental: {
-    optimizePackageImports: ["zod", "next-intl", "@notionhq/client", 'radix-ui'],
+    optimizePackageImports: [
+      "zod",
+      "next-intl",
+      "@notionhq/client",
+      "radix-ui",
+    ],
     authInterrupts: true,
   },
 };
