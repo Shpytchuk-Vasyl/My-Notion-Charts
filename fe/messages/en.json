@@ -307,9 +307,12 @@
       "grid": {
         "more": "More",
         "edit": "Edit",
+        "save": "Save",
         "share": "Share",
         "delete": "Delete",
         "exclude": "Exclude",
+        "exportSuccess": "Chart exported successfully",
+        "exportError": "Failed to export chart",
         "chartType": {
           "bar": "Bar",
           "line": "Line",
@@ -442,6 +445,7 @@
       "addNewChart": "Add new chart",
       "more": "More",
       "edit": "Edit",
+      "save": "Save",
       "share": "Share",
       "delete": "Delete"
     },

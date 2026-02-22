@@ -1,12 +1,30 @@
 "use client";
 
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenuItem,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+} from "@/components/ui/dropdown-menu";
+import { type ExportFormat } from "@/hooks/use-chart-export";
 import { Link, routing } from "@/i18n/routing";
 import { useGridStackContext } from "@/lib/gridstack";
-import { CircleMinus, Folder, Share, Trash2 } from "lucide-react";
+import {
+  BarChart3,
+  CircleMinus,
+  Download,
+  FileCode,
+  FileImage,
+  FileJson,
+  FileSpreadsheet,
+  FileText,
+  Folder,
+  Share,
+  Trash2,
+} from "lucide-react";
 import { type _Translator } from "next-intl";
 
-type ChartDropdownMenuEditOptionProps = {
+type ChartDropdownMenuOptionProps = {
   id: string;
   t: _Translator<Record<string, any>, any>;
 };
@@ -14,7 +32,7 @@ type ChartDropdownMenuEditOptionProps = {
 export function ChartDropdownMenuEditOption({
   id,
   t,
-}: ChartDropdownMenuEditOptionProps) {
+}: ChartDropdownMenuOptionProps) {
   return (
     <DropdownMenuItem asChild>
       <Link
@@ -35,7 +53,7 @@ export function ChartDropdownMenuEditOption({
 export function ChartDropdownMenuDeleteOption({
   id,
   t,
-}: ChartDropdownMenuEditOptionProps) {
+}: ChartDropdownMenuOptionProps) {
   return (
     <DropdownMenuItem variant="destructive" asChild>
       <Link
@@ -56,7 +74,7 @@ export function ChartDropdownMenuDeleteOption({
 export function ChartDropdownMenuShareOption({
   id,
   t,
-}: ChartDropdownMenuEditOptionProps) {
+}: ChartDropdownMenuOptionProps) {
   return (
     <DropdownMenuItem asChild>
       <Link
@@ -77,7 +95,7 @@ export function ChartDropdownMenuShareOption({
 export function ChartDropdownMenuExcludeFromDashboardOption({
   id,
   t,
-}: ChartDropdownMenuEditOptionProps) {
+}: ChartDropdownMenuOptionProps) {
   const { removeWidget } = useGridStackContext();
 
   return (
@@ -90,5 +108,47 @@ export function ChartDropdownMenuExcludeFromDashboardOption({
       <CircleMinus className="text-destructive" />
       <span>{t("exclude")}</span>
     </DropdownMenuItem>
+  );
+}
+
+const EXPORT_FORMATS: Array<{
+  value: ExportFormat;
+  label: string;
+  icon: typeof Download;
+}> = [
+  { value: "png", label: "PNG", icon: FileImage },
+  { value: "csv", label: "CSV", icon: FileSpreadsheet },
+  { value: "json", label: "JSON", icon: FileJson },
+  { value: "pdf", label: "PDF", icon: FileText },
+  { value: "svg", label: "SVG", icon: FileCode },
+  { value: "power-bi", label: "Power BI", icon: BarChart3 },
+];
+
+export function ChartDropdownMenuSaveOption({
+  t,
+  onExport,
+}: Pick<ChartDropdownMenuOptionProps, "t"> & {
+  onExport: (format: ExportFormat) => void | Promise<void>;
+}) {
+  return (
+    <DropdownMenuSub>
+      <DropdownMenuSubTrigger>
+        <Download />
+        <span>{t("save")}</span>
+      </DropdownMenuSubTrigger>
+      <DropdownMenuSubContent>
+        {EXPORT_FORMATS.map((format) => (
+          <DropdownMenuItem
+            key={`chart-export-format-${format.value}`}
+            onClick={() => {
+              onExport(format.value);
+            }}
+          >
+            <format.icon />
+            <span>{format.label}</span>
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuSubContent>
+    </DropdownMenuSub>
   );
 }

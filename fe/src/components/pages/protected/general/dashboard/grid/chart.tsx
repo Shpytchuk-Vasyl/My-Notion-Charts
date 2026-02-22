@@ -17,7 +17,10 @@ import {
   ChartDropdownMenuShareOption,
   ChartDropdownMenuDeleteOption,
   ChartDropdownMenuExcludeFromDashboardOption,
+  ChartDropdownMenuSaveOption,
 } from "@/components/block/chart/dropdown-menu-options";
+import { useChartExport } from "@/hooks/use-chart-export";
+import { toast } from "sonner";
 
 export function GridChart({ chart }: { chart: Chart }) {
   const t = useTranslations("pages.dashboard.grid.chartType");
@@ -30,7 +33,7 @@ export function GridChart({ chart }: { chart: Chart }) {
           description={t(chart.type)}
           icon={<ChartIcon type={chart.type} />}
         />
-        <DropdownOptions id={chart.id} />
+        <DropdownOptions id={chart.id} name={chart.name} />
       </CardHeader>
       {process.env.NEXT_PUBLIC_OMIT_IFRAME_FOR_SPEEDUP_DEV ? null : (
         <iframe
@@ -46,8 +49,9 @@ export function GridChart({ chart }: { chart: Chart }) {
   );
 }
 
-const DropdownOptions = ({ id }: { id: string }) => {
+const DropdownOptions = ({ id, name }: { id: string, name: string }) => {
   const t = useTranslations("pages.dashboard.grid");
+  const { exportChart } = useChartExport(id);
 
   return (
     <DropdownMenu>
@@ -58,12 +62,18 @@ const DropdownOptions = ({ id }: { id: string }) => {
       <DropdownMenuContent className="w-48" side="bottom" align="end">
         <ChartDropdownMenuEditOption id={id} t={t} />
         <ChartDropdownMenuShareOption id={id} t={t} />
+        <ChartDropdownMenuSaveOption t={t} onExport={(format) => {
+          exportChart(format, name).then((success) => {
+            if (success) {
+              toast.success(t("exportSuccess"));
+            } else {
+              toast.error(t("exportError"));
+            }
+          });
+        }} />
         <DropdownMenuSeparator />
         <ChartDropdownMenuDeleteOption id={id} t={t} />
-        <ChartDropdownMenuExcludeFromDashboardOption
-          id={id}
-          t={useTranslations("pages.dashboard.grid")}
-        />
+        <ChartDropdownMenuExcludeFromDashboardOption id={id} t={t} />
       </DropdownMenuContent>
     </DropdownMenu>
   );
