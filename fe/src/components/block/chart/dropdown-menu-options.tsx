@@ -10,7 +10,12 @@ import { type ExportFormat } from "@/hooks/use-chart-export";
 import { Link, routing } from "@/i18n/routing";
 import { useGridStackContext } from "@/lib/gridstack";
 import {
+  ADD_CHART_TO_DASHBOARD_EVENT,
+  type AddChartToDashboardEventDetail,
+} from "@/lib/gridstack/events";
+import {
   BarChart3,
+  CirclePlus,
   CircleMinus,
   Download,
   FileCode,
@@ -107,6 +112,29 @@ export function ChartDropdownMenuExcludeFromDashboardOption({
     >
       <CircleMinus className="text-destructive" />
       <span>{t("exclude")}</span>
+    </DropdownMenuItem>
+  );
+}
+
+export function ChartDropdownMenuAddToDashboardOption({
+  id,
+  t,
+}: ChartDropdownMenuOptionProps) {
+  return (
+    <DropdownMenuItem
+      onClick={() => {
+        window.dispatchEvent(
+          new CustomEvent<AddChartToDashboardEventDetail>(
+            ADD_CHART_TO_DASHBOARD_EVENT,
+            {
+              detail: { id },
+            },
+          ),
+        );
+      }}
+    >
+      <CirclePlus />
+      <span>{t("include")}</span>
     </DropdownMenuItem>
   );
 }

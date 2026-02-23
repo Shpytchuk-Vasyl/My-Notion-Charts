@@ -75,9 +75,7 @@ export function DropChart() {
         <BarChart3 className="size-10 text-primary" />
       </section>
 
-      <h2 className="text-xl font-semibold text-center mb-2">
-        {t("title")}
-      </h2>
+      <h2 className="text-xl font-semibold text-center mb-2">{t("title")}</h2>
       <p className="text-sm text-muted-foreground text-center">
         {t("description")}
       </p>

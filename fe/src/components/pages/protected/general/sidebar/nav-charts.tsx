@@ -28,6 +28,7 @@ import {
 import { Link, routing } from "@/i18n/routing";
 import { useProtectedContext } from "@/pages/protected/context";
 import {
+  ChartDropdownMenuAddToDashboardOption,
   ChartDropdownMenuDeleteOption,
   ChartDropdownMenuEditOption,
   ChartDropdownMenuShareOption,
@@ -105,6 +106,7 @@ function NavChartsInner() {
                     id: item.id,
                     name: item.name,
                     type: item.type,
+                    is_public: item.is_public,
                   },
                 },
               }),
@@ -121,7 +123,7 @@ function NavChartsInner() {
                 }}
                 draggable={false}
               >
-                <ChartIcon type={item.type} />
+                <ChartIcon type={item.type} is_public={item.is_public} />
                 <span title={item.name}>{item.name}</span>
               </Link>
             </SidebarMenuButton>
@@ -164,6 +166,7 @@ const DropdownOptions = ({ chartId }: { chartId: string }) => {
       >
         <ChartDropdownMenuEditOption id={chartId} t={t} />
         <ChartDropdownMenuShareOption id={chartId} t={t} />
+        <ChartDropdownMenuAddToDashboardOption id={chartId} t={t} />
         <DropdownMenuSeparator />
         <ChartDropdownMenuDeleteOption id={chartId} t={t} />
       </DropdownMenuContent>

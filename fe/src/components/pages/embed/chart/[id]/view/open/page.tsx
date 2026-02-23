@@ -22,6 +22,7 @@ export async function OpenEmbededChartViewPage({ id }: { id: string }) {
       type={chart.type}
       chartData={chartData}
       labels={chartLabels}
+      className="h-dvh"
     />
   );
 }

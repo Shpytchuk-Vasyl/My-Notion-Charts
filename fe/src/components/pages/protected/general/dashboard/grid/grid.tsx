@@ -12,6 +12,10 @@ import {
   GridStackRenderProvider,
   useGridStackContext,
 } from "@/lib/gridstack";
+import {
+  ADD_CHART_TO_DASHBOARD_EVENT,
+  type AddChartToDashboardEventDetail,
+} from "@/lib/gridstack/events";
 import type { Chart } from "@/models/chart";
 import { TOUR_DASHBOARD_DRAG_CHART_ID } from "./../tour";
 import { GridChart } from "./chart";
@@ -102,6 +106,57 @@ const SetupDragIn = () => {
   return null;
 };
 
+const SetupAddChartByEvent = ({
+  charts,
+}: {
+  charts: Omit<Chart, "config">[];
+}) => {
+  const { addWidget, _rawWidgetMetaMap, saveOptions } = useGridStackContext();
+
+  useEffect(() => {
+    const handleAddChart = (event: Event) => {
+      const customEvent = event as CustomEvent<AddChartToDashboardEventDetail>;
+      const chartId = customEvent.detail?.id;
+
+      if (!chartId || _rawWidgetMetaMap.value.has(chartId)) {
+        return;
+      }
+
+      const chart = charts.find((item) => item.id === chartId);
+      if (!chart) {
+        return;
+      }
+
+      addWidget({
+        w: 1,
+        h: 1,
+        id: chart.id,
+        content: JSON.stringify({
+          name: "GridChart",
+          props: {
+            chart: {
+              id: chart.id,
+              name: chart.name,
+              type: chart.type,
+              is_public: chart.is_public,
+            },
+          },
+        }),
+      });
+
+      const saved = saveOptions();
+      LocalCashe.set(LAYOUT_KEY, saved);
+    };
+
+    window.addEventListener(ADD_CHART_TO_DASHBOARD_EVENT, handleAddChart);
+    return () => {
+      window.removeEventListener(ADD_CHART_TO_DASHBOARD_EVENT, handleAddChart);
+    };
+  }, [addWidget, charts, saveOptions, _rawWidgetMetaMap]);
+
+  return null;
+};
+
 export function ChartGrid({
   charts,
   children,
@@ -149,6 +204,7 @@ export function ChartGrid({
       <GridStackRenderProvider>
         <GridStackRender componentMap={COMPONENT_MAP} />
         <SetupDragIn />
+        <SetupAddChartByEvent charts={charts} />
         {children}
       </GridStackRenderProvider>
     </GridStackProvider>

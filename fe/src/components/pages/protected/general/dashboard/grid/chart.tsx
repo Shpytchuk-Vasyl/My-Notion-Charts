@@ -31,7 +31,7 @@ export function GridChart({ chart }: { chart: Chart }) {
         <AvatarInfo
           title={chart.name}
           description={t(chart.type)}
-          icon={<ChartIcon type={chart.type} />}
+          icon={<ChartIcon type={chart.type} is_public={chart.is_public} />}
         />
         <DropdownOptions id={chart.id} name={chart.name} />
       </CardHeader>

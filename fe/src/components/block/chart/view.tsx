@@ -88,10 +88,10 @@ export function ChartView({
             responsive
             accessibilityLayer
             data={chartData}
-            className="w-full aspect-video"
+            className="size-full"
           >
             <CartesianGrid vertical={false} />
-            {xKey ? <XAxis dataKey={xKey} /> : null}
+            <XAxis dataKey={xKey} />
             <YAxis />
             <ChartTooltip content={<ChartTooltipContent />} />
             <ChartLegend content={<ChartLegendContent />} />
@@ -119,7 +119,7 @@ export function ChartView({
             responsive
             accessibilityLayer
             data={chartData}
-            className="w-full aspect-video"
+            className="size-full"
           >
             <defs>
               {yKeys.map((key, idx) => (
@@ -145,7 +145,7 @@ export function ChartView({
               ))}
             </defs>
             <CartesianGrid />
-            {xKey ? <XAxis dataKey={xKey} /> : null}
+            <XAxis dataKey={xKey} />
             <YAxis />
             <ChartTooltip content={<ChartTooltipContent />} />
             <ChartLegend content={<ChartLegendContent />} />
@@ -167,10 +167,10 @@ export function ChartView({
             responsive
             accessibilityLayer
             data={chartData}
-            className="w-full aspect-video"
+            className="size-full"
           >
             <CartesianGrid />
-            {xKey ? <XAxis dataKey={xKey} /> : null}
+            <XAxis dataKey={xKey} />
             <YAxis dataKey={primaryYKey} />
             {zKey ? <ZAxis dataKey={zKey} range={[60, 300]} /> : null}
             <ChartTooltip content={<ChartTooltipContent />} />
@@ -188,11 +188,7 @@ export function ChartView({
       case "pie":
         if (!primaryYKey) return null;
         return (
-          <PieChart
-            responsive
-            accessibilityLayer
-            className="w-full aspect-video"
-          >
+          <PieChart responsive accessibilityLayer className="size-full">
             <ChartTooltip content={<ChartTooltipContent />} />
             <ChartLegend content={<ChartLegendContent />} />
             <Pie
@@ -215,7 +211,7 @@ export function ChartView({
             responsive
             accessibilityLayer
             data={chartData}
-            className="w-full aspect-video"
+            className="size-full"
           >
             <PolarGrid gridType={showCircle ? "circle" : "polygon"} />
             <PolarAngleAxis dataKey={xKey} />
@@ -249,7 +245,7 @@ export function ChartView({
             startAngle={-90}
             endAngle={380}
             innerRadius={30}
-            className="w-full aspect-video"
+            className="size-full"
           >
             <ChartTooltip content={<ChartTooltipContent />} />
             <ChartLegend content={<ChartLegendContent />} />
@@ -276,13 +272,13 @@ export function ChartView({
             responsive
             accessibilityLayer
             data={chartData}
-            className="w-full aspect-video"
+            className="size-full"
           >
             <CartesianGrid vertical={false} />
-            {xKey ? <XAxis dataKey={xKey} /> : null}
+            <XAxis dataKey={xKey} />
             <YAxis />
-            {/* <ChartTooltip content={<ChartTooltipContent />} /> */}
-            {/* <ChartLegend content={<ChartLegendContent />} /> */}
+            <ChartTooltip content={<ChartTooltipContent />} />
+            <ChartLegend content={<ChartLegendContent />} />
             {yKeys.map((key, idx) => (
               <Bar
                 key={`${id}-${key}`}
@@ -312,22 +308,3 @@ export function ChartView({
     </ChartContainer>
   );
 }
-
-//  return (
-//     <Card className={className}>
-//       <CardHeader>
-//         <CardTitle>{chart.name}</CardTitle>
-//       </CardHeader>
-//       <CardContent>
-//         <ChartContainer
-//           style={getChartThemeStyles(
-//             chart.config.customization.theme as ChartThemeType,
-//           )}
-//           id={chart.id}
-//           config={chartConfig}
-//         >
-//           {renderChart()!}
-//         </ChartContainer>
-//       </CardContent>
-//     </Card>
-//   );

@@ -21,8 +21,20 @@ export const chartIcons: Record<ChartType, LucideIcon> = {
 
 export const ChartIcon = ({
   type,
+  is_public = false,
   ...rest
-}: { type: ChartType } & React.ComponentProps<LucideIcon>) => {
+}: {
+  type: ChartType;
+  is_public: boolean;
+} & React.ComponentProps<LucideIcon>) => {
   const IconComponent = chartIcons[type] || BarChart;
+
+  if (is_public)
+    return (
+      <span className="relative inline-flex after:absolute after:-right-1 after:-top-1 after:size-2 after:rounded-full after:bg-green-500 after:content-[''] after:animate-pulse">
+        <IconComponent {...rest} />
+      </span>
+    );
+
   return <IconComponent {...rest} />;
 };
