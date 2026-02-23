@@ -24,7 +24,7 @@ export class ChartService {
       forbidden();
     }
 
-    return { charts };
+    return charts!;
   }
 
   static async getChartById<Query extends string = "*">(

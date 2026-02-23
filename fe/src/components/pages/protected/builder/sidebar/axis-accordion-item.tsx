@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useBuilderContext } from "../context";
+import { TOUR_FIRST_EDIT_CHART_IDS } from "../tour";
 
 export const AxisAccordionItem = () => {
   const t = useTranslations("pages.chart.edit.nav");
@@ -35,7 +36,11 @@ export const AxisAccordionItem = () => {
 
   return (
     <AccordionItem value="chart-axis">
-      <AccordionTrigger>{t("axis.title")}</AccordionTrigger>
+      <AccordionTrigger
+        data-tour-step-id={TOUR_FIRST_EDIT_CHART_IDS.AXIS_ACCORDION}
+      >
+        {t("axis.title")}
+      </AccordionTrigger>
       <AccordionContent>
         <FieldGroup className="px-2">
           <Field>
@@ -45,7 +50,11 @@ export const AxisAccordionItem = () => {
 
             {!isLoading && (
               <Select value={axisX} onValueChange={setAxisX}>
-                <SelectTrigger id="axisX" className="w-full">
+                <SelectTrigger
+                  id="axisX"
+                  className="w-full"
+                  data-tour-step-id={TOUR_FIRST_EDIT_CHART_IDS.AXIS_X}
+                >
                   <SelectValue placeholder={t("selectProperty")} />
                 </SelectTrigger>
 
@@ -85,6 +94,7 @@ export const AxisAccordionItem = () => {
                     <SelectTrigger
                       id={`axisY-${index}`}
                       className="w-full truncate"
+                      data-tour-step-id={`${TOUR_FIRST_EDIT_CHART_IDS.AXIS_Y}-${index}`}
                     >
                       <SelectValue placeholder={t("selectProperty")} />
                     </SelectTrigger>
@@ -105,7 +115,11 @@ export const AxisAccordionItem = () => {
                       </SelectGroup>
                     </SelectContent>
                   </Select>
-                  <Button variant="outline" onClick={() => removeAxisY(index)}>
+                  <Button
+                    variant="outline"
+                    onClick={() => removeAxisY(index)}
+                    data-tour-step-id={`${TOUR_FIRST_EDIT_CHART_IDS.AXIS_REMOVE}-${index}`}
+                  >
                     <Trash2 className="text-destructive" />
                   </Button>
                 </ButtonGroup>
@@ -113,7 +127,12 @@ export const AxisAccordionItem = () => {
             </Field>
           ))}
 
-          <Button variant="outline" onClick={addAxisY} disabled={isLoading}>
+          <Button
+            variant="outline"
+            onClick={addAxisY}
+            disabled={isLoading}
+            data-tour-step-id={TOUR_FIRST_EDIT_CHART_IDS.AXIS_ADD}
+          >
             <Plus />
             {t("axis.addAxisY")}
           </Button>

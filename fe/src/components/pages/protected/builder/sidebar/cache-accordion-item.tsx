@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useBuilderContext } from "../context";
+import { TOUR_FIRST_EDIT_CHART_IDS } from "../tour";
 
 const availableCacheDurations = [
   { name: "without", value: 0, icon: <ClockAlert /> },
@@ -39,7 +40,11 @@ export const CacheAccordionItem = () => {
 
   return (
     <AccordionItem value="chart-cache">
-      <AccordionTrigger>{t("title")}</AccordionTrigger>
+      <AccordionTrigger
+        data-tour-step-id={TOUR_FIRST_EDIT_CHART_IDS.CACHE_ACCORDION}
+      >
+        {t("title")}
+      </AccordionTrigger>
       <AccordionContent>
         <Field className="px-2">
           <FieldLabel htmlFor="cacheDuration">{t("duration")}:</FieldLabel>
@@ -53,7 +58,11 @@ export const CacheAccordionItem = () => {
                 setCacheDuration as unknown as (value: string) => void
               }
             >
-              <SelectTrigger id="cacheDuration" className="w-full">
+              <SelectTrigger
+                id="cacheDuration"
+                className="w-full"
+                data-tour-step-id={TOUR_FIRST_EDIT_CHART_IDS.CACHE_DURATION}
+              >
                 <SelectValue placeholder={t("durationPlaceholder")} />
               </SelectTrigger>
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { type Content } from "radix-ui";
+import type { Popover as PopoverPrimitive } from "radix-ui";
 import { XIcon } from "lucide-react";
 import Link from "next/link";
 import { createContext, useContext, useEffect, useState } from "react";
@@ -46,11 +46,15 @@ type BaseStep = {
   previousRoute?: string;
   nextLabel?: React.ReactNode;
   previousLabel?: React.ReactNode;
-  side?: React.ComponentProps<typeof Content>["side"];
-  sideOffset?: React.ComponentProps<typeof Content>["sideOffset"];
-  align?: React.ComponentProps<typeof Content>["align"];
-  alignOffset?: React.ComponentProps<typeof Content>["alignOffset"];
+  side?: PopoverPrimitive.PopoverContentProps["side"];
+  sideOffset?: PopoverPrimitive.PopoverContentProps["sideOffset"];
+  align?: PopoverPrimitive.PopoverContentProps["align"];
+  alignOffset?: PopoverPrimitive.PopoverContentProps["alignOffset"];
   className?: string;
+  sideEffects?: {
+    afterNext?: () => void;
+    afterPrevious?: () => void;
+  }
 };
 
 type Step = BaseStep &
@@ -106,12 +110,14 @@ function TourProvider({
       setCurrentStepIndex(0);
       setActiveTourId(null);
     }
+    steps[currentStepIndex].sideEffects?.afterNext?.();
   }
 
   function previous() {
     if (currentStepIndex > 0) {
       setCurrentStepIndex((prev) => prev - 1);
     }
+    steps[currentStepIndex].sideEffects?.afterPrevious?.();
   }
 
   function close() {
@@ -248,7 +254,7 @@ function TourOverlay({
     window.addEventListener("resize", handleResizeOrScroll);
     window.addEventListener("scroll", handleResizeOrScroll, true);
 
-    const observer = new MutationObserver(() => updatePosition());
+    const observer = new MutationObserver(updatePosition);
     observer.observe(document.body, {
       attributes: true,
       childList: true,
@@ -263,6 +269,23 @@ function TourOverlay({
       window.removeEventListener("scroll", handleResizeOrScroll, true);
       observer.disconnect();
       resizeObserver.disconnect();
+    };
+  }, [step]);
+
+  useEffect(() => {
+    const onKeydown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      } else if (["ArrowRight", " ", "Enter"].includes(e.key)) {
+        onNext();
+      } else if (["ArrowLeft"].includes(e.key)) {
+        onPrevious();
+      }
+    };
+
+    window.addEventListener("keydown", onKeydown);
+    return () => {
+      window.removeEventListener("keydown", onKeydown);
     };
   }, [step]);
 

@@ -20,6 +20,10 @@ export default async function AppSidebar() {
       messages={{
         nav: messages.nav,
         pages: { chart: { edit: { nav: messages.pages.chart.edit.nav } } },
+        tours: {
+          chart: { edit: messages.tours.chart.edit },
+          nav: messages.tours.nav,
+        },
       }}
     >
       <Sidebar className="top-(--header-height) h-[calc(100svh-var(--header-height))]!">

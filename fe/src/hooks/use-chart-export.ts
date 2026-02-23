@@ -111,15 +111,14 @@ function parseChartPayloadFromScript(scriptText: string) {
     ) {
       return (parsed.chartData || []).map((row) => {
         for (const oldKey in row) {
-            const newKey = parsed.labels?.[oldKey] ?? oldKey;
-            row[newKey] = row[oldKey];
-            delete row[oldKey];     
+          const newKey = parsed.labels?.[oldKey] ?? oldKey;
+          row[newKey] = row[oldKey];
+          delete row[oldKey];
         }
         return row;
-      })
+      });
     }
-  } catch {
-  }
+  } catch {}
 
   return [];
 }
@@ -143,22 +142,25 @@ function findChartPayload(doc: Document) {
 }
 
 function jsonToCsv(jsonRecords: any[]): string {
-    if (!Array.isArray(jsonRecords) || jsonRecords.length === 0) {
-        return '';
-    }
+  if (!Array.isArray(jsonRecords) || jsonRecords.length === 0) {
+    return "";
+  }
 
-    const headers = Object.keys(jsonRecords[0]);
-    const csvHeader = headers.join(',');
+  const headers = Object.keys(jsonRecords[0]);
+  const csvHeader = headers.join(",");
 
-    const csvRows = jsonRecords.map(record => {
-        const values = headers.map(header => {
-            const value = record[header] === null || record[header] === undefined ? '' : record[header];
-            return JSON.stringify(value);
-        });
-        return values.join(',');
+  const csvRows = jsonRecords.map((record) => {
+    const values = headers.map((header) => {
+      const value =
+        record[header] === null || record[header] === undefined
+          ? ""
+          : record[header];
+      return JSON.stringify(value);
     });
+    return values.join(",");
+  });
 
-    return [csvHeader, ...csvRows].join('\r\n');
+  return [csvHeader, ...csvRows].join("\r\n");
 }
 
 export function useChartExport(chartId: string) {
@@ -246,12 +248,8 @@ export function useChartExport(chartId: string) {
           return false;
         }
 
-        const bi = 'https://github.com/queryon/powerbi_notion_connector';
-        downloadTextFile(
-          bi,
-          `${chartName}-power-bi.txt`,
-          "text/plain",
-        );
+        const bi = "https://github.com/queryon/powerbi_notion_connector";
+        downloadTextFile(bi, `${chartName}-power-bi.txt`, "text/plain");
       }
 
       return true;

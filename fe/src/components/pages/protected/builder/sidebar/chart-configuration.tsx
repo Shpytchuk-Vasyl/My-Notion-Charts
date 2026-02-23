@@ -8,25 +8,46 @@ import { JoinsAccordionItem } from "./joins-accordion-item";
 import { LimitAccordionItem } from "./limit-accordion-item";
 import { SettingsAccordionItem } from "./settings-accordion-item";
 import { SortAccordionItem } from "./sort-accordion-item";
-
-// TODO: add Translation for items
+import { getTours, TOUR_FIRST_EDIT_CHART_IDS } from "../tour";
+import { useTranslations } from "next-intl";
+import { TourProvider } from "@/components/ui/tour";
+import { FirstEditChartTour } from "./first-edit-tour";
 
 export function ChartConfigurationAccordion() {
+  const t = useTranslations("tours.nav");
+
   return (
-    <Accordion className="px-4" type="multiple">
-      <SettingsAccordionItem />
+    <TourProvider
+      tours={getTours(useTranslations("tours.chart.edit"))}
+      translations={{
+        next: t("next"),
+        previous: t("previous"),
+        finish: t("finish"),
+        step: t("step"),
+        of: t("of"),
+      }}
+    >
+      <Accordion
+        className="px-4"
+        type="multiple"
+        data-tour-step-id={TOUR_FIRST_EDIT_CHART_IDS.WELCOME}
+      >
+        <SettingsAccordionItem />
 
-      <FiltersAccordionItem />
+        <FiltersAccordionItem />
 
-      <AxisAccordionItem />
+        <AxisAccordionItem />
 
-      <CacheAccordionItem />
+        <CacheAccordionItem />
 
-      <SortAccordionItem />
+        <SortAccordionItem />
 
-      <LimitAccordionItem />
+        <LimitAccordionItem />
 
-      <JoinsAccordionItem />
-    </Accordion>
+        <JoinsAccordionItem />
+      </Accordion>
+
+      <FirstEditChartTour />
+    </TourProvider>
   );
 }

@@ -514,6 +514,92 @@
         }
       }
     },
+    "chart": {
+      "edit": {
+        "firstEdit": {
+          "welcome": {
+            "title": "Welcome to your first chart!",
+            "content": "Let's look at how to customize it so it looks exactly how you want"
+          },
+          "settingsAccordion": {
+            "title": "Chart Settings",
+            "content": "Click to open. Here you can change the chart name, type and theme"
+          },
+          "settingsName": {
+            "title": "Chart Name",
+            "content": "Enter a descriptive name so you can easily identify the chart among others"
+          },
+          "settingsType": {
+            "title": "Chart Type",
+            "content": "Select the chart type that best displays your data (bar, line, pie, etc.)"
+          },
+          "settingsTheme": {
+            "title": "Theme",
+            "content": "Select a color scheme that matches your style or brand. You can change it at any time"
+          },
+          "filtersAccordion": {
+            "title": "Filters",
+            "content": "Click to open. Here you can create and edit filters to focus on specific data or exclude noise"
+          },
+          "filtersAction": {
+            "title": "Create Filter",
+            "content": "Click to add your first filter. You can combine multiple conditions using AND/OR for more complex logic"
+          },
+          "axisAccordion": {
+            "title": "Axes",
+            "content": "Click to open. Here you select which fields to use for the X and Y axes, and you can also add multiple Y axes to compare different metrics on the same chart"
+          },
+          "axisX": {
+            "title": "X Axis",
+            "content": "Select a property for the X axis. Usually this is a category or time interval by which you want to distribute your data"
+          },
+          "axisY": {
+            "title": "Y Axis",
+            "content": "Select a property for the Y axis. This is a numeric field that you want to measure or compare on the chart. The Y axis can be omitted, in which case the chart will show the count of records for each category on the X axis, or you can select one or more numeric fields for more detailed analysis"
+          },
+          "axisAdd": {
+            "title": "Add Axis",
+            "content": "Adds another Y axis so you can compare multiple metrics on the same chart. This is useful for identifying relationships between different metrics"
+          },
+          "axisRemove": {
+            "title": "Remove Axis",
+            "content": "Removes an extra Y axis from the chart"
+          },
+          "cacheAccordion": {
+            "title": "Caching",
+            "content": "Click to open. Here you can configure how long the chart will cache data for faster loading. A shorter cache duration means the chart will update more frequently from Notion, but may load slower. A longer cache duration provides instant loading, but data may be less up-to-date"
+          },
+          "cacheDuration": {
+            "title": "Cache Duration",
+            "content": "Less is more up-to-date, more is faster."
+          },
+          "sortAccordion": {
+            "title": "Sorting",
+            "content": "Click to open. Set the order in which data is displayed on the chart by selecting a field to sort by and a direction (ascending or descending)"
+          },
+          "sortProperty": {
+            "title": "Sort By",
+            "content": "Select a property by which you want to sort the data on the chart. This can be any field from your Notion database that makes sense for organizing your data (e.g., date, numeric value, or text)"
+          },
+          "sortDirection": {
+            "title": "Direction",
+            "content": "Choose the sort direction: ascending (from smallest to largest) or descending (from largest to smallest)"
+          },
+          "limitAccordion": {
+            "title": "Limit",
+            "content": "Click to open. Here you can set the maximum number of data rows that will be displayed on the chart. This is useful if you have a very large database and want to focus only on the most important or most recent records"
+          },
+          "limitValue": {
+            "title": "Limit Rows",
+            "content": "Enter the maximum number of data rows you want to display on the chart. Leave empty to show all data, but be aware that this may affect chart loading speed if you have a very large database"
+          },
+          "complete": {
+            "title": "Complete",
+            "content": "Now you know how to set up your chart so it looks and works exactly the way you want. Don't be afraid to experiment with different settings to find the perfect representation of your data!"
+          }
+        }
+      }
+    },
     "nav": {
       "next": "Next",
       "previous": "Previous",

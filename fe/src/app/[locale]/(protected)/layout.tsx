@@ -17,9 +17,7 @@ export default function ProtectedLayout({
     if (!currentWorkspace) {
       return [];
     }
-    return ChartService.getChartsByWorkspace(currentWorkspace.id).then(
-      ({ charts }) => charts,
-    );
+    return ChartService.getChartsByWorkspace(currentWorkspace.id);
   });
 
   return (

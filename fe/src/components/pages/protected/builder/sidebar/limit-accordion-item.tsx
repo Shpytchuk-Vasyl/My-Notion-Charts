@@ -15,6 +15,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useBuilderContext } from "../context";
+import { TOUR_FIRST_EDIT_CHART_IDS } from "../tour";
 
 export const LimitAccordionItem = () => {
   const t = useTranslations("pages.chart.edit.nav.limit");
@@ -36,7 +37,11 @@ export const LimitAccordionItem = () => {
 
   return (
     <AccordionItem value="chart-limit">
-      <AccordionTrigger>{t("title")}</AccordionTrigger>
+      <AccordionTrigger
+        data-tour-step-id={TOUR_FIRST_EDIT_CHART_IDS.LIMIT_ACCORDION}
+      >
+        {t("title")}
+      </AccordionTrigger>
       <AccordionContent asChild>
         <Field className="px-2">
           <Tooltip>
@@ -62,6 +67,7 @@ export const LimitAccordionItem = () => {
               onBlur={handleBlur}
               placeholder={t("dataLimitPlaceholder")}
               id="chartLimit"
+              data-tour-step-id={TOUR_FIRST_EDIT_CHART_IDS.LIMIT_VALUE}
             />
           )}
         </Field>

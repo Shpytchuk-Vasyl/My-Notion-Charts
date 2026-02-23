@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useBuilderContext } from "../context";
+import { TOUR_FIRST_EDIT_CHART_IDS } from "../tour";
 
 export const SettingsAccordionItem = () => {
   const t = useTranslations("pages.chart.edit.nav.settings");
@@ -37,7 +38,11 @@ export const SettingsAccordionItem = () => {
 
   return (
     <AccordionItem value="chart-configuration">
-      <AccordionTrigger>{t("title")}</AccordionTrigger>
+      <AccordionTrigger
+        data-tour-step-id={TOUR_FIRST_EDIT_CHART_IDS.SETTINGS_ACCORDION}
+      >
+        {t("title")}
+      </AccordionTrigger>
       <AccordionContent>
         <FieldGroup className="px-2">
           <Field>
@@ -47,6 +52,7 @@ export const SettingsAccordionItem = () => {
             {!isLoading && (
               <Input
                 id="chartName"
+                data-tour-step-id={TOUR_FIRST_EDIT_CHART_IDS.SETTINGS_NAME}
                 placeholder={t("chartNamePlaceholder")}
                 minLength={2}
                 maxLength={50}
@@ -63,7 +69,11 @@ export const SettingsAccordionItem = () => {
 
             {!isLoading && (
               <Select value={type} onValueChange={setType}>
-                <SelectTrigger id="chartType" className="w-full">
+                <SelectTrigger
+                  id="chartType"
+                  className="w-full"
+                  data-tour-step-id={TOUR_FIRST_EDIT_CHART_IDS.SETTINGS_TYPE}
+                >
                   <SelectValue placeholder={t("chartType.placeholder")} />
                 </SelectTrigger>
 
@@ -97,6 +107,7 @@ export const SettingsAccordionItem = () => {
                   id="chartTheme"
                   className="w-full"
                   style={getChartThemeStyles(theme as ChartThemeType)}
+                  data-tour-step-id={TOUR_FIRST_EDIT_CHART_IDS.SETTINGS_THEME}
                 >
                   <SelectValue placeholder={t("chartTheme.placeholder")} />
                 </SelectTrigger>

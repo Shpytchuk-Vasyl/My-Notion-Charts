@@ -18,6 +18,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useBuilderContext } from "../context";
+import { TOUR_FIRST_EDIT_CHART_IDS } from "../tour";
 
 export const FiltersAccordionItem = () => {
   const t = useTranslations("pages.chart.edit.nav.filters");
@@ -25,7 +26,11 @@ export const FiltersAccordionItem = () => {
 
   return (
     <AccordionItem value="chart-filters">
-      <AccordionTrigger>{t("title")}</AccordionTrigger>
+      <AccordionTrigger
+        data-tour-step-id={TOUR_FIRST_EDIT_CHART_IDS.FILTERS_ACCORDION}
+      >
+        {t("title")}
+      </AccordionTrigger>
       <AccordionContent>
         <FieldGroup className="px-2 gap-2">
           <FieldLabel className="font-normal">
@@ -34,13 +39,17 @@ export const FiltersAccordionItem = () => {
           <Popover>
             <PopoverTrigger asChild>
               {Object.keys((filters ?? {}) as any).length ? (
-                <Button variant="outline">
+                <Button
+                  variant="outline"
+                  data-tour-step-id={TOUR_FIRST_EDIT_CHART_IDS.FILTERS_ACTION}
+                >
                   <SquarePen />
                   {t("editFilter")}
                 </Button>
               ) : (
                 <Button
                   variant="outline"
+                  data-tour-step-id={TOUR_FIRST_EDIT_CHART_IDS.FILTERS_ACTION}
                   onClick={() => addFilterGroup([])}
                   disabled={isLoading}
                 >

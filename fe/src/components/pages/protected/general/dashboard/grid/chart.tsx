@@ -49,7 +49,7 @@ export function GridChart({ chart }: { chart: Chart }) {
   );
 }
 
-const DropdownOptions = ({ id, name }: { id: string, name: string }) => {
+const DropdownOptions = ({ id, name }: { id: string; name: string }) => {
   const t = useTranslations("pages.dashboard.grid");
   const { exportChart } = useChartExport(id);
 
@@ -62,15 +62,18 @@ const DropdownOptions = ({ id, name }: { id: string, name: string }) => {
       <DropdownMenuContent className="w-48" side="bottom" align="end">
         <ChartDropdownMenuEditOption id={id} t={t} />
         <ChartDropdownMenuShareOption id={id} t={t} />
-        <ChartDropdownMenuSaveOption t={t} onExport={(format) => {
-          exportChart(format, name).then((success) => {
-            if (success) {
-              toast.success(t("exportSuccess"));
-            } else {
-              toast.error(t("exportError"));
-            }
-          });
-        }} />
+        <ChartDropdownMenuSaveOption
+          t={t}
+          onExport={(format) => {
+            exportChart(format, name).then((success) => {
+              if (success) {
+                toast.success(t("exportSuccess"));
+              } else {
+                toast.error(t("exportError"));
+              }
+            });
+          }}
+        />
         <DropdownMenuSeparator />
         <ChartDropdownMenuDeleteOption id={id} t={t} />
         <ChartDropdownMenuExcludeFromDashboardOption id={id} t={t} />

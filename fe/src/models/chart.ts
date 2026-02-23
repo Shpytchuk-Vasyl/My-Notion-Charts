@@ -58,7 +58,9 @@ export class ChartRepository {
   async getWorkspaceCharts(workspaceId: string) {
     return this.supabase
       .from("charts")
-      .select("created_at,databases,id,name,type,updated_at,workspace_id")
+      .select(
+        "databases,id,name,type,created_at,updated_at,workspace_id,is_public",
+      )
       .eq("workspace_id", workspaceId)
       .order("updated_at", { ascending: false });
   }
