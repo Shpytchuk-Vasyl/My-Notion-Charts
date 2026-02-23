@@ -304,6 +304,10 @@
         "description": "Create your first chart to visualize your Notion data. It's quick and easy!",
         "createButton": "Create Chart"
       },
+      "dropCharts": {
+        "title": "Time to add a chart to your dashboard",
+        "description": "Just drag a chart from the sidebar into this area"
+      },
       "grid": {
         "more": "More",
         "edit": "Edit",

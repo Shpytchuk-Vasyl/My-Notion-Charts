@@ -29,7 +29,7 @@ export function AddWorkspace() {
         />
       </svg>
 
-      <div className="flex flex-col gap-2 text-center">
+      <div className="space-y-2 text-center">
         <h2 className="text-xl font-semibold">{t("title")}</h2>
         <p className="text-sm text-muted-foreground">{t("description")}</p>
       </div>
@@ -48,11 +48,11 @@ export function AddChart() {
 
   return (
     <Card className="max-w-md m-auto p-6 items-center">
-      <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
-        <BarChart3 className="h-10 w-10 text-primary" />
+      <div className="flex size-20 items-center justify-center rounded-full bg-primary/10">
+        <BarChart3 className="size-10 text-primary" />
       </div>
 
-      <div className="flex flex-col gap-2 text-center">
+      <div className="space-y-2 text-center">
         <h2 className="text-xl font-semibold">{t("title")}</h2>
         <p className="text-sm text-muted-foreground">{t("description")}</p>
       </div>
@@ -63,5 +63,24 @@ export function AddChart() {
         </Link>
       </Button>
     </Card>
+  );
+}
+
+export function DropChart() {
+  const t = useTranslations("pages.dashboard.dropCharts");
+
+  return (
+    <section className="justify-items-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 group-has-[div]:hidden">
+      <section className="flex size-20 items-center justify-center rounded-full bg-primary/10 mb-6">
+        <BarChart3 className="size-10 text-primary" />
+      </section>
+
+      <h2 className="text-xl font-semibold text-center mb-2">
+        {t("title")}
+      </h2>
+      <p className="text-sm text-muted-foreground text-center">
+        {t("description")}
+      </p>
+    </section>
   );
 }

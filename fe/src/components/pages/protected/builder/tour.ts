@@ -25,7 +25,9 @@ export const TOUR_FIRST_EDIT_CHART_IDS = {
 };
 
 function toggleAcordion(id: string) {
-  const element = document.querySelector(`[data-tour-step-id='${id}']`) as HTMLElement;
+  const element = document.querySelector(
+    `[data-tour-step-id='${id}']`,
+  ) as HTMLElement;
   if (element) {
     element.click();
   }
@@ -53,7 +55,7 @@ export const getTours: (t: (key: string) => string) => Tour[] = (t) => {
             afterNext() {
               toggleAcordion(TOUR_FIRST_EDIT_CHART_IDS.SETTINGS_ACCORDION);
             },
-          }
+          },
         },
         {
           id: TOUR_FIRST_EDIT_CHART_IDS.SETTINGS_NAME,
@@ -65,7 +67,7 @@ export const getTours: (t: (key: string) => string) => Tour[] = (t) => {
             afterPrevious() {
               toggleAcordion(TOUR_FIRST_EDIT_CHART_IDS.SETTINGS_ACCORDION);
             },
-          }
+          },
         },
         {
           id: TOUR_FIRST_EDIT_CHART_IDS.SETTINGS_TYPE,
@@ -84,7 +86,7 @@ export const getTours: (t: (key: string) => string) => Tour[] = (t) => {
             afterNext() {
               toggleAcordion(TOUR_FIRST_EDIT_CHART_IDS.SETTINGS_ACCORDION);
             },
-          }
+          },
         },
         {
           id: TOUR_FIRST_EDIT_CHART_IDS.FILTERS_ACCORDION,
@@ -99,7 +101,7 @@ export const getTours: (t: (key: string) => string) => Tour[] = (t) => {
             afterPrevious() {
               toggleAcordion(TOUR_FIRST_EDIT_CHART_IDS.SETTINGS_ACCORDION);
             },
-          }
+          },
         },
         {
           id: TOUR_FIRST_EDIT_CHART_IDS.FILTERS_ACTION,
@@ -114,7 +116,7 @@ export const getTours: (t: (key: string) => string) => Tour[] = (t) => {
             afterPrevious() {
               toggleAcordion(TOUR_FIRST_EDIT_CHART_IDS.FILTERS_ACCORDION);
             },
-          }
+          },
         },
         {
           id: TOUR_FIRST_EDIT_CHART_IDS.AXIS_ACCORDION,
@@ -129,7 +131,7 @@ export const getTours: (t: (key: string) => string) => Tour[] = (t) => {
             afterPrevious() {
               toggleAcordion(TOUR_FIRST_EDIT_CHART_IDS.FILTERS_ACCORDION);
             },
-          }
+          },
         },
         {
           id: TOUR_FIRST_EDIT_CHART_IDS.AXIS_X,
@@ -141,7 +143,7 @@ export const getTours: (t: (key: string) => string) => Tour[] = (t) => {
             afterPrevious() {
               toggleAcordion(TOUR_FIRST_EDIT_CHART_IDS.AXIS_ACCORDION);
             },
-          }
+          },
         },
         {
           id: TOUR_FIRST_EDIT_CHART_IDS.AXIS_Y,
@@ -167,7 +169,7 @@ export const getTours: (t: (key: string) => string) => Tour[] = (t) => {
             afterNext() {
               toggleAcordion(TOUR_FIRST_EDIT_CHART_IDS.AXIS_ACCORDION);
             },
-          }
+          },
         },
         {
           id: TOUR_FIRST_EDIT_CHART_IDS.CACHE_ACCORDION,
@@ -182,7 +184,7 @@ export const getTours: (t: (key: string) => string) => Tour[] = (t) => {
             afterPrevious() {
               toggleAcordion(TOUR_FIRST_EDIT_CHART_IDS.AXIS_ACCORDION);
             },
-          }
+          },
         },
         {
           id: TOUR_FIRST_EDIT_CHART_IDS.CACHE_DURATION,
@@ -197,7 +199,7 @@ export const getTours: (t: (key: string) => string) => Tour[] = (t) => {
             afterPrevious() {
               toggleAcordion(TOUR_FIRST_EDIT_CHART_IDS.CACHE_ACCORDION);
             },
-          }
+          },
         },
         {
           id: TOUR_FIRST_EDIT_CHART_IDS.SORT_ACCORDION,
@@ -212,7 +214,7 @@ export const getTours: (t: (key: string) => string) => Tour[] = (t) => {
             afterPrevious() {
               toggleAcordion(TOUR_FIRST_EDIT_CHART_IDS.CACHE_ACCORDION);
             },
-          }
+          },
         },
         {
           id: TOUR_FIRST_EDIT_CHART_IDS.SORT_PROPERTY,
@@ -220,11 +222,11 @@ export const getTours: (t: (key: string) => string) => Tour[] = (t) => {
           content: t("firstEdit.sortProperty.content"),
           side: "right",
           align: "start",
-           sideEffects: {
+          sideEffects: {
             afterPrevious() {
               toggleAcordion(TOUR_FIRST_EDIT_CHART_IDS.SORT_ACCORDION);
             },
-          }
+          },
         },
         {
           id: TOUR_FIRST_EDIT_CHART_IDS.SORT_DIRECTION,
@@ -236,7 +238,7 @@ export const getTours: (t: (key: string) => string) => Tour[] = (t) => {
             afterNext() {
               toggleAcordion(TOUR_FIRST_EDIT_CHART_IDS.SORT_ACCORDION);
             },
-          }
+          },
         },
         {
           id: TOUR_FIRST_EDIT_CHART_IDS.LIMIT_ACCORDION,
@@ -250,8 +252,8 @@ export const getTours: (t: (key: string) => string) => Tour[] = (t) => {
             },
             afterPrevious() {
               toggleAcordion(TOUR_FIRST_EDIT_CHART_IDS.SORT_ACCORDION);
-            }
-          }
+            },
+          },
         },
         {
           id: TOUR_FIRST_EDIT_CHART_IDS.LIMIT_VALUE,
@@ -265,8 +267,8 @@ export const getTours: (t: (key: string) => string) => Tour[] = (t) => {
             },
             afterPrevious() {
               toggleAcordion(TOUR_FIRST_EDIT_CHART_IDS.LIMIT_ACCORDION);
-            }
-          }
+            },
+          },
         },
         {
           id: TOUR_FIRST_EDIT_CHART_IDS.COMPLETE,
@@ -278,9 +280,9 @@ export const getTours: (t: (key: string) => string) => Tour[] = (t) => {
             afterPrevious() {
               toggleAcordion(TOUR_FIRST_EDIT_CHART_IDS.LIMIT_ACCORDION);
             },
-          }
+          },
         },
-      ] as Tour['steps'],
+      ] as Tour["steps"],
     },
   ] as Tour[];
 };

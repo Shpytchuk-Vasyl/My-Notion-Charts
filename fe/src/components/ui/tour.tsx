@@ -54,7 +54,7 @@ type BaseStep = {
   sideEffects?: {
     afterNext?: () => void;
     afterPrevious?: () => void;
-  }
+  };
 };
 
 type Step = BaseStep &

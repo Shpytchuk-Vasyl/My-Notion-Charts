@@ -10,11 +10,13 @@ import { getTours } from "./tour";
 export function DashboardPage({
   addWorkspace,
   addChart,
+  dropChart,
   dashboardMessages,
   tourMessages,
 }: {
   addWorkspace: React.ReactNode;
   addChart: React.ReactNode;
+  dropChart: React.ReactNode;
   tourMessages: Record<string, string>;
   dashboardMessages: Record<string, string>;
 }) {
@@ -41,7 +43,7 @@ export function DashboardPage({
       }}
     >
       <Tours>
-        <ChartGrid charts={chartsData} />
+        <ChartGrid charts={chartsData}>{dropChart}</ChartGrid>
       </Tours>
     </NextIntlClientProvider>
   );

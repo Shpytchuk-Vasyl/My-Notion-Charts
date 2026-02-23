@@ -102,7 +102,10 @@ const SetupDragIn = () => {
   return null;
 };
 
-export function ChartGrid({ charts }: { charts: Omit<Chart, "config">[] }) {
+export function ChartGrid({
+  charts,
+  children,
+}: React.PropsWithChildren<{ charts: Omit<Chart, "config">[] }>) {
   const { start } = useTour();
 
   function getGridOptions() {
@@ -146,6 +149,7 @@ export function ChartGrid({ charts }: { charts: Omit<Chart, "config">[] }) {
       <GridStackRenderProvider>
         <GridStackRender componentMap={COMPONENT_MAP} />
         <SetupDragIn />
+        {children}
       </GridStackRenderProvider>
     </GridStackProvider>
   );

@@ -79,7 +79,10 @@ export const SortAccordionItem = () => {
               </Select>
             )}
           </Field>
-          <Field orientation="horizontal" data-tour-step-id={TOUR_FIRST_EDIT_CHART_IDS.SORT_DIRECTION}>
+          <Field
+            orientation="horizontal"
+            data-tour-step-id={TOUR_FIRST_EDIT_CHART_IDS.SORT_DIRECTION}
+          >
             {isLoading && <Skeleton className="h-9 w-full" />}
 
             {!isLoading && (
@@ -88,7 +91,6 @@ export const SortAccordionItem = () => {
                 checked={sortAscending}
                 onCheckedChange={toggleSortAscending}
                 disabled={!sortProperty}
-                
               />
             )}
             <FieldLabel htmlFor="sortAscending">{t("descending")}</FieldLabel>
