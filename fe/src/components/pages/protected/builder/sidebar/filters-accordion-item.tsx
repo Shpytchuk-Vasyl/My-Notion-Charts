@@ -1,4 +1,4 @@
-import { Plus, SquarePen } from "lucide-react";
+import { PlusIcon, SquarePenIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import {
   FilterForm,
@@ -43,7 +43,7 @@ export const FiltersAccordionItem = () => {
                   variant="outline"
                   data-tour-step-id={TOUR_FIRST_EDIT_CHART_IDS.FILTERS_ACTION}
                 >
-                  <SquarePen />
+                  <SquarePenIcon />
                   {t("editFilter")}
                 </Button>
               ) : (
@@ -53,7 +53,7 @@ export const FiltersAccordionItem = () => {
                   onClick={() => addFilterGroup([])}
                   disabled={isLoading}
                 >
-                  <Plus />
+                  <PlusIcon />
                   {t("createFilter")}
                 </Button>
               )}

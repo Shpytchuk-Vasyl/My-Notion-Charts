@@ -13,6 +13,7 @@ import {
   ADD_CHART_TO_DASHBOARD_EVENT,
   type AddChartToDashboardEventDetail,
 } from "@/lib/gridstack/events";
+// todo: replace BarChart3 to BarChart3ICon, and other icons too
 import {
   BarChart3,
   CirclePlus,

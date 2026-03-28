@@ -1,6 +1,6 @@
 "use client";
 
-import { MoreHorizontal, Plus } from "lucide-react";
+import { MoreHorizontalIcon, PlusIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Suspense, use, useState } from "react";
 import { ChartIcon } from "@/components/block/chart/icons";
@@ -81,7 +81,7 @@ function NavChartsInner() {
           <TooltipTrigger asChild>
             <SidebarMenuAction className="static" asChild>
               <Link href={routing.pathnames["/dashboard/chart/new"]}>
-                <Plus />
+                <PlusIcon />
                 <span className="sr-only">{t("addNewChart")}</span>
               </Link>
             </SidebarMenuAction>
@@ -137,7 +137,7 @@ function NavChartsInner() {
                 setDisplayedCharts((prev) => prev + CHART_DISPLAY_LIMIT)
               }
             >
-              <MoreHorizontal />
+              <MoreHorizontalIcon />
               <span>{t("more")}</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -155,7 +155,7 @@ const DropdownOptions = ({ chartId }: { chartId: string }) => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <SidebarMenuAction showOnHover>
-          <MoreHorizontal />
+          <MoreHorizontalIcon />
           <span className="sr-only">{t("more")}</span>
         </SidebarMenuAction>
       </DropdownMenuTrigger>

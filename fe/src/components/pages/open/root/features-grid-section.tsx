@@ -1,11 +1,11 @@
 import {
-  ArrowRight,
-  BarChart3,
-  Database,
-  Download,
-  FileSpreadsheet,
-  Lock,
-  Zap,
+  ArrowRightIcon,
+  BarChart3Icon,
+  DatabaseIcon,
+  DownloadIcon,
+  FileSpreadsheetIcon,
+  LockIcon,
+  ZapIcon,
 } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
@@ -13,15 +13,15 @@ import { Card } from "@/components/ui/card";
 import RootSection from "./section";
 
 const FEATURE_ICONS = [
-  [Zap, Lock, FileSpreadsheet],
-  [BarChart3, Database, FileSpreadsheet],
-  [ArrowRight, ArrowRight, Download],
+  [ZapIcon, LockIcon, FileSpreadsheetIcon],
+  [BarChart3Icon, DatabaseIcon, FileSpreadsheetIcon],
+  [ArrowRightIcon, ArrowRightIcon, DownloadIcon],
 ] as const;
 
 const FEATURE_COLORS = ["green", "purple", "blue"] as const;
 
 type FeatureItemProps = {
-  icon: typeof Zap;
+  icon: typeof ZapIcon;
   text: string;
   color: (typeof FEATURE_COLORS)[number];
 };

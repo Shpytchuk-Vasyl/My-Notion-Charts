@@ -1,6 +1,6 @@
 "use client";
 
-import { Sparkles } from "lucide-react";
+import { SparklesIcon } from "lucide-react";
 import { SiteBreadcrumb } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -49,7 +49,7 @@ export function AppHeader({
         {save}
       </Button>
       <Button variant="ghost" size="icon" id="chat-sidebar-trigger" disabled>
-        <Sparkles />
+        <SparklesIcon />
       </Button>
     </header>
   );

@@ -1,11 +1,11 @@
 "use client";
 
 import {
-  ChevronsUpDown,
-  Folder,
-  MoreHorizontal,
-  Plus,
-  Trash2,
+  ChevronsUpDownIcon,
+  FolderIcon,
+  MoreHorizontalIcon,
+  PlusIcon,
+  Trash2Icon,
 } from "lucide-react";
 import NextLink from "next/link";
 import { useTranslations } from "next-intl";
@@ -109,7 +109,7 @@ function NavWorkspaceInner({ editable }: NavWorkspaceProps) {
                 description={currentWorkspaceData.workspace_email}
                 url={currentWorkspaceData.workspace_icon}
               />
-              <ChevronsUpDown className="ml-auto size-4" />
+              <ChevronsUpDownIcon className="ml-auto size-4" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
@@ -182,14 +182,14 @@ const DropdownOptions = ({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <SidebarMenuAction className="static">
-          <MoreHorizontal />
+          <MoreHorizontalIcon />
           <span className="sr-only">{t("more")}</span>
         </SidebarMenuAction>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-48" side={"right"} align={"start"}>
         <DropdownMenuItem asChild>
           <NextLink href={process.env.NEXT_PUBLIC_NOTION_REDIRECT_URL!}>
-            <Folder className="text-muted-foreground" />
+            <FolderIcon className="text-muted-foreground" />
             <span>{t("edit")}</span>
           </NextLink>
         </DropdownMenuItem>
@@ -203,7 +203,7 @@ const DropdownOptions = ({
               },
             }}
           >
-            <Trash2 className="text-destructive" />
+            <Trash2Icon className="text-destructive" />
             <span>{t("delete")}</span>
           </Link>
         </DropdownMenuItem>
@@ -225,7 +225,7 @@ const AddWorkspace = () => {
         description={""}
         icon={
           <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-            <Plus />
+            <PlusIcon />
           </div>
         }
       />

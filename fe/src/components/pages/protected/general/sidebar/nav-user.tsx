@@ -1,6 +1,12 @@
 "use client";
 
-import { Bell, ChevronsUpDown, LogOut, Moon, Sun } from "lucide-react";
+import {
+  BellIcon,
+  ChevronsUpDownIcon,
+  LogOutIcon,
+  MoonIcon,
+  SunIcon,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
 import { UserAvatar } from "@/components/block/user/avatar";
 import {
@@ -37,7 +43,7 @@ export function NavUser() {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <UserAvatar />
-              <ChevronsUpDown className="ml-auto size-4" />
+              <ChevronsUpDownIcon className="ml-auto size-4" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
@@ -54,8 +60,8 @@ export function NavUser() {
             <DropdownMenuGroup>
               <DropdownMenuSub>
                 <DropdownMenuSubTrigger>
-                  <Sun className="scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
-                  <Moon className="absolute scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+                  <SunIcon className="scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+                  <MoonIcon className="absolute scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
                   {t("theme")}
                 </DropdownMenuSubTrigger>
                 <DropdownMenuSubContent>
@@ -81,14 +87,14 @@ export function NavUser() {
               </DropdownMenuSub>
 
               <DropdownMenuItem>
-                <Bell />
+                <BellIcon />
                 {t("notifications")}
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
               <Link href={routing.pathnames["/logout"]}>
-                <LogOut />
+                <LogOutIcon />
                 {t("logout")}
               </Link>
             </DropdownMenuItem>

@@ -1,6 +1,6 @@
 "use client";
 
-export class LocalCashe {
+export class LocalCache {
   static get<T>(key: string, storage: Storage = localStorage): T | null {
     const item = storage.getItem(key);
     return item ? (JSON.parse(item) as T) : null;

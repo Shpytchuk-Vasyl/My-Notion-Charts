@@ -99,7 +99,7 @@ function BreadcrumbEllipsis({ className, ...props }: ComponentProps<"span">) {
 type BreadcrumbProps = {
   list: {
     title: ReactNode;
-    url: string;
+    url: any;
   }[];
 };
 

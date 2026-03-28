@@ -1,10 +1,10 @@
 "use client";
 
 import {
-  BookOpen,
-  ChevronRight,
+  BookOpenIcon,
+  ChevronRightIcon,
   type LucideIcon,
-  Settings2,
+  Settings2Icon,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import {
@@ -46,7 +46,7 @@ const getItems = (): NavItem[] => [
   {
     titleKey: "documentation",
     url: "#",
-    icon: BookOpen,
+    icon: BookOpenIcon,
     items: [
       {
         titleKey: "introduction",
@@ -69,7 +69,7 @@ const getItems = (): NavItem[] => [
   {
     titleKey: "settings",
     url: "#",
-    icon: Settings2,
+    icon: Settings2Icon,
     items: [
       {
         titleKey: "general",
@@ -116,7 +116,7 @@ export function NavMain() {
                 <>
                   <CollapsibleTrigger asChild>
                     <SidebarMenuAction className="data-[state=open]:rotate-90">
-                      <ChevronRight />
+                      <ChevronRightIcon />
                       <span className="sr-only">{t("toggle")}</span>
                     </SidebarMenuAction>
                   </CollapsibleTrigger>

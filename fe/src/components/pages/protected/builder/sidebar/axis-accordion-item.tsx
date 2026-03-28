@@ -1,4 +1,4 @@
-import { Plus, Trash2 } from "lucide-react";
+import { PlusIcon, Trash2Icon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { PropertyIcon } from "@/components/block/notion/property";
 import {
@@ -120,7 +120,7 @@ export const AxisAccordionItem = () => {
                     onClick={() => removeAxisY(index)}
                     data-tour-step-id={`${TOUR_FIRST_EDIT_CHART_IDS.AXIS_REMOVE}-${index}`}
                   >
-                    <Trash2 className="text-destructive" />
+                    <Trash2Icon className="text-destructive" />
                   </Button>
                 </ButtonGroup>
               )}
@@ -133,7 +133,7 @@ export const AxisAccordionItem = () => {
             disabled={isLoading}
             data-tour-step-id={TOUR_FIRST_EDIT_CHART_IDS.AXIS_ADD}
           >
-            <Plus />
+            <PlusIcon />
             {t("axis.addAxisY")}
           </Button>
         </FieldGroup>

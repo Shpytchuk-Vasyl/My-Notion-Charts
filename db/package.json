@@ -2,13 +2,12 @@
   "scripts": {
     "start": "supabase start",
     "stop": "supabase stop",
-    "restart": "supabase restart",
     "status": "supabase status",
     "logs": "supabase logs --follow",
     "db:reset": "supabase db reset --yes",
     "db:m:new": "supabase migration new",
-    "db:m:up": "supabase db migrate up",
-    "db:m:down": "supabase db migrate down",
+    "db:m:up": "supabase migration up",
+    "db:m:down": "supabase migration down",
     "db:seed": "supabase db seed",
     "types:gen:fe": "supabase gen types typescript --local > ../fe/src/models/_database.types.ts"
   },

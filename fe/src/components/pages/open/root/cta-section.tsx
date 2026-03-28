@@ -1,4 +1,4 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowRightIcon } from "lucide-react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
@@ -16,7 +16,7 @@ export function CtaSection() {
         <div className="flex flex-col items-center gap-4">
           <Button size="lg" variant="secondary" className="gap-2" asChild>
             <Link href={routing.pathnames["/dashboard"]}>
-              {t("button")} <ArrowRight />
+              {t("button")} <ArrowRightIcon />
             </Link>
           </Button>
           <div className="text-sm opacity-75">{t("features")}</div>

@@ -1,4 +1,4 @@
-import { BarChart3 } from "lucide-react";
+import { BarChart3Icon } from "lucide-react";
 import NextLink from "next/link";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
@@ -49,7 +49,7 @@ export function AddChart() {
   return (
     <Card className="max-w-md m-auto p-6 items-center">
       <div className="flex size-20 items-center justify-center rounded-full bg-primary/10">
-        <BarChart3 className="size-10 text-primary" />
+        <BarChart3Icon className="size-10 text-primary" />
       </div>
 
       <div className="space-y-2 text-center">
@@ -72,7 +72,7 @@ export function DropChart() {
   return (
     <section className="justify-items-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 group-has-[div]:hidden">
       <section className="flex size-20 items-center justify-center rounded-full bg-primary/10 mb-6">
-        <BarChart3 className="size-10 text-primary" />
+        <BarChart3Icon className="size-10 text-primary" />
       </section>
 
       <h2 className="text-xl font-semibold text-center mb-2">{t("title")}</h2>

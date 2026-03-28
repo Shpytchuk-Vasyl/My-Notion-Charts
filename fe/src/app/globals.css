@@ -125,6 +125,15 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  ::selection {
+    @apply bg-primary text-primary-foreground;
+  }
+}
+
+html {
+  scrollbar-color: var(--foreground) transparent;
+  caret-color: var(--primary);
 }
 
 .grid-stack-item > .ui-resizable-se {

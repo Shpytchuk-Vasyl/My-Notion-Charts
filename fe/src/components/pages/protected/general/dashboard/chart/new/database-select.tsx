@@ -1,6 +1,6 @@
 "use client";
 
-import { Database } from "lucide-react";
+import { DatabaseIcon } from "lucide-react";
 import Image from "next/image";
 import { Suspense, use, useRef, useState } from "react";
 import {
@@ -183,7 +183,7 @@ const NotionDatabaseIcon = ({
     database.icon.type === "emoji" ||
     database.icon.type === "custom_emoji"
   ) {
-    return <Database />;
+    return <DatabaseIcon />;
   } else {
     return (
       <Image

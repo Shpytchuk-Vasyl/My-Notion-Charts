@@ -1,12 +1,12 @@
 import {
   CalendarIcon,
-  ChevronDown,
-  Copy,
-  CopyX,
-  LayersPlus,
-  MoreVertical,
-  Plus,
-  Trash2,
+  ChevronDownIcon,
+  CopyIcon,
+  CopyXIcon,
+  LayersPlusIcon,
+  MoreVerticalIcon,
+  PlusIcon,
+  Trash2Icon,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { createContext, Fragment, useContext } from "react";
@@ -418,7 +418,7 @@ const AndOrWrapperDropdownMenu = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="h-fit mt-2">
-        <MoreVertical />
+        <MoreVerticalIcon />
         <span className="sr-only">{t("more")}</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
@@ -426,7 +426,7 @@ const AndOrWrapperDropdownMenu = () => {
           className="text-destructive"
           onClick={() => removeFilterGroup(path)}
         >
-          <CopyX className="text-destructive" />
+          <CopyXIcon className="text-destructive" />
           {t("deleteGroup")}
         </DropdownMenuItem>
       </DropdownMenuContent>
@@ -714,7 +714,7 @@ const FilterRowDropDownMenu = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="ml-auto">
-        <MoreVertical />
+        <MoreVerticalIcon />
         <span className="sr-only">{t("more")}</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
@@ -722,11 +722,11 @@ const FilterRowDropDownMenu = () => {
           className="text-destructive"
           onSelect={() => removeFilter(path)}
         >
-          <Trash2 className="text-destructive" />
+          <Trash2Icon className="text-destructive" />
           {t("delete")}
         </DropdownMenuItem>
         <DropdownMenuItem onSelect={() => addFilter(path.slice(0, -1), filter)}>
-          <Copy />
+          <CopyIcon />
           {t("duplicate")}
         </DropdownMenuItem>
       </DropdownMenuContent>
@@ -742,18 +742,18 @@ const AddFilterMenuBar = ({ path }: AddFilterMenuBarProps) => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" className="w-full justify-start">
-          <Plus />
+          <PlusIcon />
           {t("add")}
-          <ChevronDown />
+          <ChevronDownIcon />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-(--radix-dropdown-menu-trigger-width)">
         <DropdownMenuItem onSelect={() => addFilter(path)}>
-          <Plus />
+          <PlusIcon />
           {t("addCondition")}
         </DropdownMenuItem>
         <DropdownMenuItem onSelect={() => addFilterGroup(path)}>
-          <LayersPlus />
+          <LayersPlusIcon />
           {t("addConditionGroup")}
         </DropdownMenuItem>
       </DropdownMenuContent>

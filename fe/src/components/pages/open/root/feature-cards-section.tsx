@@ -1,9 +1,14 @@
-import { Database, Lock, Moon, Smartphone } from "lucide-react";
+import { DatabaseIcon, LockIcon, MoonIcon, SmartphoneIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import RootSection from "./section";
 
-const FEATURE_CARD_ICONS = [Lock, Database, Smartphone, Moon] as const;
+const FEATURE_CARD_ICONS = [
+  LockIcon,
+  DatabaseIcon,
+  SmartphoneIcon,
+  MoonIcon,
+] as const;
 const FEATURE_CARD_COLORS = [
   "text-blue-600",
   "text-purple-600",

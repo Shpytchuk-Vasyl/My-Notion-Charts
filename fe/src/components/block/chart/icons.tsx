@@ -31,9 +31,23 @@ export const ChartIcon = ({
 
   if (is_public)
     return (
-      <span className="relative inline-flex after:absolute after:-right-1 after:-top-1 after:size-2 after:rounded-full after:bg-green-500 after:content-[''] after:animate-pulse">
-        <IconComponent {...rest} />
-      </span>
+      <>
+        <span
+          className="absolute size-2 rounded-full bg-green-500 animate-pulse"
+          style={{
+            positionAnchor: "--chart-icon",
+            right: "calc(anchor(right) - var(--spacing))",
+            top: "calc(anchor(top) - var(--spacing))",
+          }}
+        />
+        <IconComponent
+          {...rest}
+          style={{
+            anchorName: "--chart-icon",
+            ...rest.style,
+          }}
+        />
+      </>
     );
 
   return <IconComponent {...rest} />;

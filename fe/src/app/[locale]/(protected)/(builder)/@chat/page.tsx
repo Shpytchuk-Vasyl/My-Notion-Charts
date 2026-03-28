@@ -5,8 +5,11 @@ import {
   SidebarFooter,
   SidebarHeader,
 } from "@/components/ui/sidebar";
+import { SidebarChat } from "@/components/block/chat";
 
 export { generateStaticParams } from "@/i18n/static-params";
+
+const WIDTH_VALUE = "24rem";
 
 export default function Page() {
   return (
@@ -14,12 +17,27 @@ export default function Page() {
     <Sidebar
       className="top-(--header-height) h-[calc(100svh-var(--header-height))]!"
       side="right"
+      asideProps={{
+        style: {
+          "--sidebar-width": WIDTH_VALUE,
+        } as React.CSSProperties,
+      }}
+      WIDTH_MOBILE={WIDTH_VALUE}
     >
-      <SidebarHeader>"Chat" --- IGNORE ---</SidebarHeader>
+      <SidebarChat
+        autoResume={false}
+        id={"chat-page"}
+        // initialMessages={[{ role: "user", parts: [{ type: "text", text: "Hello!" }], id: "1", metadata: {
+        //   createdAt: new Date().toISOString()
+        // } }]}
+        initialMessages={[]}
+        isReadonly={false}
+      />
+      {/* <SidebarHeader>"Chat" --- IGNORE ---</SidebarHeader>
       <SidebarContent>"Chat content goes here" --- IGNORE ---</SidebarContent>
       <SidebarFooter>
         "Chart input and submit button goes here" --- IGNORE ---
-      </SidebarFooter>
+      </SidebarFooter> */}
     </Sidebar>
     // </NextIntlClientProvider>
   );

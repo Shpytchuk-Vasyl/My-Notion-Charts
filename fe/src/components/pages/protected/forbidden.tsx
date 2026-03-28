@@ -9,7 +9,7 @@ import {
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
 import { Link } from "@/i18n/routing";
-import { Ban } from "lucide-react";
+import { BanIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 type ForbiddenPageProps = {
@@ -33,7 +33,7 @@ export const ForbiddenModal = ({
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
-            <Ban />
+            <BanIcon />
           </AlertDialogMedia>
           <AlertDialogTitle>{t("title")}</AlertDialogTitle>
           <AlertDialogDescription>{t("description")}</AlertDialogDescription>

@@ -5,7 +5,7 @@ import { GridStack, type GridStackOptions } from "gridstack";
 import { useEffect, useState } from "react";
 import { useTour } from "@/components/ui/tour";
 import { debounce } from "@/helpers/debounce";
-import { LocalCashe } from "@/helpers/local-cashe";
+import { LocalCache } from "@/helpers/local-cache";
 import {
   GridStackProvider,
   GridStackRender,
@@ -49,7 +49,7 @@ const SetupDragIn = () => {
 
     const save = debounce(() => {
       const t = saveOptions();
-      LocalCashe.set(LAYOUT_KEY, t);
+      LocalCache.set(LAYOUT_KEY, t);
     }, 4000);
 
     const handleDropped = (
@@ -145,7 +145,7 @@ const SetupAddChartByEvent = ({
       });
 
       const saved = saveOptions();
-      LocalCashe.set(LAYOUT_KEY, saved);
+      LocalCache.set(LAYOUT_KEY, saved);
     };
 
     window.addEventListener(ADD_CHART_TO_DASHBOARD_EVENT, handleAddChart);
@@ -165,7 +165,7 @@ export function ChartGrid({
 
   function getGridOptions() {
     const layout =
-      LocalCashe.get<GridStackOptions>(LAYOUT_KEY) || default_options;
+      LocalCache.get<GridStackOptions>(LAYOUT_KEY) || default_options;
     layout.children = layout
       .children!.map((widget) => {
         const chart = charts.find((c) => c.id === widget.id);

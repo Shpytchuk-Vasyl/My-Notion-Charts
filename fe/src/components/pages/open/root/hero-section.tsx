@@ -1,4 +1,4 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowRightIcon } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
@@ -25,7 +25,7 @@ export function HeroSection() {
 
         <Button size="lg" className="gap-2 mx-auto" asChild variant="outline">
           <Link href={routing.pathnames["/dashboard"]}>
-            {t("cta")} <ArrowRight />
+            {t("cta")} <ArrowRightIcon />
           </Link>
         </Button>
       </div>

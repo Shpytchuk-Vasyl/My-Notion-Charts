@@ -1,6 +1,6 @@
 "use client";
 
-import { MoreVertical } from "lucide-react";
+import { MoreVerticalIcon } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { ChartIcon } from "@/components/block/chart/icons";
 import { AvatarInfo } from "@/components/ui/avatar-info";
@@ -56,7 +56,7 @@ const DropdownOptions = ({ id, name }: { id: string; name: string }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <MoreVertical />
+        <MoreVerticalIcon />
         <span className="sr-only">{t("more")}</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-48" side="bottom" align="end">

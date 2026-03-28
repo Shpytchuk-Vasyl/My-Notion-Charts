@@ -218,12 +218,14 @@ function Sidebar({
   className,
   children,
   WIDTH_MOBILE = SIDEBAR_WIDTH_MOBILE,
+  asideProps,
   ...props
 }: React.ComponentProps<"div"> & {
   side?: "left" | "right";
   variant?: "sidebar" | "floating" | "inset";
   collapsible?: "offcanvas" | "icon" | "none";
   WIDTH_MOBILE?: string;
+  asideProps?: React.ComponentProps<"aside">;
 }) {
   const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
 
@@ -236,6 +238,7 @@ function Sidebar({
           className,
         )}
         {...props}
+        {...asideProps}
       >
         {children}
       </aside>
@@ -275,6 +278,7 @@ function Sidebar({
       data-variant={variant}
       data-side={side}
       data-slot="sidebar"
+      {...asideProps}
     >
       {/* This is what handles the sidebar gap on desktop */}
       <div

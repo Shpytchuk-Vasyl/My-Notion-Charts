@@ -1,6 +1,6 @@
 "use client";
 
-import { LifeBuoy, type LucideIcon, Send } from "lucide-react";
+import { LifeBuoyIcon, type LucideIcon, SendIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type * as React from "react";
 import {
@@ -22,12 +22,12 @@ const items: NavItem[] = [
   {
     titleKey: "support",
     url: routing.pathnames["/support"],
-    icon: LifeBuoy,
+    icon: LifeBuoyIcon,
   },
   {
     titleKey: "feedback",
     url: routing.pathnames["/feedback"],
-    icon: Send,
+    icon: SendIcon,
   },
 ];
 
