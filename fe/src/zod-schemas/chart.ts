@@ -53,6 +53,7 @@ export const getChartUpdateSchema = async () => {
           aggregation: z
             .enum(["count", "sum", "average", "min", "max"])
             .optional(),
+          conversion: z.enum(["percentage", "number"]).optional(),
         }),
       ),
     }),

@@ -55,7 +55,12 @@ interface BuilderContextType {
   axisX: string | undefined;
   setAxisX: (property: string) => void;
   axisY: Chart["config"]["axis"]["y"];
-  setAxisY: (index: number, property: string, aggregation?: string) => void;
+  setAxisY: (
+    index: number,
+    property: string,
+    aggregation?: string,
+    conversion?: string,
+  ) => void;
   addAxisY: () => void;
   removeAxisY: (index: number) => void;
   availableAxisProperties: SortProperty[];
@@ -292,12 +297,19 @@ export function BuilderProvider({ children }: React.PropsWithChildren<{}>) {
       return prev;
     });
   };
-  const setAxisY = (index: number, property: string, aggregation?: string) => {
+  const setAxisY = (
+    index: number,
+    property: string,
+    aggregation?: string,
+    conversion?: string,
+  ) => {
     setChart((prev) => {
       prev.config.axis.y[index] = {
         property,
         aggregation:
           aggregation as Chart["config"]["axis"]["y"][number]["aggregation"],
+        conversion:
+          conversion as Chart["config"]["axis"]["y"][number]["conversion"],
       };
       return prev;
     });

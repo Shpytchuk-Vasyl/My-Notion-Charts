@@ -15,6 +15,15 @@ export function ChartEditPage({
   const { theme: themeFromContext, type: typeFromContext } =
     useBuilderContext();
 
+    console.log("ChartEditPage render", {
+      xKey,
+  yKeys,
+  theme,
+  id,
+  type,
+  labels,
+  chartData,
+    });
   return (
     <ChartView
       xKey={xKey}

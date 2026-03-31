@@ -406,7 +406,22 @@
             "title": "Axes",
             "axisX": "X Axis",
             "axisY": "Y Axis",
-            "addAxisY": "Add Y Axis"
+            "addAxisY": "Add Y Axis",
+            "aggregation": {
+              "label": "Aggregation",
+              "none": "None",
+              "sum": "Sum",
+              "average": "Average",
+              "count": "Count",
+              "min": "Min",
+              "max": "Max"
+            },
+            "conversion": {
+              "label": "Conversion",
+              "none": "None",
+              "percentage": "Percentage",
+              "number": "Number"
+            }
           },
           "cache": {
             "title": "Caching",
@@ -437,6 +452,7 @@
           "joins": {
             "title": "Joins"
           },
+          "remove": "Remove",
           "property": "Property",
           "selectProperty": "Select property"
         }

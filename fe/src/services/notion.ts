@@ -74,9 +74,13 @@ export class NotionService {
         result_type: "page",
       });
 
-      const chartData = res.results.map((r) =>
-        this.buildChartDataItem(r as PageObjectResponse, chart.databases[0]),
+      const chartData = this.applyConversionToData(
+        res.results.map((r) =>
+          this.buildChartDataItem(r as PageObjectResponse, chart.databases[0]),
+        ),
+        chart.config.axis.y,
       );
+
       const chartLabels = this.getChartLabels(
         res.results[0] as PageObjectResponse,
         chart.databases[0],
@@ -257,5 +261,37 @@ export class NotionService {
 
     //@ts-expect-error
     return property[property.type];
+  }
+
+  private applyConversionToData(
+    data: Record<string, any>[],
+    yAxis: Chart["config"]["axis"]["y"],
+  ) {
+
+
+    function applyConversionFunctions(
+      item: Record<string, any>,
+      conversion: Chart["config"]["axis"]["y"][number]["conversion"],
+    ) {
+      if (conversion === "number") {
+        return Number(item);
+      }
+      else if (conversion === "percentage") {
+        return Number(item) * 100;
+      }
+      return item;
+    }
+
+    for (const axis of yAxis) {
+      if (axis.conversion) {
+        for (const item of data) {
+          item[axis.property] = applyConversionFunctions(
+            item[axis.property],
+            axis.conversion,
+          );
+        }
+      }
+    }
+    return data;
   }
 }

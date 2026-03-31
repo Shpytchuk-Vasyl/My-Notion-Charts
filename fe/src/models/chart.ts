@@ -29,6 +29,7 @@ export type ChartConfig = {
     y: {
       property: string;
       aggregation?: "count" | "sum" | "average" | "min" | "max";
+      conversion?: "percentage" | "number";
     }[];
   };
   sort?: {

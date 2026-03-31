@@ -1,4 +1,6 @@
 export const generateHashForObject = async (obj: unknown): Promise<string> => {
+  if (!crypto.subtle) return Date.now().toString(); // Fallback for environments without crypto.subtle
+
   return crypto.subtle
     .digest("SHA-1", new TextEncoder().encode(JSON.stringify(obj)))
     .then((hashBuffer) =>

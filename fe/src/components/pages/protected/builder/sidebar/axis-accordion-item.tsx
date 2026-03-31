@@ -1,4 +1,4 @@
-import { PlusIcon, Trash2Icon } from "lucide-react";
+import { PlusIcon, SettingsIcon, Trash2Icon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { PropertyIcon } from "@/components/block/notion/property";
 import {
@@ -20,6 +20,11 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { useBuilderContext } from "../context";
 import { TOUR_FIRST_EDIT_CHART_IDS } from "../tour";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 export const AxisAccordionItem = () => {
   const t = useTranslations("pages.chart.edit.nav");
@@ -87,9 +92,7 @@ export const AxisAccordionItem = () => {
                 <ButtonGroup className="inline-flex">
                   <Select
                     value={axis.property}
-                    onValueChange={(value) =>
-                      setAxisY(index, value, axis.aggregation)
-                    }
+                    onValueChange={(value) => setAxisY(index, value)}
                   >
                     <SelectTrigger
                       id={`axisY-${index}`}
@@ -115,13 +118,33 @@ export const AxisAccordionItem = () => {
                       </SelectGroup>
                     </SelectContent>
                   </Select>
-                  <Button
-                    variant="outline"
-                    onClick={() => removeAxisY(index)}
-                    data-tour-step-id={`${TOUR_FIRST_EDIT_CHART_IDS.AXIS_REMOVE}-${index}`}
-                  >
-                    <Trash2Icon className="text-destructive" />
-                  </Button>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        data-tour-step-id={`${TOUR_FIRST_EDIT_CHART_IDS.AXIS_REMOVE}-${index}`}
+                      >
+                        <SettingsIcon />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto space-y-2" align="start">
+                      <ConvertSelect
+                        conversion={axis.conversion}
+                        setConversion={(conv) =>
+                          setAxisY(index, axis.property, axis.aggregation, conv)
+                        }
+                      />
+
+                      <AggregationSelect
+                        aggregation={axis.aggregation}
+                        setAggregation={(agg) =>
+                          setAxisY(index, axis.property, agg, axis.conversion)
+                        }
+                      />
+
+                      <DeleteAxisYButton onDelete={() => removeAxisY(index)} />
+                    </PopoverContent>
+                  </Popover>
                 </ButtonGroup>
               )}
             </Field>
@@ -139,5 +162,88 @@ export const AxisAccordionItem = () => {
         </FieldGroup>
       </AccordionContent>
     </AccordionItem>
+  );
+};
+
+const AggregationSelect = ({
+  aggregation,
+  setAggregation,
+}: {
+  aggregation: string | undefined;
+  setAggregation: (agg: string | undefined) => void;
+}) => {
+  const t = useTranslations("pages.chart.edit.nav");
+  return (
+    <Field>
+      <FieldLabel htmlFor="database">{t("axis.aggregation.label")}</FieldLabel>
+      <Select
+        value={aggregation || "none"}
+        onValueChange={(value) =>
+          setAggregation(value === "none" ? undefined : value)
+        }
+      >
+        <SelectTrigger>
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectItem value="none">{t("axis.aggregation.none")}</SelectItem>
+            <SelectItem value="sum">{t("axis.aggregation.sum")}</SelectItem>
+            <SelectItem value="average">
+              {t("axis.aggregation.average")}
+            </SelectItem>
+            <SelectItem value="count">{t("axis.aggregation.count")}</SelectItem>
+            <SelectItem value="min">{t("axis.aggregation.min")}</SelectItem>
+            <SelectItem value="max">{t("axis.aggregation.max")}</SelectItem>
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+    </Field>
+  );
+};
+
+const ConvertSelect = ({
+  conversion,
+  setConversion,
+}: {
+  conversion: string | undefined;
+  setConversion: (conv: string | undefined) => void;
+}) => {
+  const t = useTranslations("pages.chart.edit.nav");
+  return (
+    <Field>
+      <FieldLabel htmlFor="conversion">{t("axis.conversion.label")}</FieldLabel>
+      <Select
+        value={conversion || "none"}
+        onValueChange={(value) =>
+          setConversion(value === "none" ? undefined : value)
+        }
+      >
+        <SelectTrigger>
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectItem value="none">{t("axis.conversion.none")}</SelectItem>
+            <SelectItem value="percentage">
+              {t("axis.conversion.percentage")}
+            </SelectItem>
+            <SelectItem value="number">
+              {t("axis.conversion.number")}
+            </SelectItem>
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+    </Field>
+  );
+};
+
+const DeleteAxisYButton = ({ onDelete }: { onDelete: () => void }) => {
+  const t = useTranslations("pages.chart.edit.nav");
+
+  return (
+    <Button className="w-full" variant="outline" onClick={onDelete}>
+      {t("remove")} <Trash2Icon className="text-destructive" />
+    </Button>
   );
 };
