@@ -62,7 +62,7 @@ export class NotionService {
   }
 
   async getChartData(chart: Chart, isPublic: boolean = false) {
-    await this.validateChartConfig(chart, isPublic);
+    this.validateChartConfig(chart, isPublic);
 
     if (chart.databases.length === 1) {
       const res = await this.client.dataSources.query({
@@ -222,23 +222,22 @@ export class NotionService {
     return data.value;
   }
 
-  private async validateChartConfig(chart: Chart, isPublic: boolean) {
-    const t = (await getMessages())["validation"];
+  private validateChartConfig(chart: Chart, isPublic: boolean) {
     if (!chart.config.axis.x || !chart.config.axis.x.property) {
-      throw new Error(t[ErrorCodes.missing_x_axis]);
+      throw new Error(ErrorCodes.missing_x_axis);
     }
     if (chart.config.axis.y.length === 0 || !chart.config.axis.y[0].property) {
-      throw new Error(t[ErrorCodes.missing_y_axis]);
+      throw new Error(ErrorCodes.missing_y_axis);
     }
     if (chart.config.limit && chart.config.limit < 0) {
-      throw new Error(t[ErrorCodes.invalid_limit]);
+      throw new Error(ErrorCodes.invalid_limit);
     }
     if (chart.config.joins.some((join) => !(join.to && join.from))) {
-      throw new Error(t[ErrorCodes.invalid_joins]);
+      throw new Error(ErrorCodes.invalid_joins);
     }
     //TODO: validate if chart is public
     if (isPublic && !chart.is_public) {
-      throw new Error(t[ErrorCodes.not_public]);
+      throw new Error(ErrorCodes.not_public);
     }
 
     return true;
@@ -267,16 +266,13 @@ export class NotionService {
     data: Record<string, any>[],
     yAxis: Chart["config"]["axis"]["y"],
   ) {
-
-
     function applyConversionFunctions(
       item: Record<string, any>,
       conversion: Chart["config"]["axis"]["y"][number]["conversion"],
     ) {
       if (conversion === "number") {
         return Number(item);
-      }
-      else if (conversion === "percentage") {
+      } else if (conversion === "percentage") {
         return Number(item) * 100;
       }
       return item;

@@ -14,16 +14,6 @@ export function ChartEditPage({
 }: Omit<ChartViewProps, "className">) {
   const { theme: themeFromContext, type: typeFromContext } =
     useBuilderContext();
-
-    console.log("ChartEditPage render", {
-      xKey,
-  yKeys,
-  theme,
-  id,
-  type,
-  labels,
-  chartData,
-    });
   return (
     <ChartView
       xKey={xKey}
@@ -33,7 +23,7 @@ export function ChartEditPage({
       type={typeFromContext || type}
       chartData={chartData}
       labels={labels}
-      className="bg-card border m-4 p-6 rounded-xl shadow-sm max-h-[calc(100%-(--spacing(8)))]"
+      className="bg-card border m-4 p-6 rounded-xl shadow-sm h-[calc(100%-(--spacing(8)))]"
     />
   );
 }
