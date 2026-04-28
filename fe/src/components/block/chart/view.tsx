@@ -74,7 +74,7 @@ export function ChartView({
     yKeys.map((axis, idx) => [
       axis,
       {
-        label: labels[axis] || axis,
+        label: labels[axis] || idx.toString(),
         color: getColorByIndex(idx),
       },
     ]),

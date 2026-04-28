@@ -1,5 +1,4 @@
 import { useTranslations } from "next-intl";
-import { Suspense } from "react";
 import { chartIcons } from "@/components/block/chart/icons";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
@@ -11,8 +10,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Skeleton } from "@/components/ui/skeleton";
 import { DatabaseSelect } from "./database-select";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export function NewChartForm() {
   const t = useTranslations("pages.dashboard.charts.new");
@@ -24,6 +23,8 @@ export function NewChartForm() {
       <DatabaseField t={t} />
 
       <ChartTypeField t={t} />
+
+      <AICheckbox t={t} />
     </FieldGroup>
   );
 }
@@ -78,11 +79,20 @@ function ChartNameField({ t }: DatabaseFieldProps) {
         id="chartName"
         name="chartName"
         placeholder={t("namePlaceholder")}
-        defaultValue={"My Chart"}
+        defaultValue={t("nameDefault")}
         required
         minLength={2}
         maxLength={50}
       />
     </Field>
+  );
+}
+
+function AICheckbox({ t }: DatabaseFieldProps) {
+  return (
+    <div className="flex gap-2 items-center">
+      <Checkbox name="aiConfig" id="aiConfig" />
+      <FieldLabel htmlFor="aiConfig">{t("aiLabel")}</FieldLabel>
+    </div>
   );
 }

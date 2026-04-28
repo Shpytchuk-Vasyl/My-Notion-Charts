@@ -50,7 +50,7 @@ export type Chart = Tables<"charts"> & {
 };
 
 export const DEFAULT_CHART_CONFIG_CACHE_DURATION = 3600; // 1 hour
-export const DEFAULT_CHART_CONFIG_LIMIT = 500;
+export const DEFAULT_CHART_CONFIG_LIMIT = 100;
 export const DEFAULT_CHART_CONFIG_THEME = "green";
 
 export class ChartRepository {

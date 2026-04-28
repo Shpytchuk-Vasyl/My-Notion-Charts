@@ -252,6 +252,8 @@
         "new": {
           "nameLabel": "Назва графіка",
           "namePlaceholder": "Введіть назву графіка",
+          "nameDefault": "Мій графік",
+          "aiLabel": "Використати ШІ для конфігурації?",
           "databaseLabel": "База даних",
           "databasePlaceholder": "Виберіть базу даних",
           "chartTypeLabel": "Тип графіка",

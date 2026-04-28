@@ -252,6 +252,8 @@
         "new": {
           "nameLabel": "Chart Name",
           "namePlaceholder": "Enter chart name",
+          "nameDefault": "My Chart",
+          "aiLabel": "Use AI for configuration?",
           "databaseLabel": "Database",
           "databasePlaceholder": "Select a database",
           "chartTypeLabel": "Chart Type",

@@ -86,13 +86,15 @@ export class NotionService {
       res.results.map((r) =>
         this.buildChartDataItem(r as PageObjectResponse, chart.databases[0]),
       ),
-      chart.config.axis.y,
+      chart.config.axis,
     );
 
     const chartLabels = this.getChartLabels(
       res.results[0] as PageObjectResponse,
       chart.databases[0],
     );
+
+    console.log("chartLabels",chartLabels);
     return {
       chartData,
       chartLabels,
@@ -125,10 +127,10 @@ export class NotionService {
       chart.databases[0],
     );
 
-    console.log('resPrimary', resPrimary, chartData)
+    console.log("resPrimary", resPrimary, chartData);
     for (let index = 1; index < chart.databases.length; index++) {
       const database = chart.databases[index];
-      const isNotRelation = this.splitProperty(
+      const isNotRelationJoin = this.splitProperty(
         chart.config.joins[index - 1].to,
       ).propertyId;
 
@@ -138,55 +140,39 @@ export class NotionService {
           this.splitProperty(chart.config.joins[index].from).propertyId,
         );
 
-      if (isNotRelation) {
+      if (isNotRelationJoin) {
+        // в цьому випадку ми з'єднуємо за будь-яким полем, а не через id
       } else {
-//         const primaryDataMap = new Map(
-//           chartData.map((item) => [
-//             item[chart.config.joins[index - 1].from].id,
-//             item,
-//           ]),
-//         );
+        const primaryDataMap = new Map(
+          chartData.map((item) => [
+            item[chart.config.joins[index - 1].from].id,
+            item,
+          ]),
+        );
 
-//         const secondaryRes = await this.client.pages.retrieve({
-// page_id
-//           data_source_id: database,
-//           page_size: chart.config.limit,
-//           filter_properties: Array.from(propertySet),
-//           filter: this.getFilter(
-//             {
-//               config: {
-//                 filters: {
-//                   and: [
-//                     {
-//                       property: "id",
-//                       operator: "contains",
-//                       value: Array.from(primaryDataMap.keys()),
-//                       type: "relation",
-//                     },
-//                   ],
-//                 },
-//               },
-//             } as any,
-//             true,
-//           ),
-//           sorts: this.getSorts({ config: { sort: null } } as any),
-//           result_type: "page",
-//         });
-//         console.log('secondaryRes', secondaryRes);
-//         secondaryRes.results.forEach((r) =>
-//           Object.assign(
-//             primaryDataMap.get(r.id)!,
-//             this.buildChartDataItem(r as PageObjectResponse, database),
-//           ),
-//         );
-//         Object.assign(
-//           chartLabels,
-//           this.getChartLabels(
-//             secondaryRes.results[0] as PageObjectResponse,
-//             database,
-//           ),
-//         );
-       }
+        const secondaryRes = await this.client.dataSources.query({
+          data_source_id: database,
+          filter_properties: Array.from(propertySet),
+          sorts: this.getSorts({ config: { sort: null } } as any),
+          result_type: "page",
+        });
+        console.log("secondaryRes", secondaryRes);
+        secondaryRes.results
+          .filter((r) => primaryDataMap.has(r.id))
+          .forEach((r) =>
+            Object.assign(
+              primaryDataMap.get(r.id)!,
+              this.buildChartDataItem(r as PageObjectResponse, database),
+            ),
+          );
+        Object.assign(
+          chartLabels,
+          this.getChartLabels(
+            secondaryRes.results[0] as PageObjectResponse,
+            database,
+          ),
+        );
+      }
     }
 
     return {
@@ -382,12 +368,12 @@ export class NotionService {
 
   private applyConversionToData(
     data: Record<string, any>[],
-    yAxis: Chart["config"]["axis"]["y"],
+    axis: Chart["config"]["axis"],
   ) {
-    function toNumber(value: any) {
-      if (Array.isArray(value)) {
-        return value.length;
-      }
+    function toNumber(
+      value: any,
+      aggregation?: Chart["config"]["axis"]["y"][number]["aggregation"],
+    ): number {
       if (typeof value === "string") {
         const parsed = parseFloat(value);
         return isNaN(parsed) ? 0 : parsed;
@@ -398,6 +384,21 @@ export class NotionService {
       if (typeof value === "boolean") {
         return value ? 1 : 0;
       }
+      if (Array.isArray(value)) {
+        if (aggregation === "sum") {
+          return value.reduce((sum, item) => sum + toNumber(item), 0);
+        } else if (aggregation === "average") {
+          return (
+            value.reduce((sum, item) => sum + toNumber(item), 0) / value.length
+          );
+        } else if (aggregation === "min") {
+          return Math.min(...value.map((item) => toNumber(item)));
+        } else if (aggregation === "max") {
+          return Math.max(...value.map((item) => toNumber(item)));
+        } else {
+          return value.length;
+        }
+      }
       if (typeof value === "object" && value !== null) {
         return Object.keys(value).length;
       }
@@ -406,26 +407,59 @@ export class NotionService {
 
     function applyConversionFunctions(
       item: any,
-      conversion: Chart["config"]["axis"]["y"][number]["conversion"],
+      y: Chart["config"]["axis"]["y"][number],
     ) {
-      if (conversion === "number") {
-        return toNumber(item);
-      } else if (conversion === "percentage") {
-        return toNumber(item) * 100;
+      if (y.conversion === "number") {
+        return toNumber(item, y.aggregation);
+      } else if (y.conversion === "percentage") {
+        return toNumber(item, y.aggregation) * 100;
       }
       return item;
     }
 
-    for (const axis of yAxis) {
-      if (axis.conversion) {
+    const shouldGroupBy = axis.y.some((axis) => axis.aggregation);
+    if (shouldGroupBy) data = this.applyGrouping(data, axis);
+
+    for (const y of axis.y) {
+      if (y.conversion) {
         for (const item of data) {
-          item[axis.property] = applyConversionFunctions(
-            item[axis.property],
-            axis.conversion,
+          item[y.property] = applyConversionFunctions(
+            item[y.property],
+            y,
           );
         }
       }
     }
     return data;
+  }
+
+  private applyGrouping(
+    data: Record<string, any>[],
+    axis: Chart["config"]["axis"],
+  ): Record<string, any>[] {
+    const map = new Map<string, Record<string, any>>();
+
+    for (const item of data) {
+      const xValue = item[axis.x.property];
+      const existing = map.get(xValue);
+      if (existing) {
+        for (const y of axis.y) {
+          existing[y.property].push(item[y.property]);
+        }
+      } else {
+        map.set(
+          xValue,
+          axis.y.reduce(
+            (acc, y) => {
+              acc[y.property] = [item[y.property]];
+              return acc;
+            },
+            { [axis.x.property]: xValue } as Record<string, any>,
+          ),
+        );
+      }
+    }
+
+    return Array.from(map.values());
   }
 }

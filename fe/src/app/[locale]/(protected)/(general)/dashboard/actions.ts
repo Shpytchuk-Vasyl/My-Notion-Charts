@@ -55,6 +55,7 @@ export async function createChart(_: any, formData: FormData) {
     workspaceId: formData.get("workspaceId"),
     chartType: formData.get("chartType"),
     joins,
+    aiConfig: formData.get("aiConfig") === "on",
   };
 
   const result = (await getChartCreateSchema()).safeParse(values);
@@ -69,6 +70,16 @@ export async function createChart(_: any, formData: FormData) {
 
   if (error) {
     return { success: false, msg: error.message };
+  }
+
+  if (values.aiConfig) {
+    // todo
+    // await ChartService.updateChart({
+    //   id: data.id,
+    //   config: await AiService.generateChartConfig(
+    //     data
+    //   )
+    // })
   }
 
   const locale = await getLocale();
