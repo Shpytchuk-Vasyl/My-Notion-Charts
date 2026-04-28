@@ -19,8 +19,8 @@ export const FirstEditChartTour = () => {
   }, [charts]);
 
   useEffect(() => {
-    // if (count !== null && count === 1 && !isLoading) {
-    if (count !== null && !isLoading) {
+    if (count !== null && count === 1 && !isLoading) {
+      // if (count !== null && !isLoading) { // for testing purposes
       start(TOUR_FIRST_EDIT_CHART_ID);
     }
   }, [count, isLoading]);

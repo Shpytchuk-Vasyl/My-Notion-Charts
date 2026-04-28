@@ -47,6 +47,12 @@
     },
     "public": {
       "denied": "Chart is not public. To make it public, please change the chart settings and set it to public"
+    },
+    "filters": {
+      "invalid_for_multiple_databases": "Filters are currently only supported for the primary database — the one selected first during chart creation."
+    },
+    "sort": {
+      "invalid_for_multiple_databases": "Sorting is currently only supported for the primary database — the one selected first during chart creation."
     }
   },
   "pages": {

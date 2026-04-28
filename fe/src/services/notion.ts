@@ -4,7 +4,6 @@ import {
   type PageObjectResponse,
   type QueryDataSourceParameters,
 } from "@notionhq/client";
-import { getMessages } from "next-intl/server";
 import type { Chart, ChartConfigFilterType } from "@/models/chart";
 
 const ErrorCodes = {
@@ -12,6 +11,8 @@ const ErrorCodes = {
   missing_y_axis: "y-axis.min",
   invalid_limit: "limit.invalid",
   invalid_joins: "joins.invalid",
+  invalid_filter_for_multiple_dbs: "filters.invalid_for_multiple_databases",
+  invalid_sort_for_multiple_dbs: "sort.invalid_for_multiple_databases",
   not_public: "public.denied",
   something_went_wrong: "SOMETHING_WENT_WRONG",
 };
@@ -65,35 +66,132 @@ export class NotionService {
     this.validateChartConfig(chart, isPublic);
 
     if (chart.databases.length === 1) {
-      const res = await this.client.dataSources.query({
-        data_source_id: chart.databases[0],
-        page_size: chart.config.limit,
-        filter_properties: this.getFilterProperties(chart),
-        sorts: this.getSorts(chart),
-        filter: this.getFilter(chart.config.filters),
-        result_type: "page",
-      });
+      return await this.getDataForOneDataSource(chart);
+    }
 
-      const chartData = this.applyConversionToData(
-        res.results.map((r) =>
-          this.buildChartDataItem(r as PageObjectResponse, chart.databases[0]),
+    return await this.getDataForMultipleDataSources(chart);
+  }
+
+  private async getDataForOneDataSource(chart: Chart) {
+    const res = await this.client.dataSources.query({
+      data_source_id: chart.databases[0],
+      page_size: chart.config.limit,
+      filter_properties: this.getFilterProperties(chart, chart.databases[0]),
+      sorts: this.getSorts(chart),
+      filter: this.getFilter(chart.config.filters),
+      result_type: "page",
+    });
+
+    const chartData = this.applyConversionToData(
+      res.results.map((r) =>
+        this.buildChartDataItem(r as PageObjectResponse, chart.databases[0]),
+      ),
+      chart.config.axis.y,
+    );
+
+    const chartLabels = this.getChartLabels(
+      res.results[0] as PageObjectResponse,
+      chart.databases[0],
+    );
+    return {
+      chartData,
+      chartLabels,
+    };
+  }
+
+  private async getDataForMultipleDataSources(chart: Chart) {
+    // перевірити якщо ми спокійно можемо зробити лівий джоін, без складної фільтрації та сортування
+    const resPrimary = await this.client.dataSources.query({
+      data_source_id: chart.databases[0],
+      page_size: chart.config.limit,
+      filter_properties: Array.from(
+        new Set(
+          this.getFilterProperties(chart, chart.databases[0]).concat(
+            this.splitProperty(chart.config.joins[0].from).propertyId,
+          ),
         ),
-        chart.config.axis.y,
-      );
+      ),
+      sorts: this.getSorts(chart),
+      filter: this.getFilter(chart.config.filters),
+      result_type: "page",
+    });
 
-      const chartLabels = this.getChartLabels(
-        res.results[0] as PageObjectResponse,
-        chart.databases[0],
-      );
-      return {
-        chartData,
-        chartLabels,
-      };
+    const chartData = resPrimary.results.map((r) =>
+      this.buildChartDataItem(r as PageObjectResponse, chart.databases[0]),
+    );
+
+    const chartLabels = this.getChartLabels(
+      resPrimary.results[0] as PageObjectResponse,
+      chart.databases[0],
+    );
+
+    console.log('resPrimary', resPrimary, chartData)
+    for (let index = 1; index < chart.databases.length; index++) {
+      const database = chart.databases[index];
+      const isNotRelation = this.splitProperty(
+        chart.config.joins[index - 1].to,
+      ).propertyId;
+
+      const propertySet = new Set(this.getFilterProperties(chart, database));
+      if (chart.config.joins[index])
+        propertySet.add(
+          this.splitProperty(chart.config.joins[index].from).propertyId,
+        );
+
+      if (isNotRelation) {
+      } else {
+//         const primaryDataMap = new Map(
+//           chartData.map((item) => [
+//             item[chart.config.joins[index - 1].from].id,
+//             item,
+//           ]),
+//         );
+
+//         const secondaryRes = await this.client.pages.retrieve({
+// page_id
+//           data_source_id: database,
+//           page_size: chart.config.limit,
+//           filter_properties: Array.from(propertySet),
+//           filter: this.getFilter(
+//             {
+//               config: {
+//                 filters: {
+//                   and: [
+//                     {
+//                       property: "id",
+//                       operator: "contains",
+//                       value: Array.from(primaryDataMap.keys()),
+//                       type: "relation",
+//                     },
+//                   ],
+//                 },
+//               },
+//             } as any,
+//             true,
+//           ),
+//           sorts: this.getSorts({ config: { sort: null } } as any),
+//           result_type: "page",
+//         });
+//         console.log('secondaryRes', secondaryRes);
+//         secondaryRes.results.forEach((r) =>
+//           Object.assign(
+//             primaryDataMap.get(r.id)!,
+//             this.buildChartDataItem(r as PageObjectResponse, database),
+//           ),
+//         );
+//         Object.assign(
+//           chartLabels,
+//           this.getChartLabels(
+//             secondaryRes.results[0] as PageObjectResponse,
+//             database,
+//           ),
+//         );
+       }
     }
 
     return {
-      chartData: [],
-      chartLabels: {},
+      chartData,
+      chartLabels,
     };
   }
 
@@ -123,11 +221,14 @@ export class NotionService {
     return { dataSourceId, propertyId };
   }
 
-  private getFilterPropertiesAndDataSources(chart: Chart) {
+  private getFilterPropertiesAndDataSources(
+    chart: Chart,
+    dataSourceId?: string,
+  ) {
     return [
       this.splitProperty(chart.config.axis.x.property),
       ...chart.config.axis.y.map((axis) => this.splitProperty(axis.property)),
-    ];
+    ].filter((item) => !dataSourceId || item.dataSourceId === dataSourceId);
   }
 
   private getUsedDataSourceIds(chart: Chart) {
@@ -136,8 +237,8 @@ export class NotionService {
     );
   }
 
-  private getFilterProperties(chart: Chart) {
-    return this.getFilterPropertiesAndDataSources(chart).map(
+  private getFilterProperties(chart: Chart, dataSourceId?: string) {
+    return this.getFilterPropertiesAndDataSources(chart, dataSourceId).map(
       ({ propertyId }) => propertyId,
     );
   }
@@ -235,6 +336,23 @@ export class NotionService {
     if (chart.config.joins.some((join) => !(join.to && join.from))) {
       throw new Error(ErrorCodes.invalid_joins);
     }
+    if (
+      chart.databases.length > 1 &&
+      chart.databases
+        .slice(1)
+        .some((id) => JSON.stringify(chart.config.filters).includes(id))
+    ) {
+      throw new Error(ErrorCodes.invalid_filter_for_multiple_dbs);
+    }
+    if (
+      chart.databases.length > 1 &&
+      chart.config.sort &&
+      chart.databases
+        .slice(1)
+        .some((id) => chart.config.sort?.property?.includes(id))
+    ) {
+      throw new Error(ErrorCodes.invalid_sort_for_multiple_dbs);
+    }
     //TODO: validate if chart is public
     if (isPublic && !chart.is_public) {
       throw new Error(ErrorCodes.not_public);
@@ -266,14 +384,34 @@ export class NotionService {
     data: Record<string, any>[],
     yAxis: Chart["config"]["axis"]["y"],
   ) {
+    function toNumber(value: any) {
+      if (Array.isArray(value)) {
+        return value.length;
+      }
+      if (typeof value === "string") {
+        const parsed = parseFloat(value);
+        return isNaN(parsed) ? 0 : parsed;
+      }
+      if (typeof value === "number") {
+        return value;
+      }
+      if (typeof value === "boolean") {
+        return value ? 1 : 0;
+      }
+      if (typeof value === "object" && value !== null) {
+        return Object.keys(value).length;
+      }
+      return 0;
+    }
+
     function applyConversionFunctions(
-      item: Record<string, any>,
+      item: any,
       conversion: Chart["config"]["axis"]["y"][number]["conversion"],
     ) {
       if (conversion === "number") {
-        return Number(item);
+        return toNumber(item);
       } else if (conversion === "percentage") {
-        return Number(item) * 100;
+        return toNumber(item) * 100;
       }
       return item;
     }

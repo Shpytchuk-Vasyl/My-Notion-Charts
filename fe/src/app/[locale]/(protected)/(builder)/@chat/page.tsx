@@ -27,9 +27,6 @@ export default function Page() {
       <SidebarChat
         autoResume={false}
         id={"chat-page"}
-        // initialMessages={[{ role: "user", parts: [{ type: "text", text: "Hello!" }], id: "1", metadata: {
-        //   createdAt: new Date().toISOString()
-        // } }]}
         initialMessages={[]}
         isReadonly={false}
       />
