@@ -1,5 +1,6 @@
 "use client";
 import type { UseChatHelpers } from "@ai-sdk/react";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { useDataStream } from "../data-stream-provider";
 import { MessageContent } from "./base";
@@ -90,19 +91,35 @@ export function Messages({
         </div>
       </div>
 
-      <button
-        aria-label="Scroll to bottom"
-        className={`absolute bottom-4 left-1/2 z-10 -translate-x-1/2 rounded-full border bg-background p-2 shadow-lg transition-all hover:bg-muted ${
-          isAtBottom
-            ? "pointer-events-none scale-0 opacity-0"
-            : "pointer-events-auto scale-100 opacity-100"
-        }`}
-        onClick={() => scrollToBottom("smooth")}
-        type="button"
-      >
-        <ArrowDownIcon className="size-4" />
-      </button>
+      <ScrollToBottomButton
+        scrollToBottom={scrollToBottom}
+        isAtBottom={isAtBottom}
+      />
     </div>
+  );
+}
+
+function ScrollToBottomButton({
+  scrollToBottom,
+  isAtBottom,
+}: {
+  scrollToBottom: (behavior: ScrollBehavior) => void;
+  isAtBottom: boolean;
+}) {
+  const t = useTranslations("pages.chart.edit.chat.message");
+  return (
+    <button
+      aria-label={t("scrollToBottom")}
+      className={`absolute bottom-4 left-1/2 z-10 -translate-x-1/2 rounded-full border bg-background p-2 shadow-lg transition-all hover:bg-muted ${
+        isAtBottom
+          ? "pointer-events-none scale-0 opacity-0"
+          : "pointer-events-auto scale-100 opacity-100"
+      }`}
+      onClick={() => scrollToBottom("smooth")}
+      type="button"
+    >
+      <ArrowDownIcon className="size-4" />
+    </button>
   );
 }
 
@@ -429,6 +446,7 @@ export const PreviewMessage = ({
 };
 
 export const ThinkingMessage = () => {
+  const t = useTranslations("pages.chart.edit.chat.message");
   return (
     <div
       className="group/message fade-in w-full animate-in duration-300"
@@ -440,7 +458,7 @@ export const ThinkingMessage = () => {
         </div>
 
         <div className="flex text-muted-foreground text-sm">
-          <span className="animate-pulse">Thinking</span>
+          <span className="animate-pulse">{t("thinking")}</span>
 
           <span className="animate-bounce delay-0">.</span>
           <span className="animate-bounce delay-150">.</span>

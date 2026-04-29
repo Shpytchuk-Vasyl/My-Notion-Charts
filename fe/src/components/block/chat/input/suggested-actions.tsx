@@ -1,4 +1,5 @@
 import type { UseChatHelpers } from "@ai-sdk/react";
+import { useTranslations } from "next-intl";
 import type { ChatMessage } from "../types";
 import { Button } from "@/components/ui/button";
 
@@ -7,31 +8,27 @@ type SuggestedActionsProps = {
 };
 
 export function SuggestedActions({ sendMessage }: SuggestedActionsProps) {
-  const suggestedActions = [
-    "Write code to demonstrate Dijkstra's algorithm",
-    "Help me write an essay about Silicon Valley",
-    "What are the advantages of using Next.js?",
-    "What is the weather in San Francisco?",
-  ];
+  const t = useTranslations("pages.chart.edit.chat");
+  const suggestions = t.raw("suggestions") as string[];
 
   return (
     <ul className="space-y-2">
-      {suggestedActions.map((suggestedAction, index) => (
+      {suggestions.map((suggestion, index) => (
         <Button
           asChild
-          key={suggestedAction}
+          key={suggestion}
           className="animate-in fade-in-0 slide-in-from-bottom-5 duration-500 fill-mode-[both]"
           size="sm"
           variant="outline"
           onClick={() => {
             sendMessage({
               role: "user",
-              parts: [{ type: "text", text: suggestedAction }],
+              parts: [{ type: "text", text: suggestion }],
             });
           }}
           style={{ animationDelay: `${0.5 + 0.25 * index}s` }}
         >
-          <li>{suggestedAction}</li>
+          <li>{suggestion}</li>
         </Button>
       ))}
     </ul>

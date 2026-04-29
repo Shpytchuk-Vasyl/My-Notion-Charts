@@ -31,7 +31,7 @@ export async function OpenEmbededChartViewPage({ id }: { id: string }) {
     return (
       <ChartErrorView
         error={error.message}
-        className="border-none p-0 shadow-none"
+        className="border-none p-0 shadow-none text-center"
       />
     );
   }

@@ -94,7 +94,7 @@ export class NotionService {
       chart.databases[0],
     );
 
-    console.log("chartLabels",chartLabels);
+    console.log("chartLabels", chartLabels);
     return {
       chartData,
       chartLabels,
@@ -423,10 +423,7 @@ export class NotionService {
     for (const y of axis.y) {
       if (y.conversion) {
         for (const item of data) {
-          item[y.property] = applyConversionFunctions(
-            item[y.property],
-            y,
-          );
+          item[y.property] = applyConversionFunctions(item[y.property], y);
         }
       }
     }

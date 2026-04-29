@@ -27,7 +27,7 @@ import {
   FieldSet,
 } from "@/components/ui/field";
 import { Switch } from "@/components/ui/switch";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { updateChartPublicStatus } from "@/app/[locale]/(protected)/(general)/dashboard/actions";
 import { debounce } from "@/helpers/debounce";
 
@@ -72,7 +72,7 @@ export function ShareChartForm({
     "></iframe>",
   ].join("\n");
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     chart.then((data) => {
       setIsPublic(data.is_public);
     });

@@ -3,6 +3,7 @@
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import { type ComponentProps, useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -39,6 +40,7 @@ function PureChat({
 }) {
   const { setDataStream } = useDataStream();
 
+  const t = useTranslations("pages.chart.edit.chat");
   const [input, setInput] = useState<string>("");
   const [showCreditCardAlert, setShowCreditCardAlert] = useState(false);
   const [currentModelId, setCurrentModelId] = useState(initialChatModel);
@@ -110,7 +112,7 @@ function PureChat({
       } else if (error instanceof ChatbotError) {
         toast.error(error.message, { position: "top-right" });
       } else {
-        toast.error(error.message || "Oops, an error occurred!", {
+        toast.error(error.message || t("errors.generic"), {
           position: "top-right",
         });
       }
@@ -163,15 +165,15 @@ function PureChat({
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Activate AI Gateway</AlertDialogTitle>
+            <AlertDialogTitle>{t("gateway.title")}</AlertDialogTitle>
             <AlertDialogDescription>
-              This application requires{" "}
-              {process.env.NODE_ENV === "production" ? "the owner" : "you"} to
-              activate Vercel AI Gateway.
+              {process.env.NODE_ENV === "production"
+                ? t("gateway.descriptionProd")
+                : t("gateway.descriptionDev")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t("gateway.cancel")}</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => {
                 window.open(
@@ -180,7 +182,7 @@ function PureChat({
                 );
               }}
             >
-              Activate
+              {t("gateway.activate")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

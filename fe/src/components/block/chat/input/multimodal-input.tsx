@@ -13,6 +13,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { ModelSelectorCompact } from "./model-selector";
 import type { Attachment, ChatMessage } from "../types";
@@ -54,6 +55,7 @@ function PureMultimodalInput({
   selectedModelId,
   onModelChange,
 }: MultimodalInputProps) {
+  const t = useTranslations("pages.chart.edit.chat.input");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
@@ -138,7 +140,7 @@ function PureMultimodalInput({
         contentType: file.type,
       };
     } catch (_error) {
-      toast.error(`Failed to upload file: ${file.name}, please try again!`, {
+      toast.error(t("uploadError", { name: file.name }), {
         position: "top-right",
       });
     }
@@ -206,7 +208,7 @@ function PureMultimodalInput({
       ]);
     } catch (error) {
       console.error("Error uploading pasted images:", error);
-      toast.error("Failed to upload pasted image(s)", {
+      toast.error(t("pasteError"), {
         position: "top-right",
       });
     } finally {
@@ -249,7 +251,7 @@ function PureMultimodalInput({
             return;
           }
           if (status !== "ready") {
-            toast.error("Please wait for the model to finish its response!", {
+            toast.error(t("waitForModel"), {
               position: "top-right",
             });
           } else {
@@ -290,7 +292,7 @@ function PureMultimodalInput({
 
         <PromptInputTextarea
           onChange={handleInput}
-          placeholder="Send a message..."
+          placeholder={t("placeholder")}
           ref={textareaRef}
           value={input}
         />

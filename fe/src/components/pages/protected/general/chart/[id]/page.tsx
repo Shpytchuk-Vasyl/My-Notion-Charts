@@ -7,7 +7,7 @@ export function ChartPage({ id }: { id: string }) {
     <iframe
       key={`grid-chart-view-${id}`}
       src={`/${locale}/chart/${id}/view`}
-      className="size-full bg-card border m-4 p-6 rounded-xl shadow-sm max-h-[calc(100%-(--spacing(8)))]"
+      className="size-[calc(100%-(--spacing(8)))] bg-card border m-4 p-6 rounded-xl shadow-sm`}"
       frameBorder={0}
       allowFullScreen
     />

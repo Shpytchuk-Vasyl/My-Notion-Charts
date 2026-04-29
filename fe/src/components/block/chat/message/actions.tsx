@@ -1,6 +1,7 @@
 "use client";
 
 import { memo } from "react";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
@@ -80,6 +81,7 @@ export function PureMessageActions({
   isLoading: boolean;
   setMode?: (mode: "view" | "edit") => void;
 }) {
+  const t = useTranslations("pages.chart.edit.chat.message.actions");
   const { copyToClipboard } = useCopyToClipboard();
 
   if (isLoading) {
@@ -94,12 +96,12 @@ export function PureMessageActions({
 
   const handleCopy = async () => {
     if (!textFromParts) {
-      toast.error("There's no text to copy!", { position: "top-right" });
+      toast.error(t("noText"), { position: "top-right" });
       return;
     }
 
     await copyToClipboard(textFromParts);
-    toast.success("Copied to clipboard!", { position: "top-right" });
+    toast.success(t("copied"), { position: "top-right" });
   };
 
   // User messages get edit (on hover) and copy actions
@@ -112,12 +114,12 @@ export function PureMessageActions({
               className="absolute top-0 -left-10 opacity-0 transition-opacity focus-visible:opacity-100 group-hover/message:opacity-100"
               data-testid="message-edit-button"
               onClick={() => setMode("edit")}
-              tooltip="Edit"
+              tooltip={t("edit")}
             >
               <Edit2Icon />
             </Action>
           )}
-          <Action onClick={handleCopy} tooltip="Copy">
+          <Action onClick={handleCopy} tooltip={t("copy")}>
             <CopyIcon />
           </Action>
         </div>
@@ -127,7 +129,7 @@ export function PureMessageActions({
 
   return (
     <Actions className="-ml-0.5">
-      <Action onClick={handleCopy} tooltip="Copy">
+      <Action onClick={handleCopy} tooltip={t("copy")}>
         <CopyIcon />
       </Action>
     </Actions>

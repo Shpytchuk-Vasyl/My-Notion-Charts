@@ -1,5 +1,4 @@
 import type { UIMessage, UIMessagePart } from "ai";
-import { formatISO } from "date-fns";
 import { ChatbotError, type ErrorCode } from "./errors";
 import type { ChatMessage, ChatTools, CustomUIDataTypes } from "./types";
 
