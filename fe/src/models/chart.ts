@@ -3,6 +3,27 @@ import type { Database, Enums, Tables, TablesInsert } from "./_database.types";
 
 export type ChartType = Enums<"chart_type">;
 
+export const CHART_TYPES = [
+  "bar",
+  "line",
+  "pie",
+  "scatter",
+  "radar",
+  "area",
+  "radial",
+] as const satisfies ChartType[];
+
+export const CHART_AGGREGATIONS = [
+  "none",
+  "count",
+  "sum",
+  "average",
+  "min",
+  "max",
+] as const;
+
+export const CHART_CONVERSIONS = ["none", "percentage", "number"] as const;
+
 export type ChartConfigFilterType = {
   property?: string;
   type?: string;
@@ -28,8 +49,8 @@ export type ChartConfig = {
     };
     y: {
       property: string;
-      aggregation?: "count" | "sum" | "average" | "min" | "max";
-      conversion?: "percentage" | "number";
+      aggregation?: (typeof CHART_AGGREGATIONS)[number];
+      conversion?: (typeof CHART_CONVERSIONS)[number];
     }[];
   };
   sort?: {

@@ -26,11 +26,38 @@ const toolApprovalMessageSchema = z.object({
   parts: z.array(z.record(z.string(), z.unknown())),
 });
 
+const axisYItemSchema = z.object({
+  property: z.string(),
+  aggregation: z.string().optional(),
+  conversion: z.string().optional(),
+});
+
+const databaseSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  properties: z.record(z.string(), z.unknown()),
+});
+
+export const chartContextSchema = z.object({
+  name: z.string().optional(),
+  type: z.string().optional(),
+  theme: z.string().optional(),
+  axisX: z.string().optional(),
+  axisY: z.array(axisYItemSchema).optional(),
+  cacheDuration: z.number().optional(),
+  limit: z.number().optional(),
+  sortProperty: z.string().optional(),
+  sortAscending: z.boolean().optional(),
+  databases: z.array(databaseSchema).optional(),
+});
+
 export const postRequestBodySchema = z.object({
   id: z.string(),
   message: userMessageSchema.optional(),
   messages: z.array(toolApprovalMessageSchema).optional(),
   selectedChatModel: z.string(),
+  chartContext: chartContextSchema.optional(),
 });
 
+export type ChartContextPayload = z.infer<typeof chartContextSchema>;
 export type PostRequestBody = z.infer<typeof postRequestBodySchema>;

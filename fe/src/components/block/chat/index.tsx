@@ -1,7 +1,10 @@
 "use client";
 
 import { useChat } from "@ai-sdk/react";
-import { DefaultChatTransport } from "ai";
+import {
+  DefaultChatTransport,
+  lastAssistantMessageIsCompleteWithToolCalls,
+} from "ai";
 import { type ComponentProps, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import {
@@ -24,6 +27,11 @@ import { MultimodalInput } from "./input/multimodal-input";
 import { toast } from "sonner";
 import { useChatSidebar } from "@/pages/protected/builder/chat/context";
 import { DEFAULT_CHAT_MODEL } from "./tools/models";
+import type { ChartContextPayload } from "@/app/api/chat/schema";
+import type {
+  ChartMutationToolName,
+  ToolPreviewFormatter,
+} from "./tools/chart-mutations";
 
 function PureChat({
   id,
@@ -31,24 +39,38 @@ function PureChat({
   initialChatModel = DEFAULT_CHAT_MODEL,
   isReadonly,
   autoResume,
+  chartContext,
+  onClientToolCall,
+  formatToolPreview,
 }: {
   id: string;
   initialMessages: ChatMessage[];
   initialChatModel?: string;
   isReadonly: boolean;
   autoResume: boolean;
+  chartContext?: ChartContextPayload;
+  onClientToolCall?: (
+    toolName: ChartMutationToolName,
+    input: Record<string, unknown>,
+  ) => unknown;
+  formatToolPreview?: ToolPreviewFormatter;
 }) {
+  const t = useTranslations("pages.chart.edit.chat");
   const { setDataStream } = useDataStream();
 
-  const t = useTranslations("pages.chart.edit.chat");
   const [input, setInput] = useState<string>("");
   const [showCreditCardAlert, setShowCreditCardAlert] = useState(false);
   const [currentModelId, setCurrentModelId] = useState(initialChatModel);
   const currentModelIdRef = useRef(currentModelId);
+  const chartContextRef = useRef(chartContext);
 
   useEffect(() => {
     currentModelIdRef.current = currentModelId;
   }, [currentModelId]);
+
+  useEffect(() => {
+    chartContextRef.current = chartContext;
+  }, [chartContext]);
 
   const {
     messages,
@@ -59,42 +81,21 @@ function PureChat({
     regenerate,
     resumeStream,
     addToolApprovalResponse,
+    addToolOutput,
   } = useChat<ChatMessage>({
     id,
     messages: initialMessages,
-    sendAutomaticallyWhen: ({ messages: currentMessages }) => {
-      const lastMessage = currentMessages.at(-1);
-      const shouldContinue =
-        lastMessage?.parts?.some(
-          (part) =>
-            "state" in part &&
-            part.state === "approval-responded" &&
-            "approval" in part &&
-            (part.approval as { approved?: boolean })?.approved === true,
-        ) ?? false;
-      return shouldContinue;
-    },
+    sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithToolCalls,
     transport: new DefaultChatTransport({
       api: "/api/chat",
       fetch: fetchWithErrorHandlers,
       prepareSendMessagesRequest(request) {
-        const lastMessage = request.messages.at(-1);
-        const isToolApprovalContinuation =
-          lastMessage?.role !== "user" ||
-          request.messages.some((msg) =>
-            msg.parts?.some((part) => {
-              const state = (part as { state?: string }).state;
-              return (
-                state === "approval-responded" || state === "output-denied"
-              );
-            }),
-          );
-
         return {
           body: {
             id: request.id,
             messages: request.messages,
             selectedChatModel: currentModelIdRef.current,
+            chartContext: chartContextRef.current,
             ...request.body,
           },
         };
@@ -103,8 +104,8 @@ function PureChat({
     onData: (dataPart) => {
       setDataStream((ds) => (ds ? [...ds, dataPart] : []));
     },
-    onFinish: () => {
-      // mutate(unstable_serialize(getChatHistoryPaginationKey));
+    onFinish: (msg) => {
+      console.log("Chat stream finished. Final messages:", msg);
     },
     onError: (error) => {
       if (error.message?.includes("AI Gateway requires a valid credit card")) {
@@ -133,6 +134,9 @@ function PureChat({
       <div className="flex h-full min-w-0 touch-pan-y flex-col">
         <Messages
           addToolApprovalResponse={addToolApprovalResponse}
+          addToolOutput={addToolOutput}
+          onClientToolCall={onClientToolCall}
+          formatToolPreview={formatToolPreview}
           isReadonly={isReadonly}
           messages={messages}
           regenerate={regenerate}

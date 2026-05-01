@@ -4,7 +4,7 @@ import {
   extractReasoningMiddleware,
   wrapLanguageModel,
 } from "ai";
-import { chatModel, titleModel } from "./models.mock";
+import { chatModel } from "./models.mock";
 const isTestEnvironment = process.env.NODE_ENV !== "production";
 
 const THINKING_SUFFIX_REGEX = /-thinking$/;
@@ -14,7 +14,7 @@ export const myProvider = isTestEnvironment
       return customProvider({
         languageModels: {
           "chat-model": chatModel as any,
-          "title-model": titleModel as any,
+          "title-model": chatModel as any,
         },
       });
     })()

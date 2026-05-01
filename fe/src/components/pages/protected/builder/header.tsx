@@ -48,7 +48,12 @@ export function AppHeader({
       >
         {save}
       </Button>
-      <Button variant="ghost" size="icon" id="chat-sidebar-trigger" disabled>
+      <Button
+        variant="ghost"
+        size="icon"
+        id="chat-sidebar-trigger"
+        disabled={isLoading}
+      >
         <SparklesIcon />
       </Button>
     </header>

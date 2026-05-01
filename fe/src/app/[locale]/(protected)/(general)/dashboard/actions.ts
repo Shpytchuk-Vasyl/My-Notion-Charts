@@ -62,7 +62,7 @@ export async function createChart(_: any, formData: FormData) {
   if (!result.success) {
     return {
       success: false,
-      msg: z.treeifyError(result.error).errors.join(", "),
+      msg: z.prettifyError(result.error),
     };
   }
 
@@ -120,7 +120,7 @@ export async function updateChart(newChart: Chart) {
   if (!result.success) {
     return {
       success: false,
-      msg: z.treeifyError(result.error).errors.join(", "),
+      msg: z.prettifyError(result.error),
     };
   }
 

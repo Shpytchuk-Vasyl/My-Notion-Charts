@@ -464,7 +464,84 @@
           "property": "Властивість",
           "selectProperty": "Виберіть властивість"
         },
-        "chat": {}
+        "chat": {
+          "greeting": {
+            "title": "Привіт!",
+            "subtitle": "Чим можу допомогти?"
+          },
+          "input": {
+            "placeholder": "Напишіть повідомлення...",
+            "uploadError": "Помилка завантаження файлу: {name}, спробуйте ще раз!",
+            "pasteError": "Помилка завантаження зображення(ь)",
+            "waitForModel": "Зачекайте, поки модель завершить відповідь!"
+          },
+          "message": {
+            "thinking": "Думаю",
+            "scrollToBottom": "Прокрутити вниз",
+            "actions": {
+              "noText": "Немає тексту для копіювання!",
+              "copied": "Скопійовано!",
+              "edit": "Редагувати",
+              "copy": "Копіювати"
+            }
+          },
+          "gateway": {
+            "title": "Активувати AI Gateway",
+            "descriptionDev": "Для роботи застосунку потрібно активувати Vercel AI Gateway.",
+            "descriptionProd": "Власнику застосунку потрібно активувати Vercel AI Gateway.",
+            "cancel": "Скасувати",
+            "activate": "Активувати"
+          },
+          "errors": {
+            "generic": "Упс, сталась помилка!"
+          },
+          "editor": {
+            "cancel": "Скасувати",
+            "send": "Надіслати",
+            "sending": "Надсилання..."
+          },
+          "tool": {
+            "approve": "Застосувати",
+            "deny": "Відхилити",
+            "applied": "Застосовано",
+            "denied": "Відхилено",
+            "parameters": "Параметри",
+            "result": "Результат",
+            "error": "Помилка",
+            "noneValue": "немає",
+            "sortAscending": "за зростанням",
+            "sortDescending": "за спаданням",
+            "status": {
+              "approvalRequested": "Очікує підтвердження",
+              "approvalResponded": "Підтверджено",
+              "inputAvailable": "Виконується",
+              "inputStreaming": "Очікує",
+              "outputAvailable": "Завершено",
+              "outputDenied": "Відхилено",
+              "outputError": "Помилка"
+            },
+            "labels": {
+              "setChartName": "Перейменувати графік",
+              "setChartType": "Змінити тип графіка",
+              "setChartTheme": "Змінити тему",
+              "setAxisX": "Встановити вісь X",
+              "setAxisY": "Встановити вісь Y",
+              "addAxisY": "Додати вісь Y",
+              "removeAxisY": "Видалити вісь Y",
+              "setCacheDuration": "Встановити тривалість кешу",
+              "setDataLimit": "Встановити ліміт даних",
+              "setSortProperty": "Встановити сортування",
+              "toggleSortAscending": "Змінити напрям сортування",
+              "updateChart": "Оновити графік",
+              "saveChart": "Зберегти графік"
+            }
+          },
+          "suggestions": [
+            "Візуалізуй мої дані",
+            "Яка візуалізація найбільш підходяща?",
+            "Допоможи вибрати правильний тип графіка"
+          ]
+        }
       }
     }
   },

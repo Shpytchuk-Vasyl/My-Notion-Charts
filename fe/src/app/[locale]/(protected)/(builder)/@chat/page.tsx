@@ -6,11 +6,11 @@ import {
   SidebarHeader,
 } from "@/components/ui/sidebar";
 import { getMessages } from "next-intl/server";
-import { SidebarChat } from "@/components/block/chat";
+import { BuilderSidebarChat } from "@/pages/protected/builder/chat/builder-chat";
 // import dynamic from "next/dynamic";
 // import { Skeleton } from "@/components/ui/skeleton";
 //todo чогось динамічний імпорт не працює
-// const SidebarChat = dynamic(() => import('@/components/block/chat').then((mod) => mod.SidebarChat), 
+// const SidebarChat = dynamic(() => import('@/components/block/chat').then((mod) => mod.SidebarChat),
 // { loading: () => <Skeleton className="w-full" /> });
 
 export { generateStaticParams } from "@/i18n/static-params";
@@ -22,7 +22,14 @@ export default async function Page() {
   return (
     <NextIntlClientProvider
       messages={{
-        pages: {chart: {edit: {chat: messages.pages.chart.edit.chat}}},
+        pages: {
+          chart: {
+            edit: {
+              chat: messages.pages.chart.edit.chat,
+              nav: messages.pages.chart.edit.nav,
+            },
+          },
+        },
       }}
     >
       <Sidebar
@@ -35,12 +42,7 @@ export default async function Page() {
         }}
         WIDTH_MOBILE={WIDTH_VALUE}
       >
-        <SidebarChat
-          autoResume={false}
-          id={"chat-page"}
-          initialMessages={[]}
-          isReadonly={false}
-        />
+        <BuilderSidebarChat />
         {/* <SidebarHeader>"Chat" --- IGNORE ---</SidebarHeader>
       <SidebarContent>"Chat content goes here" --- IGNORE ---</SidebarContent>
       <SidebarFooter>

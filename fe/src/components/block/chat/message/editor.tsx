@@ -9,6 +9,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { useTranslations } from "next-intl";
 import type { ChatMessage } from "../types";
 import { getTextFromMessage } from "../utils";
 import { Textarea } from "@/components/ui/textarea";
@@ -27,6 +28,7 @@ export function MessageEditor({
   setMessages,
   regenerate,
 }: MessageEditorProps) {
+  const t = useTranslations("pages.chart.edit.chat.editor");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const [draftContent, setDraftContent] = useState<string>(
@@ -70,7 +72,7 @@ export function MessageEditor({
           }}
           variant="outline"
         >
-          Cancel
+          {t("cancel")}
         </Button>
         <Button
           className="h-fit px-3 py-2"
@@ -103,7 +105,7 @@ export function MessageEditor({
           }}
           variant="default"
         >
-          {isSubmitting ? "Sending..." : "Send"}
+          {isSubmitting ? t("sending") : t("send")}
         </Button>
       </div>
     </div>

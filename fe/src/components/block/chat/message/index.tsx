@@ -5,26 +5,34 @@ import { useState } from "react";
 import { useDataStream } from "../data-stream-provider";
 import { MessageContent } from "./base";
 import { Response } from "./response";
-// import {
-//   Tool,
-//   ToolContent,
-//   ToolHeader,
-//   ToolInput,
-//   ToolOutput,
-// } from "./elements/tool";
 import { MessageActions } from "./actions";
 import { MessageEditor } from "./editor";
 import { MessageReasoning } from "./reasoning";
 import { PreviewAttachment } from "./preview-attachment";
-import { ChatMessage } from "../types";
+import { ChartToolCard } from "./chart-tool-card";
+import { ChatMessage, ChatTools } from "../types";
 import { cn } from "@/lib/utils";
 import { sanitizeText } from "../utils";
 import { ArrowDownIcon, SparklesIcon } from "lucide-react";
 import { useMessages } from "@/hooks/use-messages";
 import { Greeting } from "../greeting";
+import {
+  CHART_MUTATION_TOOL_NAMES,
+  type ChartMutationToolName,
+  type ToolPreviewFormatter,
+} from "../tools/chart-mutations";
+import type { ToolUIPart } from "ai";
+
+const chartToolSet = new Set<string>(CHART_MUTATION_TOOL_NAMES);
 
 type MessagesProps = {
   addToolApprovalResponse: UseChatHelpers<ChatMessage>["addToolApprovalResponse"];
+  addToolOutput: UseChatHelpers<ChatMessage>["addToolOutput"];
+  onClientToolCall?: (
+    toolName: ChartMutationToolName,
+    input: Record<string, unknown>,
+  ) => unknown;
+  formatToolPreview?: ToolPreviewFormatter;
   status: UseChatHelpers<ChatMessage>["status"];
   messages: ChatMessage[];
   setMessages: UseChatHelpers<ChatMessage>["setMessages"];
@@ -34,6 +42,9 @@ type MessagesProps = {
 
 export function Messages({
   addToolApprovalResponse,
+  addToolOutput,
+  onClientToolCall,
+  formatToolPreview,
   status,
   messages,
   setMessages,
@@ -64,6 +75,9 @@ export function Messages({
           {messages.map((message, index) => (
             <PreviewMessage
               addToolApprovalResponse={addToolApprovalResponse}
+              addToolOutput={addToolOutput}
+              onClientToolCall={onClientToolCall}
+              formatToolPreview={formatToolPreview}
               isLoading={
                 status === "streaming" && messages.length - 1 === index
               }
@@ -86,7 +100,6 @@ export function Messages({
               ),
             ) && <ThinkingMessage />}
 
-          <ThinkingMessage />
           <div className="min-w-6 shrink-0" ref={messagesEndRef} />
         </div>
       </div>
@@ -125,6 +138,9 @@ function ScrollToBottomButton({
 
 export const PreviewMessage = ({
   addToolApprovalResponse,
+  addToolOutput,
+  onClientToolCall,
+  formatToolPreview,
   message,
   isLoading,
   setMessages,
@@ -133,6 +149,12 @@ export const PreviewMessage = ({
   requiresScrollPadding: _requiresScrollPadding,
 }: {
   addToolApprovalResponse: UseChatHelpers<ChatMessage>["addToolApprovalResponse"];
+  addToolOutput: UseChatHelpers<ChatMessage>["addToolOutput"];
+  onClientToolCall?: (
+    toolName: ChartMutationToolName,
+    input: Record<string, unknown>,
+  ) => unknown;
+  formatToolPreview?: ToolPreviewFormatter;
   message: ChatMessage;
   isLoading: boolean;
   setMessages: UseChatHelpers<ChatMessage>["setMessages"];
@@ -172,13 +194,12 @@ export const PreviewMessage = ({
             ),
             "w-full":
               (message.role === "assistant" &&
-                (message.parts?.some(
+                message.parts?.some(
                   (p) => p.type === "text" && p.text?.trim(),
-                ) ||
-                  message.parts?.some((p) => p.type.startsWith("tool-")))) ||
+                )) ||
               mode === "edit",
             "max-w-[calc(100%-2.5rem)] sm:max-w-[min(fit-content,80%)]":
-              message.role === "user" && mode !== "edit",
+              mode !== "edit",
           })}
         >
           {attachmentsFromMessage.length > 0 && (
@@ -253,180 +274,25 @@ export const PreviewMessage = ({
               }
             }
 
-            // if (type === "tool-getWeather") {
-            //   const { toolCallId, state } = part;
-            //   const approvalId = (part as { approval?: { id: string } })
-            //     .approval?.id;
-            //   const isDenied =
-            //     state === "output-denied" ||
-            //     (state === "approval-responded" &&
-            //       (part as { approval?: { approved?: boolean } }).approval
-            //         ?.approved === false);
-            //   const widthClass = "w-[min(100%,450px)]";
-
-            //   if (state === "output-available") {
-            //     return (
-            //       <div className={widthClass} key={toolCallId}>
-            //         <Weather weatherAtLocation={part.output} />
-            //       </div>
-            //     );
-            //   }
-
-            //   if (isDenied) {
-            //     return (
-            //       <div className={widthClass} key={toolCallId}>
-            //         <Tool className="w-full" defaultOpen={true}>
-            //           <ToolHeader
-            //             state="output-denied"
-            //             type="tool-getWeather"
-            //           />
-            //           <ToolContent>
-            //             <div className="px-4 py-3 text-muted-foreground text-sm">
-            //               Weather lookup was denied.
-            //             </div>
-            //           </ToolContent>
-            //         </Tool>
-            //       </div>
-            //     );
-            //   }
-
-            //   if (state === "approval-responded") {
-            //     return (
-            //       <div className={widthClass} key={toolCallId}>
-            //         <Tool className="w-full" defaultOpen={true}>
-            //           <ToolHeader state={state} type="tool-getWeather" />
-            //           <ToolContent>
-            //             <ToolInput input={part.input} />
-            //           </ToolContent>
-            //         </Tool>
-            //       </div>
-            //     );
-            //   }
-
-            //   return (
-            //     <div className={widthClass} key={toolCallId}>
-            //       <Tool className="w-full" defaultOpen={true}>
-            //         <ToolHeader state={state} type="tool-getWeather" />
-            //         <ToolContent>
-            //           {(state === "input-available" ||
-            //             state === "approval-requested") && (
-            //             <ToolInput input={part.input} />
-            //           )}
-            //           {state === "approval-requested" && approvalId && (
-            //             <div className="flex items-center justify-end gap-2 border-t px-4 py-3">
-            //               <button
-            //                 className="rounded-md px-3 py-1.5 text-muted-foreground text-sm transition-colors hover:bg-muted hover:text-foreground"
-            //                 onClick={() => {
-            //                   addToolApprovalResponse({
-            //                     id: approvalId,
-            //                     approved: false,
-            //                     reason: "User denied weather lookup",
-            //                   });
-            //                 }}
-            //                 type="button"
-            //               >
-            //                 Deny
-            //               </button>
-            //               <button
-            //                 className="rounded-md bg-primary px-3 py-1.5 text-primary-foreground text-sm transition-colors hover:bg-primary/90"
-            //                 onClick={() => {
-            //                   addToolApprovalResponse({
-            //                     id: approvalId,
-            //                     approved: true,
-            //                   });
-            //                 }}
-            //                 type="button"
-            //               >
-            //                 Allow
-            //               </button>
-            //             </div>
-            //           )}
-            //         </ToolContent>
-            //       </Tool>
-            //     </div>
-            //   );
-            // }
-
-            // if (type === "tool-createDocument") {
-            //   const { toolCallId } = part;
-
-            //   if (part.output && "error" in part.output) {
-            //     return (
-            //       <div
-            //         className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-500 dark:bg-red-950/50"
-            //         key={toolCallId}
-            //       >
-            //         Error creating document: {String(part.output.error)}
-            //       </div>
-            //     );
-            //   }
-
-            //   return (
-            //     <DocumentPreview
-            //       isReadonly={isReadonly}
-            //       key={toolCallId}
-            //       result={part.output}
-            //     />
-            //   );
-            // }
-
-            // if (type === "tool-updateDocument") {
-            //   const { toolCallId } = part;
-
-            //   if (part.output && "error" in part.output) {
-            //     return (
-            //       <div
-            //         className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-500 dark:bg-red-950/50"
-            //         key={toolCallId}
-            //       >
-            //         Error updating document: {String(part.output.error)}
-            //       </div>
-            //     );
-            //   }
-
-            //   return (
-            //     <div className="relative" key={toolCallId}>
-            //       <DocumentPreview
-            //         args={{ ...part.output, isUpdate: true }}
-            //         isReadonly={isReadonly}
-            //         result={part.output}
-            //       />
-            //     </div>
-            //   );
-            // }
-
-            // if (type === "tool-requestSuggestions") {
-            //   const { toolCallId, state } = part;
-
-            //   return (
-            //     <Tool defaultOpen={true} key={toolCallId}>
-            //       <ToolHeader state={state} type="tool-requestSuggestions" />
-            //       <ToolContent>
-            //         {state === "input-available" && (
-            //           <ToolInput input={part.input} />
-            //         )}
-            //         {state === "output-available" && (
-            //           <ToolOutput
-            //             errorText={undefined}
-            //             output={
-            //               "error" in part.output ? (
-            //                 <div className="rounded border p-2 text-red-500">
-            //                   Error: {String(part.output.error)}
-            //                 </div>
-            //               ) : (
-            //                 <DocumentToolResult
-            //                   isReadonly={isReadonly}
-            //                   result={part.output}
-            //                   type="request-suggestions"
-            //                 />
-            //               )
-            //             }
-            //           />
-            //         )}
-            //       </ToolContent>
-            //     </Tool>
-            //   );
-            // }
+            if (type.startsWith("tool-")) {
+              const toolName = type.slice("tool-".length);
+              if (chartToolSet.has(toolName)) {
+                const p = part as ToolUIPart<ChatTools>;
+                return (
+                  <ChartToolCard
+                    key={p.toolCallId ?? key}
+                    toolName={toolName as ChartMutationToolName}
+                    toolCallId={p.toolCallId}
+                    input={p.input ?? {}}
+                    state={p.state}
+                    output={p.output}
+                    onClientToolCall={onClientToolCall}
+                    addToolOutput={addToolOutput}
+                    formatToolPreview={formatToolPreview}
+                  />
+                );
+              }
+            }
 
             return null;
           })}

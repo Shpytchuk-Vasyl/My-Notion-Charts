@@ -1,4 +1,9 @@
-import { type ChartType } from "@/models/chart";
+import {
+  CHART_AGGREGATIONS,
+  CHART_CONVERSIONS,
+  CHART_TYPES,
+  type ChartType,
+} from "@/models/chart";
 import { getTranslations } from "next-intl/server";
 import { z } from "zod";
 
@@ -13,18 +18,7 @@ export const getChartCreateSchema = async () => {
       .array(z.uuid(), t("databases.required"))
       .min(1, t("databases.min")),
     workspaceId: z.uuid(t("workspaceId.required")),
-    chartType: z.enum(
-      [
-        "bar",
-        "line",
-        "pie",
-        "scatter",
-        "radar",
-        "area",
-        "radial",
-      ] as ChartType[],
-      t("chartType.invalid"),
-    ),
+    chartType: z.enum(CHART_TYPES as ChartType[], t("chartType.invalid")),
     joins: z.array(
       z.object({
         from: z.string(),
@@ -50,10 +44,8 @@ export const getChartUpdateSchema = async () => {
       y: z.array(
         z.object({
           property: z.string().optional(),
-          aggregation: z
-            .enum(["count", "sum", "average", "min", "max"])
-            .optional(),
-          conversion: z.enum(["percentage", "number"]).optional(),
+          aggregation: z.enum(CHART_AGGREGATIONS).optional(),
+          conversion: z.enum(CHART_CONVERSIONS).optional(),
         }),
       ),
     }),
@@ -88,18 +80,7 @@ export const getChartUpdateSchema = async () => {
       .string(t("chartName.required"))
       .min(2, t("chartName.min"))
       .max(50, t("chartName.max")),
-    type: z.enum(
-      [
-        "bar",
-        "line",
-        "pie",
-        "scatter",
-        "radar",
-        "area",
-        "radial",
-      ] as ChartType[],
-      t("chartType.invalid"),
-    ),
+    type: z.enum(CHART_TYPES as ChartType[], t("chartType.invalid")),
     config: chartConfigSchema,
   });
 };

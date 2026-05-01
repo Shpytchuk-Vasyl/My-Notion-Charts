@@ -64,6 +64,7 @@ interface BuilderContextType {
   addAxisY: () => void;
   removeAxisY: (index: number) => void;
   availableAxisProperties: SortProperty[];
+  databases: DatabasesType;
   filters: Chart["config"]["filters"] | undefined;
   availableFilterProperties: (PartialDataSourceObjectResponse["properties"]["key"] &
     SortProperty)[];
@@ -79,6 +80,7 @@ interface BuilderContextType {
     newKey: "and" | "or" | (string & {}),
   ) => void;
   removeFilterGroup: (path: PathType) => void;
+  _setChart: React.Dispatch<React.SetStateAction<Chart>>;
 }
 
 const BuilderContext = createContext<BuilderContextType | undefined>(undefined);
@@ -157,9 +159,7 @@ export function BuilderProvider({ children }: React.PropsWithChildren<{}>) {
   const setChart: React.Dispatch<React.SetStateAction<Chart>> = (updater) => {
     if (typeof updater === "function") {
       set((prev) => {
-        const updated = (updater as (prevState: Chart | null) => Chart | null)(
-          JSON.parse(JSON.stringify(prev)),
-        );
+        const updated = updater(prev ? structuredClone(prev) : prev!);
         return updated;
       });
     } else set(updater);
@@ -468,6 +468,7 @@ export function BuilderProvider({ children }: React.PropsWithChildren<{}>) {
         addAxisY,
         removeAxisY,
         availableAxisProperties,
+        databases,
         filters,
         addFilter,
         updateFilter,
@@ -476,6 +477,7 @@ export function BuilderProvider({ children }: React.PropsWithChildren<{}>) {
         addFilterGroup,
         updateFilterGroup,
         removeFilterGroup,
+        _setChart: setChart,
       }}
     >
       {children}

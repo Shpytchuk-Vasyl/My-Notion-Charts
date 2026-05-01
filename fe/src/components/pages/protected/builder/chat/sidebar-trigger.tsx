@@ -13,11 +13,9 @@ export const ChatSidebarTrigger = () => {
     if (!button) return;
 
     button.addEventListener("click", toggleSidebar);
-    button.disabled = false;
 
     return () => {
       button.removeEventListener("click", toggleSidebar);
-      button.disabled = true;
     };
   }, [toggleSidebar]);
 

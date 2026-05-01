@@ -463,6 +463,84 @@
           "remove": "Remove",
           "property": "Property",
           "selectProperty": "Select property"
+        },
+        "chat": {
+          "greeting": {
+            "title": "Hello there!",
+            "subtitle": "How can I help you today?"
+          },
+          "input": {
+            "placeholder": "Send a message...",
+            "uploadError": "Failed to upload file: {name}, please try again!",
+            "pasteError": "Failed to upload pasted image(s)",
+            "waitForModel": "Please wait for the model to finish its response!"
+          },
+          "message": {
+            "thinking": "Thinking",
+            "scrollToBottom": "Scroll to bottom",
+            "actions": {
+              "noText": "There's no text to copy!",
+              "copied": "Copied to clipboard!",
+              "edit": "Edit",
+              "copy": "Copy"
+            }
+          },
+          "gateway": {
+            "title": "Activate AI Gateway",
+            "descriptionDev": "This application requires you to activate Vercel AI Gateway.",
+            "descriptionProd": "This application requires the owner to activate Vercel AI Gateway.",
+            "cancel": "Cancel",
+            "activate": "Activate"
+          },
+          "errors": {
+            "generic": "Oops, an error occurred!"
+          },
+          "editor": {
+            "cancel": "Cancel",
+            "send": "Send",
+            "sending": "Sending..."
+          },
+          "tool": {
+            "approve": "Apply",
+            "deny": "Deny",
+            "applied": "Applied",
+            "denied": "Denied",
+            "parameters": "Parameters",
+            "result": "Result",
+            "error": "Error",
+            "noneValue": "none",
+            "sortAscending": "ascending",
+            "sortDescending": "descending",
+            "status": {
+              "approvalRequested": "Awaiting Approval",
+              "approvalResponded": "Responded",
+              "inputAvailable": "Running",
+              "inputStreaming": "Pending",
+              "outputAvailable": "Completed",
+              "outputDenied": "Denied",
+              "outputError": "Error"
+            },
+            "labels": {
+              "setChartName": "Rename chart",
+              "setChartType": "Change chart type",
+              "setChartTheme": "Change theme",
+              "setAxisX": "Set X-axis",
+              "setAxisY": "Set Y-axis",
+              "addAxisY": "Add Y-axis",
+              "removeAxisY": "Remove Y-axis",
+              "setCacheDuration": "Set cache duration",
+              "setDataLimit": "Set data limit",
+              "setSortProperty": "Set sort property",
+              "toggleSortAscending": "Set sort direction",
+              "updateChart": "Update chart",
+              "saveChart": "Save chart"
+            }
+          },
+          "suggestions": [
+            "Visualize my data",
+            "Help me choose the right chart type",
+            "Which visualization is most suitable?"
+          ]
         }
       }
     }

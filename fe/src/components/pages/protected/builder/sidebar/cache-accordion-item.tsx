@@ -25,7 +25,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useBuilderContext } from "../context";
 import { TOUR_FIRST_EDIT_CHART_IDS } from "../tour";
 
-const availableCacheDurations = [
+export const availableCacheDurations = [
   { name: "without", value: 0, icon: <ClockAlert /> },
   { name: "tenMin", value: 10 * 60, icon: <Watch /> },
   { name: "oneHour", value: 60 * 60, icon: <Clock1 /> },
