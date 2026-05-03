@@ -44,7 +44,7 @@ type ShareChartFormProps = {
     embed: string;
   };
   isIntercepted?: boolean;
-  chart: Promise<Pick<Chart, "name" | "is_public">>;
+  chart: Promise<Pick<Chart, "name" | "is_public" | "config">>;
 };
 
 export function ShareChartForm({
@@ -53,13 +53,14 @@ export function ShareChartForm({
   chart,
 }: ShareChartFormProps) {
   const [isPublic, setIsPublic] = useState<boolean | null>(null);
+  const [ttl, setTtl] = useState(0);
   const [allowUpdate, setAllowUpdate] = useState(false);
   const { id } = useParams();
   const { copyToClipboard } = useCopyToClipboard();
 
   const shareData: ShareData = {
     title: translation.title,
-    url: `${window.location.origin}/chart/${id}/view${isPublic ? "/open" : ""}`,
+    url: `${window.location.origin}/chart/${id}/view${isPublic ? `/open${ttl ? '/' + ttl : ''}` : ""}`,
   };
 
   const embedCode = [
@@ -75,7 +76,9 @@ export function ShareChartForm({
   useEffect(() => {
     chart.then((data) => {
       setIsPublic(data.is_public);
+      setTtl(data.config.cache.duration);
     });
+
   }, [chart]);
 
   const updatePublicStatus = debounce((newStatus: boolean) => {
@@ -117,7 +120,7 @@ export function ShareChartForm({
           <InputGroup>
             <InputGroupInput
               id="link"
-              defaultValue={shareData.url}
+              value={shareData.url}
               readOnly
               placeholder={translation.link}
             />
@@ -182,7 +185,7 @@ export function ShareChartForm({
             <InputGroupTextarea
               readOnly
               id="iframe"
-              defaultValue={embedCode}
+              value={embedCode}
               placeholder={translation.embed}
             />
             <InputGroupAddon align="inline-end">

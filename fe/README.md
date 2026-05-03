@@ -1,4 +1,4 @@
-# Chart Builder Dashboard
+# My Notion Charts
 
 Next.js application для створення та візуалізації графіків на основі даних з Notion.
 
@@ -38,50 +38,75 @@ yarn build
 ```
 fe/
 ├── src/
-│   ├── app/                    # Next.js App Router
-│   │   ├── [locale]/          # Інтернаціоналізація
-│   │   │   ├── (auth)/        # Маршрути аутентифікації
-│   │   │   │   └── actions.ts # Server actions для auth
-│   │   │   ├── (protected)/   # Захищені маршрути (потрібна авторизація)
-│   │   │   │   ├── (general)/ # Загальні сторінки (dashboard)
-│   │   │   │   └── (builder)/ # Chart builder сторінки
+│   ├── app/                          # Next.js App Router
+│   │   ├── [locale]/                # Інтернаціоналізація
+│   │   │   ├── (auth)/             # Маршрути аутентифікації
+│   │   │   │   ├── login/
+│   │   │   │   ├── signup/
+│   │   │   │   ├── logout/
+│   │   │   │   ├── verify-email/
+│   │   │   │   └── actions.ts      # Server actions для auth
+│   │   │   ├── (open)/             # Публічні сторінки (без авторизації)
+│   │   │   │   ├── (root)/         # Лендинг
+│   │   │   │   └── legal/          # Privacy, Terms
+│   │   │   ├── (embed)/            # Embed-маршрути для вбудованих чартів
+│   │   │   │   └── chart/[id]/view/
+│   │   │   │       └── open/       # Публічний перегляд (з TTL-кешуванням)
+│   │   │   ├── (protected)/        # Захищені маршрути (потрібна авторизація)
+│   │   │   │   ├── (general)/      # Загальні сторінки
+│   │   │   │   │   ├── dashboard/  # Дашборд зі списком чартів
+│   │   │   │   │   │   └── @modal/ # Паралельний слот для модалок
+│   │   │   │   │   └── chart/[id]/ # Сторінка чарту
+│   │   │   │   │       └── @modal/ # Паралельний слот (share, delete)
+│   │   │   │   └── (builder)/      # Chart builder
+│   │   │   │       ├── @chat/      # Паралельний слот — AI чат
+│   │   │   │       ├── @sidebar/   # Паралельний слот — бічна панель
+│   │   │   │       ├── @header/    # Паралельний слот — заголовок
 │   │   │   │       └── chart/[id]/edit/
 │   │   │   └── layout.tsx
-│   │   └── api/               # API routes
+│   │   └── api/                    # API routes
+│   │       ├── auth/callback/
+│   │       ├── chart/[id]/
+│   │       ├── chat/               # AI chat streaming endpoint
+│   │       │   └── [id]/stream/
+│   │       ├── notion/databases/
+│   │       └── workspace/callback/
 │   │
-│   ├── components/            # React компоненти
-│   │   ├── block/            # Блоки контенту (chart/, table/, etc.)
-│   │   ├── ui/               # UI компоненти (shadcn/ui)
-│   │   └── *.tsx             # Загальні компоненти
+│   ├── components/                 # React компоненти
+│   │   ├── block/                 # Блоки контенту
+│   │   │   ├── chart/             # Chart компоненти та типи чартів
+│   │   │   ├── chat/              # AI chat (input, message, tools)
+│   │   │   ├── notion/            # Notion-пов'язані блоки
+│   │   │   └── user/              # User-related блоки
+│   │   ├── pages/                 # Page-level компоненти
+│   │   │   ├── auth/
+│   │   │   ├── embed/
+│   │   │   ├── open/
+│   │   │   └── protected/
+│   │   │       ├── builder/       # Builder: chart, chat, sidebar
+│   │   │       └── general/       # General: chart, dashboard, sidebar
+│   │   └── ui/                    # UI компоненти (shadcn/ui)
 │   │
-│   ├── models/               # Моделі даних та репозиторії
-│   │   ├── workspace.ts      # WorkspaceRepository
-│   │   ├── chart.ts          # ChartRepository
-│   │   └── _database.types.ts # Supabase типи
+│   ├── models/                    # Моделі даних та репозиторії
+│   ├── services/                  # Бізнес-логіка
+│   ├── zod-schemas/               # Zod-схеми валідації
 │   │
-│   ├── services/             # Бізнес-логіка
-│   │   ├── notion.ts         # NotionService (інтеграція з Notion API)
-│   │   ├── user.ts           # UserService
-│   │   ├── workspace.ts      # WorkspaceService
-│   │   └── chart.ts          # ChartService
+│   ├── lib/                       # Утиліти та допоміжні функції
+│   │   ├── supabase/              # Supabase клієнти (server.ts, client.ts)
+│   │   └── gridstack/             # GridStack інтеграція
 │   │
-│   ├── lib/                  # Утиліти та допоміжні функції
-│   │   ├── supabase/         # Supabase клієнти
-│   │   │   ├── server.ts     # Server-side клієнт
-│   │   │   └── client.ts     # Browser клієнт
-│   │   └── utils.ts
-│   │
-│   ├── hooks/                # Custom React hooks
-│   ├── helpers/              # Допоміжні функції
-│   └── i18n/                 # Конфігурація інтернаціоналізації
+│   ├── hooks/                     # Custom React hooks
+│   ├── helpers/                   # Допоміжні функції
+│   └── i18n/                      # Конфігурація інтернаціоналізації
 │
-├── messages/                 # Переклади
-│   ├── en.json              # Англійська
-│   └── uk.json              # Українська
+├── messages/                      # Переклади
+│   ├── en.json                   # Англійська
+│   └── uk.json                   # Українська
 │
-├── public/                   # Статичні файли
-├── biome.json               # Конфігурація Biome
-└── tsconfig.json            # TypeScript конфігурація
+├── scripts/                       # Build-скрипти (генерація кеш-сторінок)
+├── public/                        # Статичні файли
+├── biome.json                     # Конфігурація Biome
+└── tsconfig.json                  # TypeScript конфігурація
 ```
 
 ---
@@ -89,22 +114,6 @@ fe/
 ## Архітектурні Принципи
 
 ### 1. Розділення Server vs Client Components
-
-**Server Components (за замовчуванням)**:
-- Всі компоненти в `app/` є Server Components
-- Використовуються для:
-  - Фетчингу даних
-  - Доступу до бази даних
-  - Серверної логіки
-- Не можуть використовувати hooks (`useState`, `useEffect`)
-
-**Client Components (`"use client"`)**:
-- Потрібні для:
-  - Інтерактивності (обробники подій)
-  - React hooks
-  - Browser APIs
-- Приклади: `src/components/block/chart/view.tsx`
-
 ### 2. Layered Architecture
 
 ```
@@ -141,7 +150,7 @@ export function ChartView({ chartData, chartLabels }) {
 - Дані передаються через props (server → client)
 - Не фетчати дані в Client Components
 - Використовувати Server Actions для мутацій
-
+- Пейджі серверні для оптимізації та SEO
 ---
 
 ## Правила Неймінгу
@@ -281,7 +290,7 @@ fetch: (url, init) => {
 
 export async function createChart(formData: FormData) {
   const supabase = await createClient();
-  // Валідація + логіка
+  // Валідація zod + логіка 
   return { success: true };
 }
 
@@ -292,57 +301,5 @@ function Component() {
   const handleSubmit = async (formData) => {
     const result = await createChart(formData);
   };
-}
-```
-
----
-
-## Best Practices
-
-### ✅ DO
-
-- Використовувати Server Components де можливо
-- Передавати дані через props (server → client)
-- Валідувати дані з `zod` в Server Actions
-- Використовувати TypeScript строго
-- Логувати API запити для debugging
-- Слідувати структурі layers (page → service → model)
-
-### ❌ DON'T
-
-- Не фетчити дані в Client Components
-- Не використовувати `"use client"` без потреби
-- Не дублювати логіку між services/models
-- Не ігнорувати TypeScript помилки
-- Не міксувати Server/Client код без розуміння
-
----
-
-## Environment Variables
-
-```env
-# Supabase
-NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
-
-# Notion
-NOTION_CLIENT_ID=
-NOTION_CLIENT_SECRET=
-NEXT_PUBLIC_NOTION_REDIRECT_URL=
-
-# App
-NEXT_PUBLIC_SITE_URL=
-```
-
----
-
-## Scripts
-
-```json
-{
-  "dev": "next dev",           // Розробка
-  "build": "next build",       // Білд для продакшну
-  "start": "next start",       // Запуск продакшн білду
-  "format": "biome check --write ./src" // Форматування коду
 }
 ```

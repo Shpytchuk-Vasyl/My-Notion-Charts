@@ -64,7 +64,7 @@ export function ChartDropdownMenuDeleteOption({
     <DropdownMenuItem variant="destructive" asChild>
       <Link
         href={{
-          pathname: routing.pathnames["/dashboard/chart/[id]/delete"],
+          pathname: routing.pathnames["/chart/[id]/delete"],
           params: {
             id,
           },

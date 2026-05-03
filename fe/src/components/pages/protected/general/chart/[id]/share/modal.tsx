@@ -1,6 +1,7 @@
 import { useTranslations } from "next-intl";
 import { ChartService } from "@/services/chart";
 import { ShareChartForm } from "./form";
+import { type Chart } from "@/models/chart";
 
 export function ShareChartModal({
   params,
@@ -10,7 +11,7 @@ export function ShareChartModal({
   isIntercepted?: boolean;
 }) {
   const chart = params.then(({ id }) =>
-    ChartService.getChartById(id, "name,is_public"),
+    ChartService.getChartById(id, "name,is_public,config"),
   );
 
   const t = useTranslations("pages.dashboard.charts.share");
@@ -28,7 +29,7 @@ export function ShareChartModal({
         embed: t("embed"),
       }}
       isIntercepted={isIntercepted}
-      chart={chart}
+      chart={chart as Promise<Chart>}
     />
   );
 }

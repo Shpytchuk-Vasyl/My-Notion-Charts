@@ -1,5 +1,9 @@
-import { Skeleton } from "@/components/ui/skeleton";
+import { Spinner } from "@/components/ui/spinner";
 
 export default function Loading() {
-  return <Skeleton className="size-full rounded-xl" />;
+  return (
+    <main className="flex flex-col items-center justify-center h-dvh">
+      <Spinner />
+    </main>
+  );
 }

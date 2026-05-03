@@ -104,15 +104,19 @@ export async function deleteChart(chartId: string) {
     return { success: false, msg: error.message };
   }
 
-  const locale = await getLocale();
-
-  redirect({
-    locale,
-    href: {
-      pathname: routing.pathnames["/dashboard"],
-    },
-  });
   return { success: true, msg: "" };
+}
+
+async function revalidateISR(id: string) {
+  const revalidatePath = (await import("next/cache")).revalidatePath;
+
+  const openIntervals = [600, 3600, 21600, 43200, 86400];
+  for (const locale of routing.locales) {
+    revalidatePath(`/${locale}/chart/${id}/view/open`);
+    for (const interval of openIntervals) {
+      revalidatePath(`/${locale}/chart/${id}/view/open/${interval}`);
+    }
+  }
 }
 
 export async function updateChart(newChart: Chart) {
@@ -124,10 +128,14 @@ export async function updateChart(newChart: Chart) {
     };
   }
 
-  const { error } = await ChartService.updateChart(result.data);
+  const { error, data } = await ChartService.updateChart(result.data);
 
   if (error) {
     return { success: false, msg: error.message };
+  }
+
+  if (data?.is_public && data?.id) {
+    await revalidateISR(data.id );
   }
 
   return { success: true, msg: "" };
@@ -148,6 +156,8 @@ export async function updateChartPublicStatus({
   if (error) {
     return { success: false, msg: error.message };
   }
+
+  await revalidateISR(id);
 
   return { success: true, msg: "" };
 }
