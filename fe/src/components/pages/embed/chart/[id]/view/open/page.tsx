@@ -1,6 +1,8 @@
 import { ChartErrorView } from "@/components/block/chart/error-view";
 import type { ChartThemeType } from "@/components/block/chart/themes";
 import { ChartView } from "@/components/block/chart/view";
+import { AvatarInfo } from "@/components/ui/avatar-info";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartService } from "@/services/chart";
 import { NotionService } from "@/services/notion";
 
@@ -16,16 +18,21 @@ export async function OpenEmbededChartViewPage({ id }: { id: string }) {
     const yKeys = chart.config.axis.y.map((axis) => axis.property);
 
     return (
-      <ChartView
-        xKey={xKey}
-        yKeys={yKeys}
-        theme={chart.config.customization.theme as ChartThemeType}
-        id={chart.id}
-        type={chart.type}
-        chartData={chartData}
-        labels={chartLabels}
-        className="h-dvh"
-      />
+      <Card className="h-dvh shadow-none p-6">
+        <CardHeader>
+          <CardTitle>{chart.name}</CardTitle>
+        </CardHeader>
+        <ChartView
+          xKey={xKey}
+          yKeys={yKeys}
+          theme={chart.config.customization.theme as ChartThemeType}
+          id={chart.id}
+          type={chart.type}
+          chartData={chartData}
+          labels={chartLabels}
+          className="h-full"
+        />
+      </Card>
     );
   } catch (error: any) {
     return (

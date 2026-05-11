@@ -1,7 +1,5 @@
 import { NextIntlClientProvider } from "next-intl";
-import {
-  Sidebar
-} from "@/components/ui/sidebar";
+import { Sidebar } from "@/components/ui/sidebar";
 import { getMessages } from "next-intl/server";
 import { BuilderSidebarChat } from "@/pages/protected/builder/chat/builder-chat";
 

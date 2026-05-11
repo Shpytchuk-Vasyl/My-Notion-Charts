@@ -23,14 +23,12 @@ import { useChartExport } from "@/hooks/use-chart-export";
 import { toast } from "sonner";
 
 export function GridChart({ chart }: { chart: Chart }) {
-  const t = useTranslations("pages.dashboard.grid.chartType");
   const locale = useLocale();
   return (
     <Card data-tour-step-id="grid-chart" className="size-full shadow-none p-6">
       <CardHeader className="grid-rows-1 grid-cols-[min-content_auto_min-content] items-center p-0">
         <AvatarInfo
           title={chart.name}
-          description={t(chart.type)}
           icon={<ChartIcon type={chart.type} is_public={chart.is_public} />}
         />
         <DropdownOptions id={chart.id} name={chart.name} />

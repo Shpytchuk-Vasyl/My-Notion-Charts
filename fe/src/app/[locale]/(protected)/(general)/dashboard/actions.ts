@@ -135,7 +135,7 @@ export async function updateChart(newChart: Chart) {
   }
 
   if (data?.is_public && data?.id) {
-    await revalidateISR(data.id );
+    await revalidateISR(data.id);
   }
 
   return { success: true, msg: "" };

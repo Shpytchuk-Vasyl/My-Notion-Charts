@@ -60,7 +60,7 @@ export function ShareChartForm({
 
   const shareData: ShareData = {
     title: translation.title,
-    url: `${window.location.origin}/chart/${id}/view${isPublic ? `/open${ttl ? '/' + ttl : ''}` : ""}`,
+    url: `${window.location.origin}/chart/${id}/view${isPublic ? `/open${ttl ? "/" + ttl : ""}` : ""}`,
   };
 
   const embedCode = [
@@ -78,7 +78,6 @@ export function ShareChartForm({
       setIsPublic(data.is_public);
       setTtl(data.config.cache.duration);
     });
-
   }, [chart]);
 
   const updatePublicStatus = debounce((newStatus: boolean) => {
