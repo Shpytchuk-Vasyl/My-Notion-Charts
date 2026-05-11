@@ -17,6 +17,7 @@ import {
   CardTitle,
 } from "./card";
 import { Popover, PopoverAnchor, PopoverContent } from "./popover";
+import { ToorHelper } from "@/helpers/toors";
 
 const TourContext = createContext<{
   start: (tourId: string) => void;
@@ -109,6 +110,7 @@ function TourProvider({
       setIsOpen(false);
       setCurrentStepIndex(0);
       setActiveTourId(null);
+      activeTourId && ToorHelper.complete(activeTourId) 
     }
     steps[currentStepIndex].sideEffects?.afterNext?.();
   }
@@ -124,11 +126,12 @@ function TourProvider({
     setIsOpen(false);
     setCurrentStepIndex(0);
     setActiveTourId(null);
+    activeTourId && ToorHelper.complete(activeTourId)
   }
 
   function start(tourId: string) {
     const tour = tours.find((tour) => tour.id === tourId);
-    if (tour) {
+    if (tour && !ToorHelper.isCompleted(tour.id)) {
       if (tour.steps.length > 0) {
         setActiveTourId(tourId);
         setIsOpen(true);
